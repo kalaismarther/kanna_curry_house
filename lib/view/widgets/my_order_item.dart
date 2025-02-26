@@ -1,0 +1,119 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kanna_curry_house/config/app_images.dart';
+import 'package:kanna_curry_house/model/order/my_order_model.dart';
+
+class MyOrderItem extends StatelessWidget {
+  const MyOrderItem(
+      {super.key,
+      required this.myOrder,
+      this.onTap,
+      this.showRateNowBtn = false});
+
+  final MyOrderModel myOrder;
+  final Function()? onTap;
+  final bool showRateNowBtn;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16.sp),
+        padding: EdgeInsets.all(16.sp),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  AppImages.myBag,
+                  height: 76.sp,
+                  width: 76.sp,
+                ),
+                SizedBox(width: 20.sp),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Order ID #${myOrder.uniqueNo}',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 8.sp),
+                      Text(
+                        'Placed on ${myOrder.orderDate}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 8.sp),
+                      Row(
+                        children: [
+                          Text(
+                            'Items : ',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            myOrder.itemsQuantity,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.sp),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 4.sp),
+            const Divider(),
+            SizedBox(height: 4.sp),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (myOrder.status.toLowerCase().trim() == 'order cancelled')
+                  Image.asset(AppImages.wrongIcon, height: 14.sp)
+                else
+                  Image.asset(AppImages.tickIcon, height: 14.sp),
+                SizedBox(width: 6.sp),
+                Text(
+                  myOrder.status,
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: myOrder.status.toLowerCase().trim() ==
+                              'order cancelled'
+                          ? Colors.red
+                          : Colors.green.shade300),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -3,6 +3,8 @@ class AppImages {
 
 //<!------------------------ SPLASH SCREEN --------------------->
   static const String logo = '${imagePath}logo.png';
+  static const String splashLeftCorner = '${imagePath}splash_left_corner.png';
+  static const String splashRightCorner = '${imagePath}splash_right_corner.png';
 
 //<!------------------------ GET STARTED SCREEN --------------------->
   static const String getStartedOne = '${imagePath}get_started_one.png';
@@ -34,6 +36,7 @@ class AppImages {
 //<!------------------------ HOME SCREEN --------------------->
   static const String menuIcon = '${imagePath}menu_icon.png';
   static const String notificationIcon = '${imagePath}notification_icon.png';
+  static const String cartIcon = '${imagePath}cart_icon.png';
   static const String homeLocationIcon = '${imagePath}home_location_icon.png';
   static const String order = '${imagePath}order.png';
   static const String table = '${imagePath}table.png';
@@ -44,7 +47,6 @@ class AppImages {
   static const String otherAddress = '${imagePath}other_address.png';
 
 //<!------------------------ PROFILE --------------------->
-
   static const String menuMyOrders = '${imagePath}menu_myorders.png';
   static const String menuMyBookings = '${imagePath}menu_mybookings.png';
   static const String menuNotification = '${imagePath}menu_notification.png';
@@ -52,4 +54,12 @@ class AppImages {
   static const String logout = '${imagePath}menu_logout.png';
   static const String gmail = '${imagePath}gmail.png';
   static const String whatsapp = '${imagePath}whatsapp.png';
+
+//<!------------------------ PROFILE --------------------->
+  static const String orderConfirmed = '${imagePath}order_confirmed.png';
+
+//<!------------------------ ORDER --------------------->
+  static const String myBag = '${imagePath}mybag.png';
+  static const tickIcon = '${imagePath}tick_icon.png';
+  static const wrongIcon = '${imagePath}wrong_icon.png';
 }

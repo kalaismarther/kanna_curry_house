@@ -144,9 +144,7 @@ class VerificationScreen extends StatelessWidget {
                             () {
                               if (controller.remainingSeconds.value == 0) {
                                 return TextButton(
-                                  onPressed: () {
-                                    controller.resetTimer();
-                                  },
+                                  onPressed: controller.resendOTP,
                                   child: Text(
                                     'Resend',
                                     style: Theme.of(context)

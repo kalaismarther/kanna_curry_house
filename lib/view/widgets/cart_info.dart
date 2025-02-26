@@ -45,7 +45,7 @@ class CartInfo extends StatelessWidget {
                       ] else ...[
                         Expanded(
                           child: Text(
-                            '${cart.itemCount} Item Added  |  MYR ${cart.subTotal}',
+                            '${cart.itemCount} Item Added  |  RM ${cart.subTotal}',
                             style:
                                 TextStyle(fontSize: 16.sp, color: Colors.white),
                           ),

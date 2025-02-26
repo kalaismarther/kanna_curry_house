@@ -4,10 +4,10 @@ import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/dio_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/model/auth/login_request_model.dart';
+import 'package:kanna_curry_house/model/auth/resend_otp_request_model.dart';
 import 'package:kanna_curry_house/model/auth/verification_request_model.dart';
 import 'package:kanna_curry_house/model/cart/add_to_cart_request_model.dart';
 import 'package:kanna_curry_house/model/cart/cart_info_model.dart';
-import 'package:kanna_curry_house/model/cart/cart_item_model.dart';
 import 'package:kanna_curry_house/model/cart/delete_from_cart_request_model.dart';
 import 'package:kanna_curry_house/model/cart/review_cart_request_model.dart';
 import 'package:kanna_curry_house/model/cart/update_cart_request_model.dart';
@@ -16,6 +16,9 @@ import 'package:kanna_curry_house/model/category/category_products_request_model
 import 'package:kanna_curry_house/model/category/view_categories_request_model.dart';
 import 'package:kanna_curry_house/model/checkout/checkout_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/coupon_model.dart';
+import 'package:kanna_curry_house/model/order/my_order_list_request_model.dart';
+import 'package:kanna_curry_house/model/order/my_order_model.dart';
+import 'package:kanna_curry_house/model/order/order_detail_request_model.dart';
 import 'package:kanna_curry_house/model/product/product_detail_request_model.dart';
 import 'package:kanna_curry_house/model/product/product_model.dart';
 import 'package:kanna_curry_house/model/profile/update_profile_request_model.dart';
@@ -46,6 +49,24 @@ class ApiServices {
           await StorageHelper.deleteAll();
         }
         return;
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<String?> resendVerificationCode(
+      ResendOtpRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.resendOtpUrl,
+        headers: _headersWithoutToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['message']?.toString();
       } else {
         throw Exception(response.body['message']?.toString() ?? '');
       }
@@ -216,7 +237,7 @@ class ApiServices {
     }
   }
 
-  static Future<CartItemModel?> updateCartItem(
+  static Future<ProductModel?> updateCartItem(
       UpdateCartRequestModel input) async {
     final response = await DioHelper.postHttpMethod(
         url: AppConstants.updateCartUrl,
@@ -229,8 +250,9 @@ class ApiServices {
         await StorageHelper.write('current_cart_id', currentCartId);
 
         for (final item in response.body['cartitems'] ?? []) {
-          if (item['id']?.toString() == input.cartItemId) {
-            return CartItemModel.fromJson(item);
+          if (item['id']?.toString() == input.cartItemId &&
+              item['product'] != null) {
+            return ProductModel.fromJson(item['product']);
           }
         }
         return null;
@@ -404,6 +426,74 @@ class ApiServices {
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
         return response.body['message']?.toString() ?? '';
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+//<---------------------------- ORDER ---------------------------------------->
+
+  static Future<List<MyOrderModel>> getMyOrders(
+      MyOrderListRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.myOrdersUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return [
+          for (final order in response.body['data'] ?? [])
+            MyOrderModel.fromJson(order)
+        ];
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<String, dynamic>> getOrderDetail(
+      OrderDetailRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.orderDetailUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<String, dynamic>> cancelMyOrder(
+      OrderDetailRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.cancelOrderUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body;
       } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');

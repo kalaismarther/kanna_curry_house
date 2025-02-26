@@ -5,7 +5,7 @@ class AppConstants {
 //<!------------------------ AUTH --------------------->
   static const String loginUrl = '${apiEndPoint}user_login';
   static const String verifyOtpUrl = '${apiEndPoint}verifyotp';
-  static const String resendOtpUrl = '${apiEndPoint}resed_otp';
+  static const String resendOtpUrl = '${apiEndPoint}resend_otp';
   static const String logoutUrl = '${apiEndPoint}logout';
 
 //<!------------------------ PROFILE --------------------->
@@ -31,4 +31,9 @@ class AppConstants {
 
 //<!------------------------ PRODUCT --------------------->
   static const String checkoutUrl = '${apiEndPoint}place_new_order';
+
+//<!------------------------ PRODUCT --------------------->
+  static const String myOrdersUrl = '${apiEndPoint}my_orders';
+  static const String orderDetailUrl = '${apiEndPoint}get_ordered_items';
+  static const String cancelOrderUrl = '${apiEndPoint}cancel_order';
 }

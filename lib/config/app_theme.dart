@@ -126,12 +126,12 @@ class AppTheme {
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
+            foregroundColor: red,
             textStyle: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
-                color: Colors.white),
+                color: red),
           ),
         ),
       );

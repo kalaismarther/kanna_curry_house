@@ -115,10 +115,8 @@ class CategoryProductsScreen extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: CartInfo(
-          onCheckOut: () async {
-            await Get.to(() => const CartScreen());
-            controller.fetchProductsbyCategory(initialize: true);
-          },
+          onCheckOut: () =>
+              Get.to(() => const CartScreen(fromScreen: 'products')),
         ),
       ),
     );

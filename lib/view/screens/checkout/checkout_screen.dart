@@ -76,7 +76,7 @@ class CheckoutScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final cartItem = cartController.cartItems[index];
                       return CartItem(
-                        item: cartItem,
+                        product: cartItem,
                         onDecrement: () async {
                           if (cartItem.cartQuantity < 2) {
                             await cartController.deleteItem(cartItem);
@@ -205,8 +205,10 @@ class CheckoutScreen extends StatelessWidget {
                               const VerticalSpace(height: 16),
                               _buildSummaryItem(
                                   'Sub Total', summary.subTotal, Colors.black),
-                              _buildSummaryItem('SST (tax is 6%)',
-                                  summary.taxAmount, Colors.black),
+                              _buildSummaryItem(
+                                  'SST (tax is ${summary.taxPercentage}%)',
+                                  summary.taxAmount,
+                                  Colors.black),
                               _buildSummaryItem('Coupon Value',
                                   summary.couponAmount, Colors.red),
                               const Divider(height: 20),
@@ -220,8 +222,14 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                   ),
                   const VerticalSpace(height: 24),
-                  PrimaryButton(
-                      onPressed: controller.submit, text: 'Place Order')
+                  Obx(
+                    () => PrimaryButton(
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : controller.submit,
+                        text: 'Place Order'),
+                  ),
+                  const VerticalSpace(height: 12),
                 ],
               ),
             )
@@ -250,7 +258,7 @@ class CheckoutScreen extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                valueColor == Colors.red ? '- MYR  $value' : 'MYR  $value',
+                valueColor == Colors.red ? '- RM  $value' : 'RM  $value',
                 textAlign: TextAlign.end,
                 style: TextStyle(fontSize: 16.sp, color: valueColor),
               ),

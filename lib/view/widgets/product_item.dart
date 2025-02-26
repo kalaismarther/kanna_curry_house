@@ -83,7 +83,7 @@ class ProductItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                'MYR ${product.sellingPrice}',
+                                'RM ${product.sellingPrice}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

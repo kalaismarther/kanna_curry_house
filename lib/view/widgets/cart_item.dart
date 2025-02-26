@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kanna_curry_house/model/cart/cart_item_model.dart';
+import 'package:kanna_curry_house/model/product/product_model.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
 import 'package:kanna_curry_house/view/widgets/online_image.dart';
 import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
@@ -8,11 +8,11 @@ import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
 class CartItem extends StatelessWidget {
   const CartItem(
       {super.key,
-      required this.item,
+      required this.product,
       required this.onDecrement,
       required this.onIncrement});
 
-  final CartItemModel item;
+  final ProductModel product;
   final Function() onDecrement;
   final Function() onIncrement;
 
@@ -21,7 +21,7 @@ class CartItem extends StatelessWidget {
     return Row(
       children: [
         OnlineImage(
-          link: item.productImageLink,
+          link: product.imageLink,
           height: 60.sp,
           width: 70.sp,
           radius: 12.sp,
@@ -32,12 +32,12 @@ class CartItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'MYR ${item.sellingPrice}',
+                'RM ${product.sellingPrice}',
                 style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
               ),
               const VerticalSpace(height: 8),
               Text(
-                item.productName,
+                product.name,
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
               )
             ],
@@ -70,7 +70,7 @@ class CartItem extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Text(
-                item.cartQuantity.toString(),
+                product.cartQuantity.toString(),
                 style: const TextStyle(
                     fontWeight: FontWeight.w500, color: Colors.white),
               ),

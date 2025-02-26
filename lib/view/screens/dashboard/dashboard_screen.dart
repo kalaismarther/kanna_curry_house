@@ -4,83 +4,101 @@ import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/view/screens/home/home_screen.dart';
+import 'package:kanna_curry_house/view/screens/order/my_order_list_screen.dart';
 import 'package:kanna_curry_house/view/screens/profile/profile_screen.dart';
 import 'package:kanna_curry_house/view/widgets/primary_appbar.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({super.key, this.initialTabNo = 0});
+
+  final int initialTabNo;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DashboardController>(
-      init: DashboardController(),
       builder: (controller) => Obx(
-        () => Scaffold(
-          appBar: controller.currentTab.value == 0
-              ? null
-              : PrimaryAppbar(
-                  title: controller.currentTab.value == 3 ? 'Profile' : '',
-                  dashboardScreen: true),
-          body: controller.currentTab.value == 0
-              ? const HomeScreen()
-              : controller.currentTab.value == 3
-                  ? const ProfileScreen()
-                  : Container(),
-          bottomNavigationBar: Obx(
-            () => BottomNavigationBar(
-              currentIndex: controller.currentTab.value,
-              onTap: (value) => controller.changeTab(value),
-              selectedLabelStyle:
-                  TextStyle(color: Theme.of(context).colorScheme.secondary),
-              selectedItemColor: Theme.of(context).colorScheme.secondary,
-              backgroundColor: Colors.white,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    AppImages.footerHome,
-                    height: 22.sp,
+        () => PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (controller.currentTab.value == 0) {
+              controller.exitAlert();
+            } else {
+              controller.changeTab(0);
+            }
+          },
+          child: Scaffold(
+            appBar: controller.currentTab.value == 0
+                ? null
+                : PrimaryAppbar(
+                    title: controller.currentTab.value == 1
+                        ? 'My Order'
+                        : controller.currentTab.value == 3
+                            ? 'Profile'
+                            : '',
+                    dashboardScreen: true),
+            body: controller.currentTab.value == 0
+                ? const HomeScreen()
+                : controller.currentTab.value == 1
+                    ? const MyOrderListScreen()
+                    : controller.currentTab.value == 3
+                        ? const ProfileScreen()
+                        : Container(),
+            bottomNavigationBar: Obx(
+              () => BottomNavigationBar(
+                currentIndex: controller.currentTab.value,
+                onTap: (value) => controller.changeTab(value),
+                selectedLabelStyle:
+                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                selectedItemColor: Theme.of(context).colorScheme.secondary,
+                backgroundColor: Colors.white,
+                type: BottomNavigationBarType.fixed,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      AppImages.footerHome,
+                      height: 22.sp,
+                    ),
+                    activeIcon: Image.asset(
+                      AppImages.footerHomeActive,
+                      height: 22.sp,
+                    ),
+                    label: 'Home',
                   ),
-                  activeIcon: Image.asset(
-                    AppImages.footerHomeActive,
-                    height: 22.sp,
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      AppImages.footerMyOrder,
+                      height: 22.sp,
+                    ),
+                    activeIcon: Image.asset(
+                      AppImages.footerMyOrderActive,
+                      height: 22.sp,
+                    ),
+                    label: 'My Order',
                   ),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    AppImages.footerMyOrder,
-                    height: 22.sp,
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      AppImages.footerMyBooking,
+                      height: 22.sp,
+                    ),
+                    activeIcon: Image.asset(
+                      AppImages.footerMyBookingActive,
+                      height: 22.sp,
+                    ),
+                    label: 'My Booking',
                   ),
-                  activeIcon: Image.asset(
-                    AppImages.footerMyOrderActive,
-                    height: 22.sp,
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      AppImages.footerProfile,
+                      height: 22.sp,
+                    ),
+                    activeIcon: Image.asset(
+                      AppImages.footeProfileActive,
+                      height: 22.sp,
+                    ),
+                    label: 'My Profile',
                   ),
-                  label: 'My Order',
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    AppImages.footerMyBooking,
-                    height: 22.sp,
-                  ),
-                  activeIcon: Image.asset(
-                    AppImages.footerMyBookingActive,
-                    height: 22.sp,
-                  ),
-                  label: 'My Booking',
-                ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    AppImages.footerProfile,
-                    height: 22.sp,
-                  ),
-                  activeIcon: Image.asset(
-                    AppImages.footeProfileActive,
-                    height: 22.sp,
-                  ),
-                  label: 'My Profile',
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -6,6 +7,7 @@ import 'package:kanna_curry_house/model/cart/cart_info_model.dart';
 import 'package:kanna_curry_house/model/cart/review_cart_request_model.dart';
 import 'package:kanna_curry_house/model/checkout/checkout_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/coupon_model.dart';
+import 'package:kanna_curry_house/view/screens/checkout/order_confirmed_screen.dart';
 import 'package:kanna_curry_house/view/screens/coupon/coupon_screen.dart';
 
 class CheckoutController extends GetxController {
@@ -67,8 +69,11 @@ class CheckoutController extends GetxController {
 
       final result = await ApiServices.checkoutCart(input);
       await StorageHelper.remove('current_cart_id');
+      Get.find<CartInfoController>().myCart.value = null;
       UiHelper.showToast(result);
       UiHelper.closeLoadingDialog();
+      Get.to(() => const OrderConfirmedScreen(),
+          transition: Transition.downToUp);
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {

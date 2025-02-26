@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
+import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/view/screens/cart/cart_screen.dart';
@@ -69,6 +70,7 @@ class HomeScreen extends StatelessWidget {
                       child: Container(
                         height: 40.sp,
                         width: 40.sp,
+                        padding: EdgeInsets.all(10.sp),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(14.sp),
@@ -79,13 +81,37 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const HorizontalSpace(width: 16),
-                    Obx(
-                      () => OnlineImage(
-                          link: controller.userProfileImage.value,
-                          height: 40.sp,
-                          width: 40.sp,
-                          radius: 14.sp),
-                    )
+                    InkWell(
+                      onTap: () =>
+                          Get.to(() => const CartScreen(fromScreen: 'home')),
+                      child: Container(
+                        height: 40.sp,
+                        width: 40.sp,
+                        padding: EdgeInsets.all(8.sp),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14.sp),
+                        ),
+                        child: Obx(
+                          () {
+                            final cartInfo =
+                                Get.find<CartInfoController>().myCart.value;
+                            if (cartInfo != null && cartInfo.itemCount > 0) {
+                              return Badge.count(
+                                count: cartInfo.itemCount,
+                                child: Image.asset(
+                                  AppImages.cartIcon,
+                                ),
+                              );
+                            } else {
+                              return Image.asset(
+                                AppImages.cartIcon,
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const VerticalSpace(height: 16),
@@ -370,10 +396,8 @@ class HomeScreen extends StatelessWidget {
                     Positioned(
                       bottom: 0,
                       child: CartInfo(
-                        onCheckOut: () async {
-                          await Get.to(() => const CartScreen());
-                          controller.fetchHomeContent();
-                        },
+                        onCheckOut: () =>
+                            Get.to(() => const CartScreen(fromScreen: 'home')),
                       ),
                     )
                   ],

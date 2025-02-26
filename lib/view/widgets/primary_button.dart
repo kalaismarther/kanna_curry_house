@@ -9,7 +9,7 @@ class PrimaryButton extends StatelessWidget {
       required this.text,
       this.onScreenBottom = false});
 
-  final Function() onPressed;
+  final Function()? onPressed;
   final String text;
   final bool onScreenBottom;
 

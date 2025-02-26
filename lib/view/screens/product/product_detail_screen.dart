@@ -176,7 +176,7 @@ class ProductDetailScreen extends StatelessWidget {
                         ),
                         const VerticalSpace(height: 16),
                         Text(
-                          'MYR ${thisProduct?.sellingPrice ?? ''}',
+                          'RM ${thisProduct?.sellingPrice ?? ''}',
                           style: TextStyle(
                               fontSize: 24.sp, fontWeight: FontWeight.w600),
                         ),
@@ -204,10 +204,8 @@ class ProductDetailScreen extends StatelessWidget {
           },
         ),
         bottomNavigationBar: CartInfo(
-          onCheckOut: () async {
-            await Get.to(() => const CartScreen());
-            controller.onInit();
-          },
+          onCheckOut: () =>
+              Get.to(() => const CartScreen(fromScreen: 'product_detail')),
         ),
       ),
     );

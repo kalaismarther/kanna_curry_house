@@ -98,7 +98,8 @@ class ProductDetailController extends GetxController {
 
       await ApiServices.deleteProductFromCart(input);
       UiHelper.closeLoadingDialog();
-      await fetchProductDetail();
+      product.value?.isInCart = false;
+      product.refresh();
       notifyOnOtherScreens(isDeleted: true);
       await Get.find<CartInfoController>().reloadCartData();
     } catch (e) {

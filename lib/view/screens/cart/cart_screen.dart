@@ -10,14 +10,16 @@ import 'package:kanna_curry_house/view/widgets/loading_shimmer.dart';
 import 'package:kanna_curry_house/view/widgets/primary_appbar.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+  const CartScreen({super.key, this.fromScreen});
+
+  final String? fromScreen;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const PrimaryAppbar(title: 'Cart'),
       body: GetBuilder<CartController>(
-        init: CartController(),
+        init: CartController(fromScreenName: fromScreen),
         builder: (controller) => SingleChildScrollView(
           padding: EdgeInsets.all(16.sp),
           child: Column(
@@ -52,6 +54,11 @@ class CartScreen extends StatelessWidget {
                             radius: 16.sp),
                       );
                     }
+                    if (controller.cartItems.isEmpty) {
+                      return const Center(
+                        child: Text('Cart is Empty'),
+                      );
+                    }
                     if (controller.error.value != null) {
                       return SizedBox(
                         height: 100,
@@ -60,35 +67,32 @@ class CartScreen extends StatelessWidget {
                         ),
                       );
                     }
-                    if (controller.cartItems.isEmpty) {
-                      return const Center(
-                        child: Text('Cart is Empty'),
-                      );
-                    }
+
                     return ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.cartItems.length,
-                        separatorBuilder: (context, index) => Divider(
-                              height: 24.sp,
-                            ),
-                        itemBuilder: (context, index) {
-                          final cartItem = controller.cartItems[index];
-                          return CartItem(
-                            item: cartItem,
-                            onDecrement: () {
-                              if (cartItem.cartQuantity < 2) {
-                                controller.deleteItem(cartItem);
-                              } else {
-                                controller.updateItem(cartItem,
-                                    toIncrease: false);
-                              }
-                            },
-                            onIncrement: () {
-                              controller.updateItem(cartItem, toIncrease: true);
-                            },
-                          );
-                        });
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.cartItems.length,
+                      separatorBuilder: (context, index) => Divider(
+                        height: 24.sp,
+                      ),
+                      itemBuilder: (context, index) {
+                        final cartItem = controller.cartItems[index];
+                        return CartItem(
+                          product: cartItem,
+                          onDecrement: () {
+                            if (cartItem.cartQuantity < 2) {
+                              controller.deleteItem(cartItem);
+                            } else {
+                              controller.updateItem(cartItem,
+                                  toIncrease: false);
+                            }
+                          },
+                          onIncrement: () {
+                            controller.updateItem(cartItem, toIncrease: true);
+                          },
+                        );
+                      },
+                    );
                   },
                 ),
               ),

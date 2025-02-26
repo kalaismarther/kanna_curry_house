@@ -102,7 +102,7 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 ProfileMenuItem(
-                  onTap: () => dashboardController.changeTab(0),
+                  onTap: () => dashboardController.changeTab(1),
                   image: AppImages.menuMyOrders,
                   text: 'My Orders',
                 ),
