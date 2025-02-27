@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:kanna_curry_house/controller/order/my_order_list_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -78,9 +77,9 @@ class OrderDetailController extends GetxController {
 
       if (result['data'] != null) {
         myOrder.value = MyOrderModel.fromJson(result['data']);
-        if (myOrder.value != null) {
-          Get.find<MyOrderListController>().notifyOrderStatus(myOrder.value!);
-        }
+        // if (myOrder.value != null) {
+        //   Get.find<MyOrderListController>().notifyOrderStatus(myOrder.value!);
+        // }
       }
       UiHelper.showToast(result['message'].toString());
     } catch (e) {

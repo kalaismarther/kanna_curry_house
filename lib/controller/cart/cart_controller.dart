@@ -74,6 +74,11 @@ class CartController extends GetxController {
       await ApiServices.deleteProductFromCart(input);
       cartItems.remove(product);
       notifyOnOtherScreens(product, isDeleted: true);
+      if (cartItems.isEmpty) {
+        UiHelper.closeLoadingDialog();
+        Get.back();
+        UiHelper.showToast('Cart items cleared');
+      }
       await Get.find<CartInfoController>().reloadCartData();
     } catch (e) {
       UiHelper.showErrorMessage(e);

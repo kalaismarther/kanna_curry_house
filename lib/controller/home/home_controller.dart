@@ -146,7 +146,6 @@ class HomeController extends GetxController {
 
     if (item != null) {
       final itemIndex = products.indexOf(item);
-      print(itemIndex);
       products[itemIndex] = product;
       products.refresh();
     }

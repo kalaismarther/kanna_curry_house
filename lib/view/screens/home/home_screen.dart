@@ -311,11 +311,6 @@ class HomeScreen extends StatelessWidget {
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w600),
                               ),
-                              Text(
-                                'See All',
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: Colors.grey),
-                              ),
                             ],
                           ),
                           VerticalSpace(height: 8.sp),

@@ -186,6 +186,13 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     child: Obx(
                       () {
+                        if (controller.error.value != null) {
+                          return SizedBox(
+                            height: 200.sp,
+                            child: Center(
+                                child: Text(controller.error.value ?? '')),
+                          );
+                        }
                         final summary = controller.cartInfo.value;
 
                         return Column(
@@ -209,8 +216,9 @@ class CheckoutScreen extends StatelessWidget {
                                   'SST (tax is ${summary.taxPercentage}%)',
                                   summary.taxAmount,
                                   Colors.black),
-                              _buildSummaryItem('Coupon Value',
-                                  summary.couponAmount, Colors.red),
+                              if (controller.selectedCoupon.value != null)
+                                _buildSummaryItem('Coupon Value',
+                                    summary.couponAmount, Colors.red),
                               const Divider(height: 20),
                               _buildSummaryItem(
                                   'Total', summary.total, Colors.black,

@@ -84,6 +84,7 @@ class UpdateProfileController extends GetxController {
               dob: dob!,
               address: address.value!);
           await ApiServices.updateUserProfile(input);
+          await StorageHelper.write('logged', true);
           UiHelper.closeLoadingDialog();
           Get.to(() => const DashboardScreen());
         }

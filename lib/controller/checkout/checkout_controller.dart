@@ -28,6 +28,7 @@ class CheckoutController extends GetxController {
   Future<void> reviewCart() async {
     try {
       isLoading.value = true;
+      error.value = null;
       final user = StorageHelper.getUserDetail();
 
       final input = ReviewCartRequestModel(

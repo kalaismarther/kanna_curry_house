@@ -131,7 +131,7 @@ class VerificationScreen extends StatelessWidget {
                             ),
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
+                            if (value == null || value.length < 4) {
                               return 'Please enter 4 Digit OTP';
                             } else {
                               return null;

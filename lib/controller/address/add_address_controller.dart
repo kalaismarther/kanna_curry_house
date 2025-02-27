@@ -31,7 +31,8 @@ class AddAddressController extends GetxController {
     AddressTypeModel(
         name: 'Others', icon: AppImages.otherAddress, isSelected: false),
   ].obs;
-  RxString selectedAddressType = 'Home'.obs;
+  var selectedAddressType = AddressTypeModel(
+      name: 'Home', icon: AppImages.homeAddress, isSelected: true);
 
   Future<void> getDeviceLocation() async {
     try {
@@ -63,7 +64,7 @@ class AddAddressController extends GetxController {
     addressTypes.refresh();
     final address = addressTypes.firstWhere((e) => e == type);
     address.isSelected = true;
-    selectedAddressType.value = type.name;
+    selectedAddressType = type;
     addressTypes.refresh();
   }
 
@@ -77,7 +78,7 @@ class AddAddressController extends GetxController {
             landmark: landmarkController.text.trim(),
             latitude: currentLocation.value?.latitude,
             longitude: currentLocation.value?.longitude,
-            type: selectedAddressType.value);
+            type: selectedAddressType.name);
 
         Get.back(result: address);
       }
