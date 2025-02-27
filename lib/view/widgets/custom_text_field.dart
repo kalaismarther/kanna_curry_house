@@ -16,6 +16,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.maxLength,
     this.inputFormatters,
+    this.bgColor,
     this.marginBottom,
   });
 
@@ -29,6 +30,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final int? maxLength;
   final List<TextInputFormatter>? inputFormatters;
+  final Color? bgColor;
   final double? marginBottom;
 
   @override
@@ -49,6 +51,8 @@ class CustomTextField extends StatelessWidget {
           maxLength: maxLength,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: bgColor,
             counterText: '',
             hintText: hintText,
             suffixIcon: Padding(

@@ -5,6 +5,7 @@ import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
+import 'package:kanna_curry_house/view/screens/booking/table_booking_screen.dart';
 import 'package:kanna_curry_house/view/screens/cart/cart_screen.dart';
 import 'package:kanna_curry_house/view/screens/category/category_products_screen.dart';
 import 'package:kanna_curry_house/view/screens/category/view_categories_screen.dart';
@@ -274,7 +275,7 @@ class HomeScreen extends StatelessWidget {
                                     color: Colors.transparent,
                                     child: InkWell(
                                       onTap: () => Get.to(
-                                          () => const ViewCategoriesScreen()),
+                                          () => const TableBookingScreen()),
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 24.sp),

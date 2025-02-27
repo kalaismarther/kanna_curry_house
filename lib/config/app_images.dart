@@ -62,4 +62,8 @@ class AppImages {
   static const String myBag = '${imagePath}mybag.png';
   static const tickIcon = '${imagePath}tick_icon.png';
   static const wrongIcon = '${imagePath}wrong_icon.png';
+
+//<!------------------------ TABLE BOOKING SCREEN --------------------->
+  static const String calendarIconColor = '${imagePath}calendar_icon_color.png';
+  static const String clockIconColor = '${imagePath}clock_icon_color.png';
 }

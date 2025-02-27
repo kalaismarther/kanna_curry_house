@@ -29,11 +29,14 @@ class AppConstants {
   static const String productDetailUrl = '${apiEndPoint}product_detalis';
   static const String couponsUrl = '${apiEndPoint}show_coupons';
 
-//<!------------------------ PRODUCT --------------------->
+//<!------------------------ CHECKOUT --------------------->
   static const String checkoutUrl = '${apiEndPoint}place_new_order';
 
-//<!------------------------ PRODUCT --------------------->
+//<!------------------------ ORDER --------------------->
   static const String myOrdersUrl = '${apiEndPoint}my_orders';
   static const String orderDetailUrl = '${apiEndPoint}get_ordered_items';
   static const String cancelOrderUrl = '${apiEndPoint}cancel_order';
+
+//<!------------------------ BOOKING --------------------->
+  static const String tableBookingUrl = '${apiEndPoint}request_table_booking';
 }
