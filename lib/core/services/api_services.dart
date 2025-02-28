@@ -6,6 +6,9 @@ import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/model/auth/login_request_model.dart';
 import 'package:kanna_curry_house/model/auth/resend_otp_request_model.dart';
 import 'package:kanna_curry_house/model/auth/verification_request_model.dart';
+import 'package:kanna_curry_house/model/booking/booking_detail_request_model.dart';
+import 'package:kanna_curry_house/model/booking/my_booking_list_request_model.dart';
+import 'package:kanna_curry_house/model/booking/my_booking_model.dart';
 import 'package:kanna_curry_house/model/booking/table_booking_request_model.dart';
 import 'package:kanna_curry_house/model/cart/add_to_cart_request_model.dart';
 import 'package:kanna_curry_house/model/cart/cart_info_model.dart';
@@ -508,7 +511,7 @@ class ApiServices {
 
 //<---------------------------- BOOKING ---------------------------------------->
 
-  static Future<void> requestForTableBooking(
+  static Future<String> requestForTableBooking(
       TableBookingRequestModel input) async {
     final response = await DioHelper.postHttpMethod(
         url: AppConstants.tableBookingUrl,
@@ -517,7 +520,74 @@ class ApiServices {
 
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
-        return;
+        return response.body['message']?.toString() ??
+            'Table Booking Request Sent Successfully';
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<List<MyBookingModel>> getMyBookings(
+      MyBookingListRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.myBookingsUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return [
+          for (final booking in response.body['data'] ?? [])
+            MyBookingModel.fromJson(booking)
+        ];
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<MyBookingModel> getBookingDetail(
+      BookingDetailRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.bookingDetailUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return MyBookingModel.fromJson(response.body['data']);
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<String> cancelMyBooking(BookingDetailRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.cancelBookingUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['message']?.toString() ??
+            'Booking cancelled successfully';
       } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');

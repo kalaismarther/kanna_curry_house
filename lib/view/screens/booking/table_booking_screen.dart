@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/booking/table_booking_controller.dart';
 import 'package:kanna_curry_house/core/utils/validation_helper.dart';
@@ -36,6 +36,9 @@ class TableBookingScreen extends StatelessWidget {
                     validator: ValidationHelper.validateName,
                   ),
                   CustomTextField(
+                    maxLength: 10,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: controller.mobileController,
                     label: 'Mobile Number',
                     hintText: 'Enter Mobile Number',

@@ -39,4 +39,7 @@ class AppConstants {
 
 //<!------------------------ BOOKING --------------------->
   static const String tableBookingUrl = '${apiEndPoint}request_table_booking';
+  static const String myBookingsUrl = '${apiEndPoint}my_table_booking_list';
+  static const String bookingDetailUrl = '${apiEndPoint}table_booking_detail';
+  static const String cancelBookingUrl = '${apiEndPoint}cancel_booking';
 }

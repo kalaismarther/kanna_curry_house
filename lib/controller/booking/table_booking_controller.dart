@@ -6,6 +6,7 @@ import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/booking/table_booking_request_model.dart';
+import 'package:kanna_curry_house/view/screens/booking/booking_confirmed_screen.dart';
 
 class TableBookingController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -115,7 +116,11 @@ class TableBookingController extends GetxController {
               adultsCount: noOfAdult.value,
               kidsCount: noOfKids.value);
 
-          await ApiServices.requestForTableBooking(input);
+          final result = await ApiServices.requestForTableBooking(input);
+          UiHelper.closeLoadingDialog();
+          UiHelper.showToast(result);
+          Get.to(() => const BookingConfirmedScreen(),
+              transition: Transition.downToUp);
         }
       }
     } catch (e) {

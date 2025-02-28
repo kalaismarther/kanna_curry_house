@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
+import 'package:kanna_curry_house/view/screens/booking/my_booking_list_screen.dart';
 import 'package:kanna_curry_house/view/screens/home/home_screen.dart';
 import 'package:kanna_curry_house/view/screens/order/my_order_list_screen.dart';
 import 'package:kanna_curry_house/view/screens/profile/profile_screen.dart';
@@ -32,17 +33,21 @@ class DashboardScreen extends StatelessWidget {
                 : PrimaryAppbar(
                     title: controller.currentTab.value == 1
                         ? 'My Order'
-                        : controller.currentTab.value == 3
-                            ? 'Profile'
-                            : '',
+                        : controller.currentTab.value == 1
+                            ? 'My Bookings'
+                            : controller.currentTab.value == 3
+                                ? 'Profile'
+                                : '',
                     dashboardScreen: true),
             body: controller.currentTab.value == 0
                 ? const HomeScreen()
                 : controller.currentTab.value == 1
                     ? const MyOrderListScreen()
-                    : controller.currentTab.value == 3
-                        ? const ProfileScreen()
-                        : Container(),
+                    : controller.currentTab.value == 2
+                        ? const MyBookingListScreen()
+                        : controller.currentTab.value == 3
+                            ? const ProfileScreen()
+                            : Container(),
             bottomNavigationBar: Obx(
               () => BottomNavigationBar(
                 currentIndex: controller.currentTab.value,
