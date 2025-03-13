@@ -16,7 +16,7 @@ class CheckoutController extends GetxController {
 
   @override
   void onInit() {
-    reviewCart();
+    Future.wait([reviewCart(), fetchCancellationPolicy()]);
     super.onInit();
   }
 
@@ -25,8 +25,11 @@ class CheckoutController extends GetxController {
   var cartInfo = Rxn<CartInfoModel>();
   var error = Rxn<String>();
 
+  var cancellationPolicyContent = ''.obs;
+
   Future<void> reviewCart() async {
     try {
+      cartInfo.value = null;
       isLoading.value = true;
       error.value = null;
       final user = StorageHelper.getUserDetail();
@@ -48,7 +51,18 @@ class CheckoutController extends GetxController {
   Future<void> chooseCoupon() async {
     final coupon = await Get.to(() => const CouponScreen());
     selectedCoupon.value = coupon;
-    reviewCart();
+    if (selectedCoupon.value != null) {
+      reviewCart();
+    }
+  }
+
+  Future<void> fetchCancellationPolicy() async {
+    try {
+      final result = await ApiServices.getCancellationPolicy();
+      cancellationPolicyContent.value = result;
+    } catch (e) {
+      //
+    }
   }
 
   Future<void> submit() async {

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
+import 'package:kanna_curry_house/config/app_theme.dart';
+import 'package:kanna_curry_house/controller/order/order_detail_controller.dart';
 import 'package:kanna_curry_house/model/order/my_order_model.dart';
+import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
 
 class MyOrderItem extends StatelessWidget {
   const MyOrderItem(
@@ -90,24 +94,63 @@ class MyOrderItem extends StatelessWidget {
             ),
             SizedBox(height: 4.sp),
             const Divider(),
-            SizedBox(height: 4.sp),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (myOrder.status.toLowerCase().trim() == 'order cancelled')
-                  Image.asset(AppImages.wrongIcon, height: 14.sp)
-                else
-                  Image.asset(AppImages.tickIcon, height: 14.sp),
-                SizedBox(width: 6.sp),
-                Text(
-                  myOrder.status,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: myOrder.status.toLowerCase().trim() ==
-                              'order cancelled'
-                          ? Colors.red
-                          : Colors.green.shade300),
+                if (showRateNowBtn) ...[
+                  if (myOrder.isRatingSubmitted)
+                    Padding(
+                      padding: EdgeInsets.all(4.sp),
+                      child: Text(
+                        'Rating submitted',
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                    )
+                  else if (myOrder.status.toLowerCase() != 'order cancelled' &&
+                      myOrder.status.toLowerCase() != 'processing')
+                    InkWell(
+                      onTap: () {
+                        Get.find<OrderDetailController>().showRatingDialog();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(4.sp),
+                        child: Text(
+                          'Rate Now',
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                      ),
+                    )
+                  else
+                    const HorizontalSpace(width: 4)
+                ] else ...[
+                  if (myOrder.preparationTime.isNotEmpty)
+                    Text(
+                      '${myOrder.preparationTime} Mins',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.red),
+                    ),
+                ],
+                Row(
+                  children: [
+                    if (myOrder.status.toLowerCase().trim() ==
+                        'order cancelled')
+                      Image.asset(AppImages.wrongIcon, height: 14.sp)
+                    else
+                      Image.asset(AppImages.tickIcon, height: 14.sp),
+                    SizedBox(width: 6.sp),
+                    Text(
+                      myOrder.status,
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: myOrder.status.toLowerCase().trim() ==
+                                  'order cancelled'
+                              ? Colors.red
+                              : Colors.green.shade300),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -37,7 +37,7 @@ class MyBookingItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset(
-                  AppImages.myBag,
+                  AppImages.myBooking,
                   height: 76.sp,
                   width: 76.sp,
                 ),

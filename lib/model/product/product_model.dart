@@ -12,6 +12,7 @@ class ProductModel {
   final String slotMessage;
   final bool inStock;
   bool isInCart;
+  final String foodType;
 
   ProductModel(
       {required this.id,
@@ -26,7 +27,8 @@ class ProductModel {
       required this.productAvailable,
       required this.slotMessage,
       required this.inStock,
-      required this.isInCart});
+      required this.isInCart,
+      required this.foodType});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
       id: json['id']?.toString() ?? '0',
@@ -42,5 +44,6 @@ class ProductModel {
       productAvailable: json['is_product_available']?.toString() == '1',
       slotMessage: json['slot_message']?.toString() ?? '',
       inStock: json['stock_status']?.toString() != 'OUT_OF_STOCK',
-      isInCart: (int.tryParse(json['cart_qty']?.toString() ?? '0') ?? 0) > 0);
+      isInCart: (int.tryParse(json['cart_qty']?.toString() ?? '0') ?? 0) > 0,
+      foodType: json['food_type']?.toString() ?? '0');
 }

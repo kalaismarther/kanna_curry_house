@@ -4,6 +4,7 @@ import 'package:kanna_curry_house/model/cart/delivery_type_model.dart';
 class CartInfoModel {
   final String id;
   final int itemCount;
+  final String preparationTime;
   final String subTotal;
   final String taxPercentage;
   final String taxAmount;
@@ -16,6 +17,7 @@ class CartInfoModel {
   CartInfoModel(
       {required this.id,
       required this.itemCount,
+      required this.preparationTime,
       required this.subTotal,
       required this.taxPercentage,
       required this.taxAmount,
@@ -29,6 +31,8 @@ class CartInfoModel {
         id: json['data']?['id']?.toString() ?? '0',
         itemCount:
             int.tryParse(json['data']?['is_qty']?.toString() ?? '0') ?? 0,
+        preparationTime:
+            json['data']?['is_esti_preparation_time']?.toString() ?? '',
         subTotal: json['data']?['without_tax_subtotal']?.toString() ?? '0',
         taxPercentage: json['data']?['tax_percentage']?.toString() ?? '0',
         taxAmount: json['data']?['tax_amount']?.toString() ?? '0',

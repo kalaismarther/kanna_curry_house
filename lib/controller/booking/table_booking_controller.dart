@@ -68,7 +68,8 @@ class TableBookingController extends GetxController {
     if (pickedTime != null) {
       if (context.mounted) {
         selectedTime.value = pickedTime;
-        timeController.text = _convertTo24HourFormat(pickedTime);
+        timeController.text = pickedTime.format(context);
+        ;
       }
     }
   }
@@ -112,7 +113,8 @@ class TableBookingController extends GetxController {
               mobile: mobileController.text.trim(),
               name: nameController.text.trim(),
               date: selectedDate.value!,
-              time: timeController.text.trim(),
+              time:
+                  _convertTo24HourFormat(selectedTime.value ?? TimeOfDay.now()),
               adultsCount: noOfAdult.value,
               kidsCount: noOfKids.value);
 

@@ -3,6 +3,7 @@ class CouponModel {
   final String name;
   final String description;
   final String code;
+  final String percentage;
   final String minOrderValue;
   final String imageLink;
 
@@ -11,6 +12,7 @@ class CouponModel {
       required this.name,
       required this.description,
       required this.code,
+      required this.percentage,
       required this.minOrderValue,
       required this.imageLink});
 
@@ -19,6 +21,7 @@ class CouponModel {
         name: json['coupon_name']?.toString() ?? '',
         description: json['coupon_description']?.toString() ?? '',
         code: json['coupon_code']?.toString() ?? '',
+        percentage: json['coupon_percentage']?.toString() ?? '',
         minOrderValue: json['min_order_value']?.toString() ?? '',
         imageLink: json['is_coupon_image']?.toString() ?? '',
       );

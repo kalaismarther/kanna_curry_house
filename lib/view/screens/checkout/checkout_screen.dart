@@ -104,6 +104,47 @@ class CheckoutScreen extends StatelessWidget {
               builder: (controller) => Column(
                 children: [
                   const VerticalSpace(height: 20),
+                  Obx(() {
+                    if (controller.cartInfo.value?.preparationTime.isNotEmpty ==
+                        true) {
+                      return Container(
+                        padding: EdgeInsets.all(16.sp),
+                        margin: EdgeInsets.only(bottom: 20.sp),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade200,
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Order Preparation Time : ',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              '${controller.cartInfo.value?.preparationTime} Mins',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.red),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
                   Material(
                     color: Colors.transparent,
                     child: InkWell(
@@ -208,6 +249,13 @@ class CheckoutScreen extends StatelessWidget {
                                 height: 180.sp,
                                 child: const PrimaryLoader(),
                               )
+                            else if (controller.error.value != null)
+                              SizedBox(
+                                height: 180.sp,
+                                child: Center(
+                                  child: Text(controller.error.value ?? ''),
+                                ),
+                              )
                             else ...[
                               const VerticalSpace(height: 16),
                               _buildSummaryItem(
@@ -223,21 +271,45 @@ class CheckoutScreen extends StatelessWidget {
                               _buildSummaryItem(
                                   'Total', summary.total, Colors.black,
                                   isLabelBold: true),
-                            ]
+                            ],
                           ],
                         );
                       },
                     ),
                   ),
-                  const VerticalSpace(height: 24),
+                  Obx(() {
+                    if (controller.cancellationPolicyContent.isEmpty) {
+                      return const SizedBox();
+                    } else {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const VerticalSpace(height: 24),
+                          const Text(
+                            'Cancellation Policy',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          const VerticalSpace(height: 12),
+                          Text(
+                            controller.cancellationPolicyContent.value,
+                            style: TextStyle(
+                                fontSize: 14.sp, fontWeight: FontWeight.w400),
+                          ),
+                          const VerticalSpace(height: 24),
+                        ],
+                      );
+                    }
+                  }),
                   Obx(
                     () => PrimaryButton(
-                        onPressed: controller.isLoading.value
+                        onPressed: controller.isLoading.value ||
+                                controller.cartInfo.value == null ||
+                                controller.error.value != null
                             ? null
                             : controller.submit,
                         text: 'Place Order'),
                   ),
-                  const VerticalSpace(height: 12),
+                  const VerticalSpace(height: 24),
                 ],
               ),
             )

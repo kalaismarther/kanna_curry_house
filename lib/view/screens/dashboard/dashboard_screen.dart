@@ -33,7 +33,7 @@ class DashboardScreen extends StatelessWidget {
                 : PrimaryAppbar(
                     title: controller.currentTab.value == 1
                         ? 'My Order'
-                        : controller.currentTab.value == 1
+                        : controller.currentTab.value == 2
                             ? 'My Bookings'
                             : controller.currentTab.value == 3
                                 ? 'Profile'

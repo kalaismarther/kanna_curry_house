@@ -40,16 +40,16 @@ class CouponScreen extends StatelessWidget {
               itemCount: controller.coupons.length +
                   (controller.paginationLoading.value ? 1 : 0),
               controller: controller.scrollController,
-              itemBuilder: (context, index) =>
-                  index == controller.coupons.length
-                      ? const Center(
-                          child: CupertinoActivityIndicator(),
-                        )
-                      : CouponItem(
-                          coupon: controller.coupons[index],
-                          onSelect: () =>
-                              Get.back(result: controller.coupons[index]),
-                        ),
+              itemBuilder: (context, index) => index ==
+                      controller.coupons.length
+                  ? const Center(
+                      child: CupertinoActivityIndicator(),
+                    )
+                  : CouponItem(
+                      coupon: controller.coupons[index],
+                      onSelect: () =>
+                          controller.validateCoupon(controller.coupons[index]),
+                    ),
             );
           },
         ),

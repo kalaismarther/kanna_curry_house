@@ -110,8 +110,8 @@ class UpdateProfileScreen extends StatelessWidget {
                           },
                         ),
                         CustomTextField(
-                          readyOnly: true,
-                          onTap: controller.chooseLocation,
+                          // readyOnly: true,
+                          // onTap: controller.chooseLocation,
                           label: 'Location',
                           keyboardType: TextInputType.emailAddress,
                           hintText: 'Enter your location',

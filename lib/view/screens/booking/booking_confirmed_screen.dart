@@ -29,7 +29,7 @@ class BookingConfirmedScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                AppImages.orderConfirmed,
+                AppImages.bookingConfirmedColor,
                 height: 300.sp,
               ),
               const VerticalSpace(height: 24),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/product/product_detail_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
@@ -175,10 +176,30 @@ class ProductDetailScreen extends StatelessWidget {
                           ],
                         ),
                         const VerticalSpace(height: 16),
-                        Text(
-                          'RM ${thisProduct?.sellingPrice ?? ''}',
-                          style: TextStyle(
-                              fontSize: 24.sp, fontWeight: FontWeight.w600),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'RM ${thisProduct?.sellingPrice ?? ''}',
+                              style: TextStyle(
+                                  fontSize: 24.sp, fontWeight: FontWeight.w600),
+                            ),
+                            if (thisProduct?.foodType == '1')
+                              Image.asset(
+                                AppImages.vegIcon,
+                                height: 50.sp,
+                              )
+                            else if (thisProduct?.foodType == '2')
+                              Image.asset(
+                                AppImages.nonvegIcon,
+                                height: 50.sp,
+                              )
+                            else if (thisProduct?.foodType == '3')
+                              Image.asset(
+                                AppImages.eggIcon,
+                                height: 50.sp,
+                              )
+                          ],
                         ),
                         const VerticalSpace(height: 28),
                         Text(

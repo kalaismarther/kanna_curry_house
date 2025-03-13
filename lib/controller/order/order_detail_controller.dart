@@ -6,7 +6,9 @@ import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/order/my_order_model.dart';
 import 'package:kanna_curry_house/model/order/order_detail_request_model.dart';
+import 'package:kanna_curry_house/model/order/order_rating_request_model.dart';
 import 'package:kanna_curry_house/model/order/ordered_item_model.dart';
+import 'package:kanna_curry_house/view/widgets/rating_dialog.dart';
 
 class OrderDetailController extends GetxController {
   final String orderId;
@@ -22,6 +24,10 @@ class OrderDetailController extends GetxController {
   var myOrder = Rxn<MyOrderModel>();
   var orderedItems = <OrderedItemModel>[].obs;
   var error = Rxn<String>();
+
+  var foodRatingStar = 0.obs;
+  var packageRatingStar = 0.obs;
+  final feedbackController = TextEditingController();
 
   Future<void> fetchOrderDetail() async {
     try {
@@ -43,7 +49,44 @@ class OrderDetailController extends GetxController {
     }
   }
 
-  Future<void> rateOrder() async {}
+  Future<void> rateOrder() async {
+    try {
+      UiHelper.showLoadingDialog();
+      final user = StorageHelper.getUserDetail();
+      final input = OrderRatingRequestModel(
+          userId: user.id,
+          orderId: orderId,
+          foodRating: foodRatingStar.value,
+          packageRating: packageRatingStar.value,
+          feedback: feedbackController.text);
+      final result = await ApiServices.giveRatingToOrder(input);
+      myOrder.value?.isRatingSubmitted = true;
+      myOrder.refresh();
+      UiHelper.showToast(result);
+    } catch (e) {
+      UiHelper.showErrorMessage(e);
+    } finally {
+      UiHelper.closeLoadingDialog();
+    }
+  }
+
+  void showRatingDialog() => Get.dialog(
+        RatingDialog(
+          onSubmit: () {
+            if (foodRatingStar.value < 1) {
+              UiHelper.showToast('Please give rating for food');
+            } else if (packageRatingStar.value < 1) {
+              UiHelper.showToast('Please give rating for packaging');
+            } else if (feedbackController.text.trim().isEmpty) {
+              UiHelper.showToast('Please enter feedback');
+            } else {
+              UiHelper.unfocus();
+              Get.back();
+              rateOrder();
+            }
+          },
+        ),
+      );
 
   void showCancelOrderAlert() => Get.dialog(
         AlertDialog(

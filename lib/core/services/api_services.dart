@@ -19,10 +19,13 @@ import 'package:kanna_curry_house/model/category/category_model.dart';
 import 'package:kanna_curry_house/model/category/category_products_request_model.dart';
 import 'package:kanna_curry_house/model/category/view_categories_request_model.dart';
 import 'package:kanna_curry_house/model/checkout/checkout_request_model.dart';
+import 'package:kanna_curry_house/model/coupon/check_coupon_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/coupon_model.dart';
+import 'package:kanna_curry_house/model/help/faq_model.dart';
 import 'package:kanna_curry_house/model/order/my_order_list_request_model.dart';
 import 'package:kanna_curry_house/model/order/my_order_model.dart';
 import 'package:kanna_curry_house/model/order/order_detail_request_model.dart';
+import 'package:kanna_curry_house/model/order/order_rating_request_model.dart';
 import 'package:kanna_curry_house/model/product/product_detail_request_model.dart';
 import 'package:kanna_curry_house/model/product/product_model.dart';
 import 'package:kanna_curry_house/model/profile/update_profile_request_model.dart';
@@ -419,6 +422,26 @@ class ApiServices {
     }
   }
 
+  static Future<void> checkCoupon(CheckCouponRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.checkCouponUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
 //<---------------------------- CHECKOUT ---------------------------------------->
 
   static Future<String> checkoutCart(CheckoutRequestModel input) async {
@@ -442,7 +465,6 @@ class ApiServices {
   }
 
 //<---------------------------- ORDER ---------------------------------------->
-
   static Future<List<MyOrderModel>> getMyOrders(
       MyOrderListRequestModel input) async {
     final response = await DioHelper.postHttpMethod(
@@ -477,6 +499,45 @@ class ApiServices {
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
         return response.body;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<String> giveRatingToOrder(OrderRatingRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.orderRatingUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['message']?.toString() ??
+            'Rating submitted successfully';
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<String> getCancellationPolicy() async {
+    final response = await DioHelper.getHttpMethod(
+        url: AppConstants.cancellationPolicyUrl, headers: _headersWithToken());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['data'];
       } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');
@@ -589,6 +650,49 @@ class ApiServices {
         return response.body['message']?.toString() ??
             'Booking cancelled successfully';
       } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<dynamic, dynamic>> getHelpAndSupport() async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.helpAndSupportUrl,
+        headers: _headersWithToken(),
+        input: {});
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['data'] ?? {};
+      } else if (response.body['status']?.toString() == '5') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<List<FaqModel>> getFaqList() async {
+    final user = StorageHelper.getUserDetail();
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.faqUrl,
+        headers: _headersWithToken(),
+        input: {'user_id': user.id});
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return [
+          for (final faq in response.body['data'] ?? []) FaqModel.fromJson(faq)
+        ];
+      } else if (response.body['status']?.toString() == '5') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');
       } else {

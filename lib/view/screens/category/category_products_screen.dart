@@ -27,7 +27,7 @@ class CategoryProductsScreen extends StatelessWidget {
       init:
           CategoryProductsController(initialSelectedCategory: clickedCategory),
       builder: (controller) => Scaffold(
-        appBar: const PrimaryAppbar(title: 'View Items'),
+        appBar: const PrimaryAppbar(title: 'View Category'),
         body: Padding(
           padding: EdgeInsets.all(16.sp),
           child: Obx(

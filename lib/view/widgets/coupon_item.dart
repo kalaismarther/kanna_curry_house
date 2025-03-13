@@ -54,6 +54,22 @@ class CouponItem extends StatelessWidget {
                       coupon.description,
                       style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                     ),
+                    const VerticalSpace(height: 4),
+                    Text(
+                      'Min. Order : RM ${coupon.minOrderValue}',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    const VerticalSpace(height: 4),
+                    Text(
+                      'Percentage : ${coupon.percentage} %',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
                     const VerticalSpace(height: 8),
                     Text(
                       'Coupon code : ${coupon.code}',

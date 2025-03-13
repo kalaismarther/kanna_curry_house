@@ -1,5 +1,5 @@
 class AppConstants {
-  static const String _baseUrl = 'http://18.189.69.82/kanna/';
+  static const String _baseUrl = 'http://18.188.82.54/kanna/';
   static const String apiEndPoint = '${_baseUrl}api/';
 
 //<!------------------------ AUTH --------------------->
@@ -27,7 +27,10 @@ class AppConstants {
 
 //<!------------------------ PRODUCT --------------------->
   static const String productDetailUrl = '${apiEndPoint}product_detalis';
+
+//<!------------------------ PRODUCT --------------------->
   static const String couponsUrl = '${apiEndPoint}show_coupons';
+  static const String checkCouponUrl = '${apiEndPoint}check_coupon';
 
 //<!------------------------ CHECKOUT --------------------->
   static const String checkoutUrl = '${apiEndPoint}place_new_order';
@@ -35,11 +38,18 @@ class AppConstants {
 //<!------------------------ ORDER --------------------->
   static const String myOrdersUrl = '${apiEndPoint}my_orders';
   static const String orderDetailUrl = '${apiEndPoint}get_ordered_items';
+  static const String orderRatingUrl = '${apiEndPoint}post_order_rating';
   static const String cancelOrderUrl = '${apiEndPoint}cancel_order';
+  static const String cancellationPolicyUrl =
+      '${apiEndPoint}cancellation_policy';
 
 //<!------------------------ BOOKING --------------------->
   static const String tableBookingUrl = '${apiEndPoint}request_table_booking';
   static const String myBookingsUrl = '${apiEndPoint}my_table_booking_list';
   static const String bookingDetailUrl = '${apiEndPoint}table_booking_detail';
   static const String cancelBookingUrl = '${apiEndPoint}cancel_booking';
+
+//<!------------------------ HELP --------------------->
+  static const String helpAndSupportUrl = '${apiEndPoint}get_help_support';
+  static const String faqUrl = '${apiEndPoint}faq';
 }

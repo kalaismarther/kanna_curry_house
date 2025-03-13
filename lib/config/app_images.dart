@@ -46,6 +46,11 @@ class AppImages {
   static const String workAddress = '${imagePath}work_address.png';
   static const String otherAddress = '${imagePath}other_address.png';
 
+//<!------------------------ PRODUCT --------------------->
+  static const String vegIcon = '${imagePath}veg_icon.png';
+  static const String nonvegIcon = '${imagePath}nonveg_icon.png';
+  static const String eggIcon = '${imagePath}egg_icon.png';
+
 //<!------------------------ PROFILE --------------------->
   static const String menuMyOrders = '${imagePath}menu_myorders.png';
   static const String menuMyBookings = '${imagePath}menu_mybookings.png';
@@ -64,6 +69,9 @@ class AppImages {
   static const wrongIcon = '${imagePath}wrong_icon.png';
 
 //<!------------------------ TABLE BOOKING SCREEN --------------------->
+  static const String myBooking = '${imagePath}mybooking.png';
   static const String calendarIconColor = '${imagePath}calendar_icon_color.png';
   static const String clockIconColor = '${imagePath}clock_icon_color.png';
+  static const String bookingConfirmedColor =
+      '${imagePath}booking_confirmed.png';
 }

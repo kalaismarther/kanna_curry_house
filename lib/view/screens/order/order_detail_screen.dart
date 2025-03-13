@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/order/order_detail_controller.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
 import 'package:kanna_curry_house/view/widgets/my_order_item.dart';
@@ -42,6 +43,42 @@ class OrderDetailScreen extends StatelessWidget {
                     showRateNowBtn: true,
                   ),
                   const VerticalSpace(height: 4),
+                  if (myOrder.preparationTime.isNotEmpty) ...[
+                    Container(
+                      padding: EdgeInsets.all(16.sp),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade200,
+                            blurRadius: 4,
+                            spreadRadius: 2,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Order Preparation Time : ',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            '${myOrder.preparationTime} Mins',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppTheme.red),
+                          )
+                        ],
+                      ),
+                    ),
+                    const VerticalSpace(height: 20),
+                  ],
                   Container(
                     padding: EdgeInsets.all(16.sp),
                     decoration: BoxDecoration(
@@ -127,8 +164,9 @@ class OrderDetailScreen extends StatelessWidget {
                             'Sub Total', myOrder.subTotal, Colors.black),
                         _buildSummaryItem(
                             'SST (tax is 6%)', myOrder.taxAmount, Colors.black),
-                        _buildSummaryItem(
-                            'Coupon Value', myOrder.couponAmount, Colors.red),
+                        if ((double.tryParse(myOrder.couponAmount) ?? 0.0) > 0)
+                          _buildSummaryItem(
+                              'Coupon Value', myOrder.couponAmount, Colors.red),
                         const Divider(height: 20),
                         _buildSummaryItem('Total', myOrder.total, Colors.black,
                             isLabelBold: true),

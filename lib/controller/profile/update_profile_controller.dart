@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/auth/login_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/location_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/address/address_model.dart';
@@ -16,6 +18,8 @@ class UpdateProfileController extends GetxController {
   void onInit() {
     mobileController.text =
         Get.find<LoginController>().mobileController.text.trim();
+
+    getDeviceLocation();
     super.onInit();
   }
 
@@ -26,6 +30,7 @@ class UpdateProfileController extends GetxController {
   DateTime? dob;
   final dobController = TextEditingController();
   var address = Rxn<AddressModel>();
+  var currentLocation = Rxn<LatLng>();
   final locationController = TextEditingController();
   RxBool isAgreed = false.obs;
 
@@ -94,5 +99,31 @@ class UpdateProfileController extends GetxController {
     } finally {
       UiHelper.closeLoadingDialog();
     }
+  }
+
+  Future<void> getDeviceLocation() async {
+    try {
+      final deviceLocation = await LocationHelper.getCurrentLocation();
+      await updateLocation(deviceLocation.latitude, deviceLocation.longitude);
+    } catch (e) {
+      Get.back();
+      UiHelper.showErrorMessage(e);
+    }
+  }
+
+  Future<void> updateLocation(double latitude, double longitude) async {
+    currentLocation.value = LatLng(latitude, longitude);
+
+    locationController.text =
+        await LocationHelper.getFullAddress(latitude, longitude);
+
+    address.value = AddressModel(
+        location: locationController.text.trim(),
+        doorNo: '10',
+        pincode: await LocationHelper.getPincode(latitude, longitude),
+        landmark: 'near',
+        latitude: currentLocation.value?.latitude,
+        longitude: currentLocation.value?.longitude,
+        type: 'Home');
   }
 }
