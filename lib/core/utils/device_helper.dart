@@ -11,7 +11,7 @@ class DeviceHelper {
       MediaQuery.of(context).size.width;
 
   static double statusbarHeight(BuildContext context) =>
-      MediaQuery.of(context).padding.top + 10;
+      MediaQuery.of(context).padding.top;
 
   static double bottombarHeight(BuildContext context) =>
       MediaQuery.of(context).padding.bottom + 10;
@@ -22,12 +22,16 @@ class DeviceHelper {
     if (Platform.isIOS) {
       var iosInfo = await deviceInfoPlugin.iosInfo;
 
-      return Device(id: iosInfo.identifierForVendor ?? '', type: 'IOS');
+      return Device(
+          id: iosInfo.identifierForVendor ?? '',
+          type: 'IOS',
+          name: iosInfo.name);
       // return Device(id: '1', type: 'IOS');
     } else {
       var androidInfo = await deviceInfoPlugin.androidInfo;
 
-      return Device(id: androidInfo.id, type: 'ANDROID');
+      return Device(
+          id: androidInfo.id, type: 'ANDROID', name: androidInfo.brand);
       // return Device(id: '1', type: 'ANDROID');
     }
   }
@@ -42,6 +46,7 @@ class DeviceHelper {
 class Device {
   final String id;
   final String type;
+  final String name;
 
-  Device({required this.id, required this.type});
+  Device({required this.id, required this.type, required this.name});
 }

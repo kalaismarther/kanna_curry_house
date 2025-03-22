@@ -15,57 +15,62 @@ class ViewCategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PrimaryAppbar(title: 'View Categories'),
-      body: GetBuilder<ViewCategoriesController>(
-        init: ViewCategoriesController(),
-        builder: (controller) => SingleChildScrollView(
-          controller: controller.scrollController,
-          padding: EdgeInsets.all(16.sp),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'All Categories',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-              ),
-              const VerticalSpace(height: 20),
-              Obx(
-                () {
-                  if (controller.error.value != null) {
-                    return Center(
-                      child: Text(controller.error.value ?? ''),
-                    );
-                  }
-                  if (controller.isLoading.value) {
-                    return const CategoriesLoadingWidget(isListView: false);
-                  }
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: const PrimaryAppbar(title: 'View Categories'),
+        body: GetBuilder<ViewCategoriesController>(
+          init: ViewCategoriesController(),
+          builder: (controller) => SingleChildScrollView(
+            controller: controller.scrollController,
+            padding: EdgeInsets.all(16.sp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'All Categories',
+                  style:
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+                ),
+                const VerticalSpace(height: 20),
+                Obx(
+                  () {
+                    if (controller.error.value != null) {
+                      return Center(
+                        child: Text(controller.error.value ?? ''),
+                      );
+                    }
+                    if (controller.isLoading.value) {
+                      return const CategoriesLoadingWidget(isListView: false);
+                    }
 
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.categories.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 20.sp,
-                        crossAxisSpacing: 16.sp,
-                        childAspectRatio: 2.2),
-                    itemBuilder: (context, index) => CategoryItem(
-                        onTap: () => Get.to(
-                              () => CategoryProductsScreen(
-                                  clickedCategory:
-                                      controller.categories[index]),
-                            ),
-                        category: controller.categories[index]),
-                  );
-                },
-              ),
-            ],
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.categories.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 20.sp,
+                          crossAxisSpacing: 16.sp,
+                          childAspectRatio: 2.2),
+                      itemBuilder: (context, index) => CategoryItem(
+                          onTap: () => Get.to(
+                                () => CategoryProductsScreen(
+                                    clickedCategory:
+                                        controller.categories[index]),
+                              ),
+                          category: controller.categories[index]),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: CartInfo(
-        onCheckOut: () => Get.to(() => const CartScreen()),
+        bottomNavigationBar: CartInfo(
+          onCheckOut: () => Get.to(() => const CartScreen()),
+        ),
       ),
     );
   }

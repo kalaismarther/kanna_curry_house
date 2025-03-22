@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/controller/auth/login_controller.dart';
+import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
@@ -91,6 +92,7 @@ class VerificationController extends GetxController {
         UiHelper.closeLoadingDialog();
         if (result['step']?.toString() == '3') {
           await StorageHelper.write('logged', true);
+          Get.find<DashboardController>().changeTab(0);
           Get.offAll(() => const DashboardScreen());
         } else {
           Get.off(() => const UpdateProfileScreen());

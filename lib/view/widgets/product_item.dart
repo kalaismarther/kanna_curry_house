@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/model/product/product_model.dart';
 import 'package:kanna_curry_house/view/widgets/online_image.dart';
@@ -96,7 +97,9 @@ class ProductItem extends StatelessWidget {
                               Row(
                                 children: [
                                   InkWell(
-                                    onTap: onDecrement,
+                                    onTap: product.isAvailable
+                                        ? onDecrement
+                                        : showUnavailableAlert,
                                     child: Container(
                                       padding: EdgeInsets.all(4.sp),
                                       margin: EdgeInsets.all(8.sp),
@@ -119,7 +122,9 @@ class ProductItem extends StatelessWidget {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   InkWell(
-                                    onTap: onIncrement,
+                                    onTap: product.isAvailable
+                                        ? onIncrement
+                                        : showUnavailableAlert,
                                     child: Container(
                                       padding: EdgeInsets.all(4.sp),
                                       margin: EdgeInsets.all(8.sp),
@@ -139,7 +144,9 @@ class ProductItem extends StatelessWidget {
                               )
                             else
                               InkWell(
-                                onTap: onAdd,
+                                onTap: product.isAvailable
+                                    ? onAdd
+                                    : showUnavailableAlert,
                                 child: Container(
                                   padding: EdgeInsets.all(4.sp),
                                   margin: EdgeInsets.all(6.sp),
@@ -190,6 +197,41 @@ class ProductItem extends StatelessWidget {
       ),
     );
   }
+
+  void showUnavailableAlert() => Get.bottomSheet(
+        Padding(
+          padding: EdgeInsets.all(16.sp),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Product Unavailable',
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                  ),
+                  IconButton(
+                    onPressed: () => Get.back(),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+              const Divider(),
+              VerticalSpace(height: 16.sp),
+              Text(product.slotMessage),
+              VerticalSpace(height: Get.bottomBarHeight + 16.sp),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(16.sp),
+          ),
+        ),
+      );
 }
 
 class TrapezoidPainter extends CustomPainter {

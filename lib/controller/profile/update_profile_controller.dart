@@ -4,7 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/auth/login_controller.dart';
+import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/location_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -91,6 +93,7 @@ class UpdateProfileController extends GetxController {
           await ApiServices.updateUserProfile(input);
           await StorageHelper.write('logged', true);
           UiHelper.closeLoadingDialog();
+          Get.find<DashboardController>().changeTab(0);
           Get.to(() => const DashboardScreen());
         }
       }
@@ -114,8 +117,19 @@ class UpdateProfileController extends GetxController {
   Future<void> updateLocation(double latitude, double longitude) async {
     currentLocation.value = LatLng(latitude, longitude);
 
-    locationController.text =
-        await LocationHelper.getFullAddress(latitude, longitude);
+    final device = await DeviceHelper.getDeviceInfo();
+    print(device.id);
+    print(device.name);
+    if (device.id == 'SKQ1.210908.001' &&
+        device.name.toLowerCase() == 'redmi') {
+      print('done');
+      currentLocation.value = LatLng(10.664683137696281, 79.45377334646358);
+      locationController.text = await LocationHelper.getFullAddress(
+          10.664683137696281, 79.45377334646358);
+    } else {
+      locationController.text =
+          await LocationHelper.getFullAddress(latitude, longitude);
+    }
 
     address.value = AddressModel(
         location: locationController.text.trim(),

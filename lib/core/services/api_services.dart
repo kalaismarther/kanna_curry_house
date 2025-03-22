@@ -3,6 +3,7 @@ import 'package:kanna_curry_house/config/app_constants.dart';
 import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/dio_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
+import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/auth/login_request_model.dart';
 import 'package:kanna_curry_house/model/auth/resend_otp_request_model.dart';
 import 'package:kanna_curry_house/model/auth/verification_request_model.dart';
@@ -10,6 +11,9 @@ import 'package:kanna_curry_house/model/booking/booking_detail_request_model.dar
 import 'package:kanna_curry_house/model/booking/my_booking_list_request_model.dart';
 import 'package:kanna_curry_house/model/booking/my_booking_model.dart';
 import 'package:kanna_curry_house/model/booking/table_booking_request_model.dart';
+import 'package:kanna_curry_house/model/cancel/cancel_booking_request_model.dart';
+import 'package:kanna_curry_house/model/cancel/reason_list_request_model.dart';
+import 'package:kanna_curry_house/model/cancel/reason_model.dart';
 import 'package:kanna_curry_house/model/cart/add_to_cart_request_model.dart';
 import 'package:kanna_curry_house/model/cart/cart_info_model.dart';
 import 'package:kanna_curry_house/model/cart/delete_from_cart_request_model.dart';
@@ -28,7 +32,10 @@ import 'package:kanna_curry_house/model/order/order_detail_request_model.dart';
 import 'package:kanna_curry_house/model/order/order_rating_request_model.dart';
 import 'package:kanna_curry_house/model/product/product_detail_request_model.dart';
 import 'package:kanna_curry_house/model/product/product_model.dart';
+import 'package:kanna_curry_house/model/profile/edit_profile_request_model.dart';
 import 'package:kanna_curry_house/model/profile/update_profile_request_model.dart';
+import 'package:kanna_curry_house/model/cancel/cancel_order_request_model.dart';
+import 'package:dio/dio.dart' as dio;
 
 class ApiServices {
   static Map<String, String> _headersWithoutToken() =>
@@ -132,6 +139,38 @@ class ApiServices {
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
         await StorageHelper.write('user', response.body['data'] ?? {});
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<String, dynamic>> editProfile(
+      EditProfileRequestModel input) async {
+    var data = dio.FormData.fromMap({
+      'user_id': input.userId,
+      'first_name': input.name,
+      'email': input.email,
+      'mobile': input.mobile,
+      if (input.profileImagePath.isNotEmpty)
+        'profile_image':
+            await dio.MultipartFile.fromFile(input.profileImagePath),
+    });
+
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.editProfileUrl,
+        headers: _headersWithToken(),
+        input: data);
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        UiHelper.showToast(response.body['message'].toString());
+        return response.body['data'] ?? {};
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
       } else {
         throw Exception(response.body['message']?.toString() ?? '');
       }
@@ -549,27 +588,6 @@ class ApiServices {
     }
   }
 
-  static Future<Map<String, dynamic>> cancelMyOrder(
-      OrderDetailRequestModel input) async {
-    final response = await DioHelper.postHttpMethod(
-        url: AppConstants.cancelOrderUrl,
-        headers: _headersWithToken(),
-        input: input.toJson());
-
-    if (response.success) {
-      if (response.body['status']?.toString() == '1') {
-        return response.body;
-      } else if (response.body['status']?.toString() == '2') {
-        AuthHelper.logoutUser();
-        throw Exception(response.body['message']?.toString() ?? '');
-      } else {
-        throw Exception(response.body['message']?.toString() ?? '');
-      }
-    } else {
-      throw Exception(response.error);
-    }
-  }
-
 //<---------------------------- BOOKING ---------------------------------------->
 
   static Future<String> requestForTableBooking(
@@ -639,27 +657,6 @@ class ApiServices {
     }
   }
 
-  static Future<String> cancelMyBooking(BookingDetailRequestModel input) async {
-    final response = await DioHelper.postHttpMethod(
-        url: AppConstants.cancelBookingUrl,
-        headers: _headersWithToken(),
-        input: input.toJson());
-
-    if (response.success) {
-      if (response.body['status']?.toString() == '1') {
-        return response.body['message']?.toString() ??
-            'Booking cancelled successfully';
-      } else if (response.body['status']?.toString() == '2') {
-        AuthHelper.logoutUser();
-        throw Exception(response.body['message']?.toString() ?? '');
-      } else {
-        throw Exception(response.body['message']?.toString() ?? '');
-      }
-    } else {
-      throw Exception(response.error);
-    }
-  }
-
   static Future<Map<dynamic, dynamic>> getHelpAndSupport() async {
     final response = await DioHelper.postHttpMethod(
         url: AppConstants.helpAndSupportUrl,
@@ -669,7 +666,7 @@ class ApiServices {
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
         return response.body['data'] ?? {};
-      } else if (response.body['status']?.toString() == '5') {
+      } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');
       } else {
@@ -692,7 +689,75 @@ class ApiServices {
         return [
           for (final faq in response.body['data'] ?? []) FaqModel.fromJson(faq)
         ];
-      } else if (response.body['status']?.toString() == '5') {
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+//<---------------------------- CANCEL ---------------------------------------->
+
+  static Future<List<ReasonModel>> getCancelReasonList(
+      ReasonListRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.reasonListUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return [
+          for (final faq in response.body['data'] ?? [])
+            ReasonModel.fromJson(faq)
+        ];
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<String, dynamic>> cancelMyOrder(
+      CancelOrderRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.cancelOrderUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<String> cancelMyBooking(CancelBookingRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.cancelBookingUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['message']?.toString() ??
+            'Booking cancelled successfully';
+      } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');
       } else {

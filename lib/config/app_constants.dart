@@ -10,6 +10,7 @@ class AppConstants {
 
 //<!------------------------ PROFILE --------------------->
   static const String updateProfileUrl = '${apiEndPoint}update_profile';
+  static const String editProfileUrl = '${apiEndPoint}edit_profile';
 
 //<!------------------------ HOME --------------------->
   static const String homeContentUrl = '${apiEndPoint}home_content';
@@ -52,4 +53,7 @@ class AppConstants {
 //<!------------------------ HELP --------------------->
   static const String helpAndSupportUrl = '${apiEndPoint}get_help_support';
   static const String faqUrl = '${apiEndPoint}faq';
+
+//<!------------------------ CANCEL --------------------->
+  static const String reasonListUrl = '${apiEndPoint}get_reason_master';
 }

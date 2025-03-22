@@ -16,6 +16,7 @@ class OrderDetailController extends GetxController {
 
   @override
   void onInit() {
+    myOrder.value = null;
     fetchOrderDetail();
     super.onInit();
   }
@@ -102,33 +103,11 @@ class OrderDetailController extends GetxController {
             TextButton(
               onPressed: () async {
                 Get.back();
-                cancelOrder();
+                // cancelOrder();
               },
               child: const Text('Yes'),
             )
           ],
         ),
       );
-
-  Future<void> cancelOrder() async {
-    try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = OrderDetailRequestModel(userId: user.id, orderId: orderId);
-
-      final result = await ApiServices.cancelMyOrder(input);
-
-      if (result['data'] != null) {
-        myOrder.value = MyOrderModel.fromJson(result['data']);
-        // if (myOrder.value != null) {
-        //   Get.find<MyOrderListController>().notifyOrderStatus(myOrder.value!);
-        // }
-      }
-      UiHelper.showToast(result['message'].toString());
-    } catch (e) {
-      UiHelper.showErrorMessage(e);
-    } finally {
-      UiHelper.closeLoadingDialog();
-    }
-  }
 }

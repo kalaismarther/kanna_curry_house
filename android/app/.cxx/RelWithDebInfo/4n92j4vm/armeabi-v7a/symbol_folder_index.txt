@@ -1,0 +1,1 @@
+C:\Users\user\AndroidStudioProjects\Flutter\kanna_curry_house\build\app\intermediates\cxx\RelWithDebInfo\4n92j4vm\obj\armeabi-v7a

@@ -5,6 +5,7 @@ import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
+import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/view/screens/booking/table_booking_screen.dart';
 import 'package:kanna_curry_house/view/screens/cart/cart_screen.dart';
 import 'package:kanna_curry_house/view/screens/category/category_products_screen.dart';
@@ -19,6 +20,7 @@ import 'package:kanna_curry_house/view/widgets/online_image.dart';
 import 'package:kanna_curry_house/view/widgets/product_item.dart';
 import 'package:kanna_curry_house/view/widgets/products_loading_widget.dart';
 import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
+import 'package:marquee/marquee.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.only(
-                top: DeviceHelper.statusbarHeight(context) + 8.sp,
+                top: DeviceHelper.statusbarHeight(context) + 20.sp,
                 left: 16.sp,
                 right: 16.sp,
                 bottom: 16.sp),
@@ -146,6 +148,37 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
+          Obx(() {
+            if (controller.showAlert.value) {
+              return SizedBox(
+                child: Container(
+                  width: DeviceHelper.screenWidth(context),
+                  height: 34.sp,
+                  padding: EdgeInsets.symmetric(vertical: 8.sp),
+                  color: Colors.red.shade900,
+                  margin: EdgeInsets.only(bottom: 8.sp),
+                  child: Marquee(
+                    text: controller.alertMsg.value,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500),
+                    scrollAxis: Axis.horizontal,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    blankSpace: 20.sp,
+                    velocity: 100.0,
+                    pauseAfterRound: const Duration(seconds: 1),
+                    startPadding: 10.0,
+                    accelerationDuration: const Duration(seconds: 1),
+                    accelerationCurve: Curves.linear,
+                    decelerationDuration: const Duration(seconds: 1),
+                    decelerationCurve: Curves.ease,
+                  ),
+                ),
+              );
+            }
+            return SizedBox(height: 0);
+          }),
           Expanded(
             child: Obx(
               () {
@@ -209,10 +242,13 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           VerticalSpace(height: 24.sp),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.only(
+                                bottom: 12.sp, left: 8.sp, right: 8.sp),
+                            child: Row(
+                              children: [
+                                Container(
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -233,13 +269,13 @@ class HomeScreen extends StatelessWidget {
                                           () => const ViewCategoriesScreen()),
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
-                                            vertical: 24.sp),
+                                            vertical: 24.sp, horizontal: 20.sp),
                                         child: Column(
                                           children: [
                                             Image.asset(
                                               AppImages.order,
-                                              height: 70.sp,
-                                              width: 70.sp,
+                                              height: 48.sp,
+                                              width: 48.sp,
                                             ),
                                             const VerticalSpace(height: 12),
                                             Text(
@@ -254,10 +290,8 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              ),
-                              const HorizontalSpace(width: 20),
-                              Expanded(
-                                child: Container(
+                                const HorizontalSpace(width: 12),
+                                Container(
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -278,13 +312,13 @@ class HomeScreen extends StatelessWidget {
                                           () => const TableBookingScreen()),
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
-                                            vertical: 24.sp),
+                                            vertical: 24.sp, horizontal: 20.sp),
                                         child: Column(
                                           children: [
                                             Image.asset(
                                               AppImages.table,
-                                              height: 70.sp,
-                                              width: 70.sp,
+                                              height: 48.sp,
+                                              width: 48.sp,
                                             ),
                                             const VerticalSpace(height: 12),
                                             Text(
@@ -299,10 +333,55 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                const HorizontalSpace(width: 12),
+                                Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade200,
+                                        blurRadius: 8,
+                                        spreadRadius: 4,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        UiHelper.showToast('Coming soon',
+                                            bgColor: Colors.red);
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 24.sp, horizontal: 32.sp),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              AppImages.delivery,
+                                              height: 48.sp,
+                                              width: 48.sp,
+                                            ),
+                                            const VerticalSpace(height: 12),
+                                            Text(
+                                              'Delivery',
+                                              style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          VerticalSpace(height: 24.sp),
+                          VerticalSpace(height: 4.sp),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -312,9 +391,16 @@ class HomeScreen extends StatelessWidget {
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w600),
                               ),
+                              TextButton(
+                                onPressed: () =>
+                                    Get.to(() => const ViewCategoriesScreen()),
+                                child: const Text(
+                                  'See All',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              )
                             ],
                           ),
-                          VerticalSpace(height: 8.sp),
                           if (controller.isLoading.value)
                             const CategoriesLoadingWidget(isListView: true)
                           else

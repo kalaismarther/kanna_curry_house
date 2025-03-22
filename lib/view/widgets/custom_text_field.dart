@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.suffixIcon,
     this.maxLength,
+    this.maxLines,
     this.inputFormatters,
     this.bgColor,
     this.marginBottom,
@@ -29,6 +30,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String? value)? validator;
   final Widget? suffixIcon;
   final int? maxLength;
+  final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
   final Color? bgColor;
   final double? marginBottom;
@@ -49,6 +51,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           maxLength: maxLength,
+          maxLines: maxLines,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
             filled: true,

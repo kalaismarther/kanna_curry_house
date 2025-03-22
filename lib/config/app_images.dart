@@ -40,6 +40,7 @@ class AppImages {
   static const String homeLocationIcon = '${imagePath}home_location_icon.png';
   static const String order = '${imagePath}order.png';
   static const String table = '${imagePath}table.png';
+  static const String delivery = '${imagePath}delivery.png';
 
 //<!------------------------ ADD ADDRESS SCREEN --------------------->
   static const String homeAddress = '${imagePath}home_address.png';
@@ -62,6 +63,7 @@ class AppImages {
 
 //<!------------------------ PROFILE --------------------->
   static const String orderConfirmed = '${imagePath}order_confirmed.png';
+  static const String cameraIcon = '${imagePath}camera_icon.png';
 
 //<!------------------------ ORDER --------------------->
   static const String myBag = '${imagePath}mybag.png';

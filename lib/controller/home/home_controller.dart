@@ -28,6 +28,8 @@ class HomeController extends GetxController {
   RxString userName = ''.obs;
   RxString userProfileImage = ''.obs;
   RxInt notificationCount = 0.obs;
+  var alertMsg = ''.obs;
+  var showAlert = false.obs;
   var userCurrentAddress = Rxn<AddressModel>();
   var bannerImages = <String>[].obs;
   var categories = <CategoryModel>[].obs;
@@ -74,6 +76,9 @@ class HomeController extends GetxController {
         for (final product in result['data']?[0]?['topproducts'] ?? [])
           ProductModel.fromJson(product)
       ];
+
+      showAlert.value = result['popup_flag']?.toString() == '1';
+      alertMsg.value = result['popup_message']?.toString() ?? '';
     } catch (e) {
       error.value = UiHelper.getMsgFromException(e);
     } finally {

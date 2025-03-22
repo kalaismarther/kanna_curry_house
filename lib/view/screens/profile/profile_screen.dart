@@ -6,6 +6,7 @@ import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/controller/profile/profile_controller.dart';
 import 'package:kanna_curry_house/view/screens/help/help_and_support_screen.dart';
+import 'package:kanna_curry_house/view/screens/profile/edit_profile_screen.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
 import 'package:kanna_curry_house/view/widgets/online_image.dart';
 import 'package:kanna_curry_house/view/widgets/profile_menu_item.dart';
@@ -69,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      // await Get.to(() => const EditProfileScreen());
+                      await Get.to(() => const EditProfileScreen());
                       controller.onInit();
                     },
                     child: Container(

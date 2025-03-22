@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
@@ -41,43 +39,43 @@ class BookingDetailController extends GetxController {
 
   Future<void> rateOrder() async {}
 
-  void showCancelBookingAlert() => Get.dialog(
-        AlertDialog(
-          title: Text(
-            'Are you sure to cancel this booking?',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text('No'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Get.back();
-                cancelBooking();
-              },
-              child: const Text('Yes'),
-            )
-          ],
-        ),
-      );
+  // void showCancelBookingAlert() => Get.dialog(
+  //       AlertDialog(
+  //         title: Text(
+  //           'Are you sure to cancel this booking?',
+  //           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Get.back(),
+  //             child: const Text('No'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () async {
+  //               Get.back();
+  //               cancelBooking();
+  //             },
+  //             child: const Text('Yes'),
+  //           )
+  //         ],
+  //       ),
+  //     );
 
-  Future<void> cancelBooking() async {
-    try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input =
-          BookingDetailRequestModel(userId: user.id, bookingId: bookingId);
+  // Future<void> cancelBooking() async {
+  //   try {
+  //     UiHelper.showLoadingDialog();
+  //     final user = StorageHelper.getUserDetail();
+  //     final input =
+  //         BookingDetailRequestModel(userId: user.id, bookingId: bookingId);
 
-      final result = await ApiServices.cancelMyBooking(input);
+  //     final result = await ApiServices.cancelMyBooking(input);
 
-      UiHelper.showToast(result);
-      fetchBookingDetail();
-    } catch (e) {
-      UiHelper.showErrorMessage(e);
-    } finally {
-      UiHelper.closeLoadingDialog();
-    }
-  }
+  //     UiHelper.showToast(result);
+  //     fetchBookingDetail();
+  //   } catch (e) {
+  //     UiHelper.showErrorMessage(e);
+  //   } finally {
+  //     UiHelper.closeLoadingDialog();
+  //   }
+  // }
 }
