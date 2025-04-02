@@ -93,6 +93,23 @@ class EditProfileScreen extends StatelessWidget {
                         validator: ValidationHelper.validateName,
                       ),
                       CustomTextField(
+                        readyOnly: true,
+                        onTap: () => controller.selectDOB(context),
+                        label: 'Date of Birth',
+                        hintText: 'Choose DOB',
+                        controller: controller.dobController,
+                        suffixIcon: Image.asset(AppImages.calendarIcon),
+                        validator: (value) {
+                          if (value == null ||
+                              controller.dob == null ||
+                              value.isEmpty) {
+                            return 'Please enter date of birth';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      CustomTextField(
                         controller: controller.email,
                         label: 'Email',
                         hintText: 'Enter your email',
@@ -112,7 +129,9 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                       const VerticalSpace(height: 10),
                       PrimaryButton(
-                          onPressed: controller.submit, text: 'Update')
+                        onPressed: controller.submit,
+                        text: 'Update',
+                      ),
                     ],
                   ),
                 ),

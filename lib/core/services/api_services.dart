@@ -26,6 +26,8 @@ import 'package:kanna_curry_house/model/checkout/checkout_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/check_coupon_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/coupon_model.dart';
 import 'package:kanna_curry_house/model/help/faq_model.dart';
+import 'package:kanna_curry_house/model/notification/notification_model.dart';
+import 'package:kanna_curry_house/model/notification/notification_request_model.dart';
 import 'package:kanna_curry_house/model/order/my_order_list_request_model.dart';
 import 'package:kanna_curry_house/model/order/my_order_model.dart';
 import 'package:kanna_curry_house/model/order/order_detail_request_model.dart';
@@ -190,6 +192,31 @@ class ApiServices {
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
         return response.body;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+//<---------------------------- NOTIFICATION ---------------------------------------->
+  static Future<List<NotificationModel>> getNotificationList(
+      NotificationRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.notificationListUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return [
+          for (final notification in response.body['data'] ?? [])
+            NotificationModel.fromJson(notification)
+        ];
       } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');

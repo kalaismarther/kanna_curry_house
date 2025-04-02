@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
@@ -15,6 +16,8 @@ class EditProfileController extends GetxController {
   final mobileNumber = TextEditingController();
   final email = TextEditingController();
 
+  DateTime? dob;
+  final dobController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -25,8 +28,35 @@ class EditProfileController extends GetxController {
     name.text = user.name;
     mobileNumber.text = user.mobile;
     email.text = user.email;
-
+    dobController.text = user.dob;
     super.onInit();
+  }
+
+  void selectDOB(BuildContext context) async {
+    final date = await showDatePicker(
+      initialDate: dob,
+      context: context,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) => Theme(
+        data: ThemeData(
+          fontFamily: 'Poppins',
+          primaryColor: AppTheme.red,
+          colorScheme: const ColorScheme.light(
+            primary: AppTheme.red,
+            onPrimary: Colors.white,
+            onSurface: Colors.black,
+          ),
+          dialogTheme: DialogThemeData(
+              backgroundColor: Colors.white), // Background color
+        ),
+        child: child ?? const SizedBox(),
+      ),
+    );
+    if (date != null) {
+      dob = date;
+      dobController.text = DateFormat("dd MMM, yyyy").format(date);
+    }
   }
 
   void showImagePickerDialog() {

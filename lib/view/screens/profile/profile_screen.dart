@@ -124,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                   text: 'Help & Support',
                 ),
                 ProfileMenuItem(
-                  onTap: controller.showLogoutAlert,
+                  onTap: dashboardController.showLogoutAlert,
                   image: AppImages.logout,
                   text: 'Logout',
                 ),

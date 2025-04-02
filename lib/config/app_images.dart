@@ -35,12 +35,25 @@ class AppImages {
 
 //<!------------------------ HOME SCREEN --------------------->
   static const String menuIcon = '${imagePath}menu_icon.png';
-  static const String notificationIcon = '${imagePath}notification_icon.png';
   static const String cartIcon = '${imagePath}cart_icon.png';
   static const String homeLocationIcon = '${imagePath}home_location_icon.png';
   static const String order = '${imagePath}order.png';
   static const String table = '${imagePath}table.png';
   static const String delivery = '${imagePath}delivery.png';
+
+//<!------------------------ SIDE MENU --------------------->
+  static const String smHome = '${imagePath}sm_home.png';
+  static const String smOrder = '${imagePath}sm_order.png';
+  static const String smBooking = '${imagePath}sm_booking.png';
+  static const String smProfile = '${imagePath}sm_profile.png';
+  static const String smNotification = '${imagePath}sm_notification.png';
+  static const String smShare = '${imagePath}sm_share.png';
+  static const String smHelp = '${imagePath}sm_help.png';
+  static const String smLogout = '${imagePath}sm_logout.png';
+
+//<!------------------------ NOTIFICATION SCREEN --------------------->
+  static const String notification = '${imagePath}notification.png';
+  static const String notificationIcon = '${imagePath}notification_icon.png';
 
 //<!------------------------ ADD ADDRESS SCREEN --------------------->
   static const String homeAddress = '${imagePath}home_address.png';

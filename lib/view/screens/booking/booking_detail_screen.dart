@@ -93,7 +93,7 @@ class BookingDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    if (myBooking.status.toLowerCase() != 'cancelled')
+                    if (myBooking.status.toLowerCase().trim() == 'requested')
                       PrimaryButton(
                           onPressed: () async {
                             await Get.to(() => CancelBookingScreen());

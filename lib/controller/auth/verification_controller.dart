@@ -78,13 +78,15 @@ class VerificationController extends GetxController {
 
         final device = await DeviceHelper.getDeviceInfo();
 
+        final fcmToken = await DeviceHelper.getFCM();
+
         final input = VerificationRequestModel(
             userId: user.id,
             otp: otpController.text.trim(),
             mobile: Get.find<LoginController>().mobileController.text.trim(),
             deviceId: device.id,
             deviceType: device.type,
-            fcmToken: 'fcmtoken');
+            fcmToken: fcmToken);
 
         final result = await ApiServices.verifyMobileNumber(input);
 

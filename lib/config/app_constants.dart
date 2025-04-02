@@ -15,6 +15,10 @@ class AppConstants {
 //<!------------------------ HOME --------------------->
   static const String homeContentUrl = '${apiEndPoint}home_content';
 
+//<!------------------------ NOTIFICATION --------------------->
+  static const String notificationListUrl =
+      '${apiEndPoint}get_notification_lists';
+
 //<!------------------------ CART --------------------->
   static const String viewCartUrl = '${apiEndPoint}view_cart';
   static const String addToCartUrl = '${apiEndPoint}add_cart';

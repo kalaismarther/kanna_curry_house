@@ -25,7 +25,7 @@ class TableBookingController extends GetxController {
       initialDate: selectedDate.value,
       context: context,
       firstDate: DateTime.now().add(const Duration(days: 1)),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now().add(const Duration(days: 7)),
       builder: (context, child) => Theme(
         data: ThemeData(
           fontFamily: 'Poppins',
@@ -35,7 +35,7 @@ class TableBookingController extends GetxController {
             onPrimary: Colors.white,
             onSurface: Colors.black,
           ),
-          dialogBackgroundColor: Colors.white,
+          dialogTheme: DialogThemeData(backgroundColor: Colors.white),
         ),
         child: child ?? const SizedBox(),
       ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kanna_curry_house/model/user_model.dart';
 
@@ -22,7 +23,7 @@ class StorageHelper {
 
   static UserModel getUserDetail() {
     final userDetail = read('user');
-
+    debugPrint(userDetail.toString());
     return UserModel.fromJson(userDetail ?? {});
   }
 }

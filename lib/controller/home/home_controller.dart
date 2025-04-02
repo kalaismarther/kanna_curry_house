@@ -26,6 +26,7 @@ class HomeController extends GetxController {
   RxBool isLoading = false.obs;
 
   RxString userName = ''.obs;
+  RxString email = ''.obs;
   RxString userProfileImage = ''.obs;
   RxInt notificationCount = 0.obs;
   var alertMsg = ''.obs;
@@ -44,6 +45,7 @@ class HomeController extends GetxController {
 
       userName.value = user.name;
       userProfileImage.value = user.profileImageUrl;
+      email.value = user.email;
 
       final storedAddress = StorageHelper.read('current_address');
 

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
+import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -10,6 +11,7 @@ import 'package:kanna_curry_house/view/screens/booking/table_booking_screen.dart
 import 'package:kanna_curry_house/view/screens/cart/cart_screen.dart';
 import 'package:kanna_curry_house/view/screens/category/category_products_screen.dart';
 import 'package:kanna_curry_house/view/screens/category/view_categories_screen.dart';
+import 'package:kanna_curry_house/view/screens/notification/notification_screen.dart';
 import 'package:kanna_curry_house/view/screens/product/product_detail_screen.dart';
 import 'package:kanna_curry_house/view/widgets/cart_info.dart';
 import 'package:kanna_curry_house/view/widgets/categories_loading_widget.dart';
@@ -47,6 +49,15 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   children: [
                     InkWell(
+                      onTap: () {
+                        try {
+                          final dashboardController =
+                              Get.find<DashboardController>();
+                          dashboardController.openDrawer();
+                        } catch (e) {
+                          //
+                        }
+                      },
                       child: Container(
                         height: 40.sp,
                         width: 40.sp,
@@ -70,6 +81,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
+                      onTap: () => Get.to(() => NotificationScreen()),
                       child: Container(
                         height: 40.sp,
                         width: 40.sp,
@@ -149,7 +161,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           Obx(() {
-            if (controller.showAlert.value) {
+            if (controller.showAlert.value &&
+                controller.alertMsg.value.trim().isNotEmpty) {
               return SizedBox(
                 child: Container(
                   width: DeviceHelper.screenWidth(context),

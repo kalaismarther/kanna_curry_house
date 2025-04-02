@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "323407169293",
+    "project_id": "kanna-food",
+    "storage_bucket": "kanna-food.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323407169293:android:3f33672514f30ee608d244",
+        "android_client_info": {
+          "package_name": "co.kanna.pos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCViXkU6liy3SXXmBFiy1y_W4vfr1WtbM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323407169293:android:0a67b6968b8c01dc08d244",
+        "android_client_info": {
+          "package_name": "com.smart.kannacurryhouse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCViXkU6liy3SXXmBFiy1y_W4vfr1WtbM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

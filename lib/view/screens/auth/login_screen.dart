@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              height: 224.sp,
+              height: 300.sp,
               width: double.infinity,
               padding: EdgeInsets.all(20.sp),
               decoration: const BoxDecoration(
@@ -40,6 +40,7 @@ class LoginScreen extends StatelessWidget {
                     height: DeviceHelper.statusbarHeight(context),
                   ),
                   const BackIcon(),
+                  Center(child: Image.asset(AppImages.logo, height: 80.sp)),
                   const Spacer(),
                   Text(
                     'Login',

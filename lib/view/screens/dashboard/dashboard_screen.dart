@@ -8,6 +8,7 @@ import 'package:kanna_curry_house/view/screens/home/home_screen.dart';
 import 'package:kanna_curry_house/view/screens/order/my_order_list_screen.dart';
 import 'package:kanna_curry_house/view/screens/profile/profile_screen.dart';
 import 'package:kanna_curry_house/view/widgets/primary_appbar.dart';
+import 'package:kanna_curry_house/view/widgets/side_menubar.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -29,6 +30,7 @@ class DashboardScreen extends StatelessWidget {
             top: false,
             bottom: true,
             child: Scaffold(
+              key: controller.scaffoldKey,
               appBar: controller.currentTab.value == 0
                   ? null
                   : PrimaryAppbar(
@@ -40,6 +42,7 @@ class DashboardScreen extends StatelessWidget {
                                   ? 'Profile'
                                   : '',
                       dashboardScreen: true),
+              drawer: SideMenubar(),
               body: controller.currentTab.value == 0
                   ? const HomeScreen()
                   : controller.currentTab.value == 1

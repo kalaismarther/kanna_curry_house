@@ -51,7 +51,8 @@ class UpdateProfileController extends GetxController {
             onPrimary: Colors.white,
             onSurface: Colors.black,
           ),
-          dialogBackgroundColor: Colors.white, // Background color
+          dialogTheme: DialogThemeData(
+              backgroundColor: Colors.white), // Background color
         ),
         child: child ?? const SizedBox(),
       ),
@@ -81,6 +82,8 @@ class UpdateProfileController extends GetxController {
         if (!isAgreed.value) {
           UiHelper.showToast(
               'Please agree our terms and conditions to continue');
+        } else if (dob == null) {
+          UiHelper.showToast('Please select date of birth');
         } else {
           UiHelper.showLoadingDialog();
           final user = StorageHelper.getUserDetail();
@@ -118,11 +121,9 @@ class UpdateProfileController extends GetxController {
     currentLocation.value = LatLng(latitude, longitude);
 
     final device = await DeviceHelper.getDeviceInfo();
-    print(device.id);
-    print(device.name);
+
     if (device.id == 'SKQ1.210908.001' &&
         device.name.toLowerCase() == 'redmi') {
-      print('done');
       currentLocation.value = LatLng(10.664683137696281, 79.45377334646358);
       locationController.text = await LocationHelper.getFullAddress(
           10.664683137696281, 79.45377334646358);

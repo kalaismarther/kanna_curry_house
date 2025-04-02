@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:kanna_curry_house/Core/Utils/device_helper.dart';
 import 'package:kanna_curry_house/core/services/internet_services.dart';
 import 'package:kanna_curry_house/core/utils/location_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
@@ -103,6 +105,11 @@ class SplashController extends GetxController {
 
   Future<void> startApp() async {
     bool? alreadyLoggedIn = await StorageHelper.read('logged');
+
+    if (kDebugMode) {
+      final fcmToken = await DeviceHelper.getFCM();
+      print('FCM TOKEN - $fcmToken');
+    }
 
     if (alreadyLoggedIn == true) {
       Get.offAll(() => const DashboardScreen());

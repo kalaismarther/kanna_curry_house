@@ -180,8 +180,7 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const VerticalSpace(height: 24),
-                    if (myOrder.status.toLowerCase().trim() !=
-                        'order cancelled')
+                    if (myOrder.status.toLowerCase().trim() == 'preparing')
                       PrimaryButton(
                         onPressed: () async {
                           await Get.to(() => const CancelOrderScreen());

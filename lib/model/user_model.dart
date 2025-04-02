@@ -3,7 +3,7 @@ class UserModel {
   final String name;
   final String mobile;
   final String email;
-
+  final String dob;
   final String profileImageUrl;
   final String apiToken;
 
@@ -12,6 +12,7 @@ class UserModel {
       required this.name,
       required this.mobile,
       required this.email,
+      required this.dob,
       required this.profileImageUrl,
       required this.apiToken});
 
@@ -20,6 +21,7 @@ class UserModel {
         name: json['first_name']?.toString() ?? '',
         mobile: json['mobile']?.toString() ?? '',
         email: json['email']?.toString() ?? '',
+        dob: json['dob']?.toString() ?? '',
         profileImageUrl: json['is_user_image']?.toString() ?? '',
         apiToken: json['user_auth_token']?.toString() ?? '',
       );
