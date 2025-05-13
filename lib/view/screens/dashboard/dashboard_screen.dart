@@ -15,6 +15,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldKey = GlobalKey<ScaffoldState>();
     return GetBuilder<DashboardController>(
       builder: (controller) => Obx(
         () => PopScope(
@@ -30,7 +31,7 @@ class DashboardScreen extends StatelessWidget {
             top: false,
             bottom: true,
             child: Scaffold(
-              key: controller.scaffoldKey,
+              key: scaffoldKey,
               appBar: controller.currentTab.value == 0
                   ? null
                   : PrimaryAppbar(
@@ -44,7 +45,10 @@ class DashboardScreen extends StatelessWidget {
                       dashboardScreen: true),
               drawer: SideMenubar(),
               body: controller.currentTab.value == 0
-                  ? const HomeScreen()
+                  ? HomeScreen(
+                      onMenuIconPressed: () =>
+                          scaffoldKey.currentState?.openDrawer(),
+                    )
                   : controller.currentTab.value == 1
                       ? const MyOrderListScreen()
                       : controller.currentTab.value == 2

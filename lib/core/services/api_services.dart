@@ -23,6 +23,8 @@ import 'package:kanna_curry_house/model/category/category_model.dart';
 import 'package:kanna_curry_house/model/category/category_products_request_model.dart';
 import 'package:kanna_curry_house/model/category/view_categories_request_model.dart';
 import 'package:kanna_curry_house/model/checkout/checkout_request_model.dart';
+import 'package:kanna_curry_house/model/checkout/create_payment_request_model.dart';
+import 'package:kanna_curry_house/model/checkout/update_payment_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/check_coupon_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/coupon_model.dart';
 import 'package:kanna_curry_house/model/help/faq_model.dart';
@@ -510,15 +512,59 @@ class ApiServices {
 
 //<---------------------------- CHECKOUT ---------------------------------------->
 
-  static Future<String> checkoutCart(CheckoutRequestModel input) async {
+  static Future<Map<String, dynamic>> checkoutCart(
+      CheckoutRequestModel input) async {
     final response = await DioHelper.postHttpMethod(
         url: AppConstants.checkoutUrl,
         headers: _headersWithToken(),
         input: input.toJson());
 
     if (response.success) {
+      if (response.body['status']?.toString() == '1' ||
+          response.body['status']?.toString() == '6') {
+        return response.body;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<String, dynamic>> createBillPlzPayment(
+      CreatePaymentRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.createPaymentUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
       if (response.body['status']?.toString() == '1') {
-        return response.body['message']?.toString() ?? '';
+        return response.body;
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<Map<String, dynamic>> updatePaymentStatus(
+      UpdatePaymentRequestModel input) async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.updatePaymentUrl,
+        headers: _headersWithToken(),
+        input: input.toJson());
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body;
       } else if (response.body['status']?.toString() == '2') {
         AuthHelper.logoutUser();
         throw Exception(response.body['message']?.toString() ?? '');

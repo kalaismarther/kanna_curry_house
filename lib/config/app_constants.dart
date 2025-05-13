@@ -39,6 +39,8 @@ class AppConstants {
 
 //<!------------------------ CHECKOUT --------------------->
   static const String checkoutUrl = '${apiEndPoint}place_new_order';
+  static const String createPaymentUrl = '${apiEndPoint}create_billplz_payment';
+  static const String updatePaymentUrl = '${apiEndPoint}billplz/callback';
 
 //<!------------------------ ORDER --------------------->
   static const String myOrdersUrl = '${apiEndPoint}my_orders';

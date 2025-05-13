@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(414, 896),
       child: GetMaterialApp(
-        title: 'Kanna Curry House',
+        title: 'Aadhi Curry House',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme(),
         home: const SplashScreen(),

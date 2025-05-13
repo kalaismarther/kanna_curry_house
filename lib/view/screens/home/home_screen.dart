@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
-import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -25,7 +24,9 @@ import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
 import 'package:marquee/marquee.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.onMenuIconPressed});
+
+  final Function() onMenuIconPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +50,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () {
-                        try {
-                          final dashboardController =
-                              Get.find<DashboardController>();
-                          dashboardController.openDrawer();
-                        } catch (e) {
-                          //
-                        }
-                      },
+                      onTap: onMenuIconPressed,
                       child: Container(
                         height: 40.sp,
                         width: 40.sp,

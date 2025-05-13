@@ -89,4 +89,7 @@ class AppImages {
   static const String clockIconColor = '${imagePath}clock_icon_color.png';
   static const String bookingConfirmedColor =
       '${imagePath}booking_confirmed.png';
+  //LOTTIE FILES
+  static const String paymentSuccess = '${imagePath}payment_success.json';
+  static const String paymentFailed = '${imagePath}payment_failed.json';
 }

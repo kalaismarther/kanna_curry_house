@@ -8,14 +8,11 @@ import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/view/widgets/logout_dialog.dart';
 
 class DashboardController extends GetxController {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   var currentTab = 0.obs;
 
   void changeTab(int tabNo) {
     currentTab.value = tabNo;
   }
-
-  void openDrawer() => scaffoldKey.currentState?.openDrawer();
 
   Future<void> exitAlert() async {
     Get.dialog(

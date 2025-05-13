@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/launcher_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/order/my_order_model.dart';
@@ -23,6 +24,7 @@ class OrderDetailController extends GetxController {
 
   var isLoading = false.obs;
   var myOrder = Rxn<MyOrderModel>();
+  var invoiceUrl = ''.obs;
   var orderedItems = <OrderedItemModel>[].obs;
   var error = Rxn<String>();
 
@@ -37,6 +39,7 @@ class OrderDetailController extends GetxController {
       final input = OrderDetailRequestModel(userId: user.id, orderId: orderId);
 
       final result = await ApiServices.getOrderDetail(input);
+      invoiceUrl.value = result['invoice']?.toString() ?? '';
       orderedItems.value = [
         for (final item in result['data'] ?? []) OrderedItemModel.fromJson(item)
       ];
@@ -110,4 +113,12 @@ class OrderDetailController extends GetxController {
           ],
         ),
       );
+
+  Future<void> downloadInvoice() async {
+    try {
+      LauncherHelper.openLink(invoiceUrl.value);
+    } catch (e) {
+      //
+    }
+  }
 }

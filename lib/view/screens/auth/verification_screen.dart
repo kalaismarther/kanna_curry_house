@@ -163,7 +163,7 @@ class VerificationScreen extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        'Re-send code in',
+                                        'Resend code in',
                                         style: TextStyle(
                                             color: Colors.grey.shade600),
                                       ),

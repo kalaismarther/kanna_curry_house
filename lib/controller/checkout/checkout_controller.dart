@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
@@ -6,9 +7,11 @@ import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/cart/cart_info_model.dart';
 import 'package:kanna_curry_house/model/cart/review_cart_request_model.dart';
 import 'package:kanna_curry_house/model/checkout/checkout_request_model.dart';
+import 'package:kanna_curry_house/model/checkout/create_payment_request_model.dart';
 import 'package:kanna_curry_house/model/coupon/coupon_model.dart';
 import 'package:kanna_curry_house/view/screens/checkout/order_confirmed_screen.dart';
 import 'package:kanna_curry_house/view/screens/coupon/coupon_screen.dart';
+import 'package:kanna_curry_house/view/screens/checkout/payment_screen.dart';
 
 class CheckoutController extends GetxController {
   final String cartId;
@@ -26,6 +29,7 @@ class CheckoutController extends GetxController {
   var error = Rxn<String>();
 
   var cancellationPolicyContent = ''.obs;
+  var paymentMethod = ''.obs;
 
   Future<void> reviewCart() async {
     try {
@@ -70,6 +74,10 @@ class CheckoutController extends GetxController {
       if (cartInfo.value == null) {
         return;
       }
+      if (paymentMethod.value.isEmpty) {
+        UiHelper.showToast('Please select payment method');
+        return;
+      }
       UiHelper.showLoadingDialog();
 
       final user = StorageHelper.getUserDetail();
@@ -79,20 +87,76 @@ class CheckoutController extends GetxController {
           cartId: cartId,
           addressId: cartInfo.value?.defaultAddress.id ?? '0',
           shippingMethod: '2',
-          paymentMethod: 'COD',
+          paymentMethod: paymentMethod.value,
           couponId: selectedCoupon.value?.id);
 
       final result = await ApiServices.checkoutCart(input);
-      await StorageHelper.remove('current_cart_id');
-      Get.find<CartInfoController>().myCart.value = null;
-      UiHelper.showToast(result);
+
+      if (result['status']?.toString() == '1') {
+        await StorageHelper.remove('current_cart_id');
+        Get.find<CartInfoController>().myCart.value = null;
+        UiHelper.showToast(
+            result['message']?.toString() ?? 'Order placed successfully');
+        UiHelper.closeLoadingDialog();
+        Get.to(() => const OrderConfirmedScreen(),
+            transition: Transition.downToUp);
+      } else if (result['status']?.toString() == '6') {
+        UiHelper.closeLoadingDialog();
+        proceedOnlinePayment(
+          orderId: result['data']?['id']?.toString() ?? '',
+          amount: result['data']?['grand_total']?.toString() ?? '',
+        );
+      }
+    } catch (e) {
+      UiHelper.showErrorMessage(e);
       UiHelper.closeLoadingDialog();
-      Get.to(() => const OrderConfirmedScreen(),
-          transition: Transition.downToUp);
+    }
+  }
+
+  Future<void> proceedOnlinePayment(
+      {required String orderId, required String amount}) async {
+    try {
+      if (orderId.isEmpty || amount.isEmpty) {
+        return;
+      }
+      showProcessingDialog();
+      final user = StorageHelper.getUserDetail();
+      final input = CreatePaymentRequestModel(
+          userId: user.id, orderId: orderId, amount: amount);
+
+      final result = await ApiServices.createBillPlzPayment(input);
+
+      final billId = result['bill_id']?.toString() ?? '';
+      final paymentUrl = result['payment_url']?.toString() ?? '';
+
+      if (billId.isNotEmpty && paymentUrl.isNotEmpty) {
+        UiHelper.closeLoadingDialog();
+        Get.to(() => PaymentScreen(billId: billId, webLink: paymentUrl));
+        // launchUrlString(paymentUrl);
+      }
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {
       UiHelper.closeLoadingDialog();
     }
+  }
+
+  void showProcessingDialog() {
+    Get.dialog(
+        barrierDismissible: false,
+        PopScope(
+          canPop: false,
+          child: AlertDialog(
+            content: Row(
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.teal.shade700,
+                ),
+                SizedBox(width: 16),
+                Expanded(child: Text("Redirecting to payment")),
+              ],
+            ),
+          ),
+        ));
   }
 }

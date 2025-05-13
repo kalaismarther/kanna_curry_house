@@ -60,7 +60,7 @@ class MyOrderItem extends StatelessWidget {
                       ),
                       SizedBox(height: 8.sp),
                       Text(
-                        'Placed on ${myOrder.orderDate}',
+                        'Placed on ${myOrder.orderDate} | ${myOrder.orderTime}',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey.shade600,
@@ -106,8 +106,10 @@ class MyOrderItem extends StatelessWidget {
                         style: TextStyle(fontSize: 14.sp),
                       ),
                     )
-                  else if (myOrder.status.toLowerCase() != 'order cancelled' &&
-                      myOrder.status.toLowerCase() != 'processing')
+                  // else if (myOrder.status.toLowerCase() != 'order cancelled' &&
+                  //     myOrder.status.toLowerCase() != 'processing')
+                  else if (myOrder.status.toLowerCase() == 'delivered' ||
+                      myOrder.status.toLowerCase() == 'order delivered')
                     InkWell(
                       onTap: () {
                         Get.find<OrderDetailController>().showRatingDialog();
@@ -123,14 +125,19 @@ class MyOrderItem extends StatelessWidget {
                   else
                     const HorizontalSpace(width: 4)
                 ] else ...[
-                  if (myOrder.preparationTime.isNotEmpty)
+                  if (myOrder.preparationTime.isNotEmpty &&
+                      myOrder.status.toLowerCase().trim() !=
+                          'order cancelled' &&
+                      myOrder.status.toLowerCase().trim() != 'delivered')
                     Text(
                       '${myOrder.preparationTime} Mins',
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
                           color: AppTheme.red),
-                    ),
+                    )
+                  else
+                    HorizontalSpace(width: 10)
                 ],
                 Row(
                   children: [

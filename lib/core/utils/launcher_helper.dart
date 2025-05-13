@@ -25,4 +25,14 @@ class LauncherHelper {
       //
     }
   }
+
+  static Future<void> openLink(String url) async {
+    try {
+      if (url.isNotEmpty) {
+        await launchUrlString(url);
+      }
+    } catch (e) {
+      //
+    }
+  }
 }

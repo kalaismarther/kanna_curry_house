@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -48,14 +49,13 @@ class CheckoutScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: 3,
-                      separatorBuilder:
-                          (context, index) => Divider(height: 24.sp),
-                      itemBuilder:
-                          (context, index) => LoadingShimmer(
-                            height: 80.sp,
-                            width: double.infinity,
-                            radius: 16.sp,
-                          ),
+                      separatorBuilder: (context, index) =>
+                          Divider(height: 24.sp),
+                      itemBuilder: (context, index) => LoadingShimmer(
+                        height: 80.sp,
+                        width: double.infinity,
+                        radius: 16.sp,
+                      ),
                     );
                   }
                   if (cartController.error.value != null) {
@@ -73,8 +73,8 @@ class CheckoutScreen extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: cartController.cartItems.length,
-                    separatorBuilder:
-                        (context, index) => Divider(height: 24.sp),
+                    separatorBuilder: (context, index) =>
+                        Divider(height: 24.sp),
                     itemBuilder: (context, index) {
                       final cartItem = cartController.cartItems[index];
                       return CartItem(
@@ -106,135 +106,75 @@ class CheckoutScreen extends StatelessWidget {
               ),
               GetBuilder<CheckoutController>(
                 init: CheckoutController(cartId: cartId),
-                builder:
-                    (controller) => Column(
-                      children: [
-                        const VerticalSpace(height: 20),
-                        Obx(() {
-                          if (controller
-                                  .cartInfo
-                                  .value
-                                  ?.preparationTime
-                                  .isNotEmpty ==
-                              true) {
-                            return Container(
-                              padding: EdgeInsets.all(16.sp),
-                              margin: EdgeInsets.only(bottom: 20.sp),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16.r),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    blurRadius: 4,
-                                    spreadRadius: 2,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                builder: (controller) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const VerticalSpace(height: 20),
+                    Obx(() => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Payment Method',
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w700,
                               ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Order Preparation Time : ',
+                            ),
+                            if (controller.isLoading.value)
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.sp),
+                                  child: CupertinoActivityIndicator(),
+                                ),
+                              )
+                            else ...[
+                              if (controller
+                                      .cartInfo.value?.onlinePaymentAvailable ==
+                                  true)
+                                RadioListTile(
+                                  value: 'CC',
+                                  groupValue: controller.paymentMethod.value,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  onChanged: (value) => controller
+                                      .paymentMethod.value = value ?? 'CC',
+                                  title: Text(
+                                    'Pay Online',
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black,
                                     ),
                                   ),
-                                  Text(
-                                    '${controller.cartInfo.value?.preparationTime} Mins',
+                                ),
+                              if (controller.cartInfo.value?.codAvailable ==
+                                  true)
+                                RadioListTile(
+                                  value: 'COD',
+                                  groupValue: controller.paymentMethod.value,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  onChanged: (value) => controller
+                                      .paymentMethod.value = value ?? 'COD',
+                                  title: Text(
+                                    'Cash on Delivery',
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: AppTheme.red,
+                                      color: Colors.black,
                                     ),
                                   ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: controller.chooseCoupon,
-                            child: Obx(
-                              () => Container(
-                                padding: EdgeInsets.all(16.sp),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade200,
-                                      blurRadius: 4,
-                                      spreadRadius: 2,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    if (controller.selectedCoupon.value == null)
-                                      Text(
-                                        'Choose a coupon',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    else
-                                      Text(
-                                        controller.selectedCoupon.value?.code ??
-                                            '',
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    if (controller.selectedCoupon.value != null)
-                                      Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          onTap: () {
-                                            controller.selectedCoupon.value =
-                                                null;
-                                            controller.reviewCart();
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 4.sp,
-                                              horizontal: 8.sp,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.red,
-                                              borderRadius:
-                                                  BorderRadius.circular(4.sp),
-                                            ),
-                                            child: Text(
-                                              'Remove',
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const VerticalSpace(height: 20),
-                        Container(
+                            ]
+                          ],
+                        )),
+                    Obx(() {
+                      if (controller
+                              .cartInfo.value?.preparationTime.isNotEmpty ==
+                          true) {
+                        return Container(
                           padding: EdgeInsets.all(16.sp),
+                          margin: EdgeInsets.only(bottom: 20.sp),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16.r),
@@ -247,110 +187,245 @@ class CheckoutScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: Obx(() {
-                            if (controller.error.value != null) {
-                              return SizedBox(
-                                height: 200.sp,
+                          child: Row(
+                            children: [
+                              Text(
+                                'Order Preparation Time : ',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                '${controller.cartInfo.value?.preparationTime} Mins',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    }),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: controller.chooseCoupon,
+                        child: Obx(
+                          () => Container(
+                            padding: EdgeInsets.all(16.sp),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade200,
+                                  blurRadius: 4,
+                                  spreadRadius: 2,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                if (controller.selectedCoupon.value == null)
+                                  Text(
+                                    'Choose a coupon',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                else
+                                  Text(
+                                    controller.selectedCoupon.value?.code ?? '',
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                if (controller.selectedCoupon.value != null)
+                                  Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        controller.selectedCoupon.value = null;
+                                        controller.reviewCart();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 4.sp,
+                                          horizontal: 8.sp,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.red,
+                                          borderRadius:
+                                              BorderRadius.circular(4.sp),
+                                        ),
+                                        child: Text(
+                                          'Remove',
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const VerticalSpace(height: 20),
+                    Container(
+                      padding: EdgeInsets.all(16.sp),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade200,
+                            blurRadius: 4,
+                            spreadRadius: 2,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Obx(() {
+                        if (controller.error.value != null) {
+                          return SizedBox(
+                            height: 200.sp,
+                            child: Center(
+                              child: Text(controller.error.value ?? ''),
+                            ),
+                          );
+                        }
+                        final summary = controller.cartInfo.value;
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Pricing Summary',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            if (controller.isLoading.value || summary == null)
+                              SizedBox(
+                                height: 180.sp,
+                                child: const PrimaryLoader(),
+                              )
+                            else if (controller.error.value != null)
+                              SizedBox(
+                                height: 180.sp,
                                 child: Center(
                                   child: Text(controller.error.value ?? ''),
                                 ),
-                              );
-                            }
-                            final summary = controller.cartInfo.value;
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Pricing Summary',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
+                              )
+                            else ...[
+                              const VerticalSpace(height: 16),
+                              _buildSummaryItem(
+                                'Sub Total',
+                                summary.subTotal,
+                                Colors.black,
+                              ),
+                              _buildSummaryItem(
+                                'Delivery Charges',
+                                summary.deliveryCharge,
+                                Colors.black,
+                              ),
+                              _buildSummaryItem(
+                                'SST (tax is ${summary.taxPercentage}%)',
+                                summary.taxAmount,
+                                Colors.black,
+                              ),
+                              if (controller.selectedCoupon.value != null)
+                                _buildSummaryItem(
+                                  'Coupon Value',
+                                  summary.couponAmount,
+                                  Colors.red,
+                                ),
+                              const Divider(height: 20),
+                              _buildSummaryItem(
+                                'Total',
+                                summary.total,
+                                Colors.black,
+                                isLabelBold: true,
+                              ),
+                              if ((double.tryParse(summary.deliveryCharge) ??
+                                      0) >
+                                  0)
+                                Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.only(top: 12.sp),
+                                  padding: EdgeInsets.all(12.sp),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.shade100.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(8),
+                                    border:
+                                        Border.all(color: Colors.red.shade200),
+                                  ),
+                                  child: Text(
+                                    summary.deliveryChargeMsg,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 12),
                                   ),
                                 ),
-                                if (controller.isLoading.value ||
-                                    summary == null)
-                                  SizedBox(
-                                    height: 180.sp,
-                                    child: const PrimaryLoader(),
-                                  )
-                                else if (controller.error.value != null)
-                                  SizedBox(
-                                    height: 180.sp,
-                                    child: Center(
-                                      child: Text(controller.error.value ?? ''),
-                                    ),
-                                  )
-                                else ...[
-                                  const VerticalSpace(height: 16),
-                                  _buildSummaryItem(
-                                    'Sub Total',
-                                    summary.subTotal,
-                                    Colors.black,
-                                  ),
-                                  _buildSummaryItem(
-                                    'SST (tax is ${summary.taxPercentage}%)',
-                                    summary.taxAmount,
-                                    Colors.black,
-                                  ),
-                                  if (controller.selectedCoupon.value != null)
-                                    _buildSummaryItem(
-                                      'Coupon Value',
-                                      summary.couponAmount,
-                                      Colors.red,
-                                    ),
-                                  const Divider(height: 20),
-                                  _buildSummaryItem(
-                                    'Total',
-                                    summary.total,
-                                    Colors.black,
-                                    isLabelBold: true,
-                                  ),
-                                ],
-                              ],
-                            );
-                          }),
-                        ),
-                        Obx(() {
-                          if (controller.cancellationPolicyContent.isEmpty) {
-                            return const SizedBox();
-                          } else {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const VerticalSpace(height: 24),
-                                const Text(
-                                  'Cancellation Policy',
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                                const VerticalSpace(height: 12),
-                                Text(
-                                  controller.cancellationPolicyContent.value,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const VerticalSpace(height: 24),
-                              ],
-                            );
-                          }
-                        }),
-                        const VerticalSpace(height: 20),
-                        Obx(
-                          () => PrimaryButton(
-                            onPressed:
-                                controller.isLoading.value ||
-                                        controller.cartInfo.value == null ||
-                                        controller.error.value != null
-                                    ? null
-                                    : controller.submit,
-                            text: 'Place Order',
-                          ),
-                        ),
-                        const VerticalSpace(height: 24),
-                      ],
+                            ],
+                          ],
+                        );
+                      }),
                     ),
+                    Obx(() {
+                      if (controller.cancellationPolicyContent.isEmpty) {
+                        return const SizedBox();
+                      } else {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const VerticalSpace(height: 24),
+                            const Text(
+                              'Cancellation Policy',
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            const VerticalSpace(height: 12),
+                            Text(
+                              controller.cancellationPolicyContent.value,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const VerticalSpace(height: 24),
+                          ],
+                        );
+                      }
+                    }),
+                    const VerticalSpace(height: 20),
+                    Obx(
+                      () => PrimaryButton(
+                        onPressed: controller.isLoading.value ||
+                                controller.cartInfo.value == null ||
+                                controller.error.value != null
+                            ? null
+                            : controller.submit,
+                        text: 'Place Order',
+                      ),
+                    ),
+                    const VerticalSpace(height: 24),
+                  ],
+                ),
               ),
             ],
           ),
@@ -364,28 +439,31 @@ class CheckoutScreen extends StatelessWidget {
     String value,
     Color valueColor, {
     bool isLabelBold = false,
-  }) => Padding(
-    padding: EdgeInsets.symmetric(vertical: 8.sp),
-    child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 15.sp,
-              color: isLabelBold ? Colors.black : Colors.black.withOpacity(0.6),
-              fontWeight: isLabelBold ? FontWeight.w700 : null,
+  }) =>
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.sp),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isLabelBold
+                      ? Colors.black
+                      : Colors.black.withOpacity(0.6),
+                  fontWeight: isLabelBold ? FontWeight.w700 : null,
+                ),
+              ),
             ),
-          ),
+            Expanded(
+              child: Text(
+                valueColor == Colors.red ? '- RM  $value' : 'RM  $value',
+                textAlign: TextAlign.end,
+                style: TextStyle(fontSize: 16.sp, color: valueColor),
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          child: Text(
-            valueColor == Colors.red ? '- RM  $value' : 'RM  $value',
-            textAlign: TextAlign.end,
-            style: TextStyle(fontSize: 16.sp, color: valueColor),
-          ),
-        ),
-      ],
-    ),
-  );
+      );
 }
