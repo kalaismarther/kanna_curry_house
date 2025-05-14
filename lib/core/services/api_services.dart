@@ -158,6 +158,7 @@ class ApiServices {
       'first_name': input.name,
       'email': input.email,
       'mobile': input.mobile,
+      if (input.dob.isNotEmpty) 'dob': input.dob,
       if (input.profileImagePath.isNotEmpty)
         'profile_image':
             await dio.MultipartFile.fromFile(input.profileImagePath),

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:kanna_curry_house/config/app_constants.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/profile/update_profile_controller.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/validation_helper.dart';
+import 'package:kanna_curry_house/view/screens/auth/policy_screen.dart';
 import 'package:kanna_curry_house/view/widgets/back_icon.dart';
 import 'package:kanna_curry_house/view/widgets/custom_text_field.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
@@ -146,6 +148,9 @@ class UpdateProfileScreen extends StatelessWidget {
                               ),
                               const HorizontalSpace(width: 10),
                               InkWell(
+                                // onTap: () => Get.to(() => PolicyScreen(
+                                //     title: 'Terms and Conditions',
+                                //     url: AppConstants.termsUrl)),
                                 child: Text(
                                   'Terms and Conditions',
                                   style: TextStyle(

@@ -63,6 +63,7 @@ dependencies:
   geocoding: ^3.0.0
   google_maps_flutter: ^2.9.0
   marquee: ^2.3.0
+  new_version_plus: ^0.1.0
 
 dev_dependencies:
   flutter_test:

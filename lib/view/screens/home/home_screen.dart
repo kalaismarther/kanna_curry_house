@@ -314,8 +314,30 @@ class HomeScreen extends StatelessWidget {
                                   child: Material(
                                     color: Colors.transparent,
                                     child: InkWell(
-                                      onTap: () => Get.to(
-                                          () => const TableBookingScreen()),
+                                      onTap: () {
+                                        if (controller
+                                            .isTableReservationEnable) {
+                                          Get.to(
+                                              () => const TableBookingScreen());
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                ),
+                                                elevation: 0,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                child:
+                                                    const TableReservationUnavailable(),
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 24.sp, horizontal: 20.sp),
@@ -493,6 +515,241 @@ class HomeScreen extends StatelessWidget {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class TableReservationUnavailable extends StatelessWidget {
+  const TableReservationUnavailable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 25.0,
+            spreadRadius: 0.0,
+            offset: const Offset(0.0, 10.0),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Modern gradient header
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFFF6B6B).withOpacity(0.9),
+                  const Color(0xFFF06292).withOpacity(0.85),
+                ],
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.restaurant_menu,
+                      color: Colors.white,
+                      size: 22.sp,
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      'Dining Update',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  borderRadius: BorderRadius.circular(50.r),
+                  child: Container(
+                    padding: EdgeInsets.all(5.r),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 18.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Content with improved styling
+          Padding(
+            padding: EdgeInsets.all(24.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.r),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF8E1),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Icon(
+                        Icons.info_outline,
+                        color: const Color(0xFFFFB300),
+                        size: 22.sp,
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Table Reservation is temporarily unavailable',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF303030),
+                              height: 1.3,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'We apologize for the inconvenience, you will be notified when the table reservation is available',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: const Color(0xFF757575),
+                              height: 1.5,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 24.h),
+                // Container(
+                //   padding:
+                //       EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+                //   decoration: BoxDecoration(
+                //     color: const Color(0xFFF5F9FF),
+                //     borderRadius: BorderRadius.circular(12.r),
+                //     border: Border.all(color: const Color(0xFFE0EAFF)),
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         padding: EdgeInsets.all(8.r),
+                //         decoration: BoxDecoration(
+                //           color: const Color(0xFFE0EAFF),
+                //           borderRadius: BorderRadius.circular(8.r),
+                //         ),
+                //         child: Icon(
+                //           Icons.access_time_filled,
+                //           color: const Color(0xFF4285F4),
+                //           size: 18.sp,
+                //         ),
+                //       ),
+                //       SizedBox(width: 12.w),
+                //       Expanded(
+                //         child: Text(
+                //           'Expected to be back online by tomorrow at 10:00 AM',
+                //           style: TextStyle(
+                //             fontSize: 13.sp,
+                //             color: const Color(0xFF546E7A),
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+
+          // Modern footer with gradient button
+          // Container(
+          //   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
+          //   decoration: BoxDecoration(
+          //     color: const Color(0xFFFAFAFA),
+          //     borderRadius: BorderRadius.only(
+          //       bottomLeft: Radius.circular(20.r),
+          //       bottomRight: Radius.circular(20.r),
+          //     ),
+          //   ),
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       gradient: const LinearGradient(
+          //         colors: [Color(0xFF4285F4), Color(0xFF34A853)],
+          //         begin: Alignment.centerLeft,
+          //         end: Alignment.centerRight,
+          //       ),
+          //       borderRadius: BorderRadius.circular(10.r),
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: const Color(0xFF4285F4).withOpacity(0.3),
+          //           blurRadius: 8,
+          //           offset: const Offset(0, 4),
+          //         ),
+          //       ],
+          //     ),
+          //     child: ElevatedButton(
+          //       onPressed: () => Navigator.of(context).pop(),
+          //       style: ElevatedButton.styleFrom(
+          //         foregroundColor: Colors.white,
+          //         backgroundColor: Colors.transparent,
+          //         shadowColor: Colors.transparent,
+          //         padding:
+          //             EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(10.r),
+          //         ),
+          //       ),
+          //       child: Row(
+          //         children: [
+          //           Text(
+          //             'Contact Reception',
+          //             style: TextStyle(
+          //               fontSize: 14.sp,
+          //               fontWeight: FontWeight.w500,
+          //             ),
+          //           ),
+          //           SizedBox(width: 8.w),
+          //           Icon(
+          //             Icons.arrow_forward,
+          //             size: 16.sp,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

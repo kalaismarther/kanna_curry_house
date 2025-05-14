@@ -35,6 +35,7 @@ class HomeController extends GetxController {
   var bannerImages = <String>[].obs;
   var categories = <CategoryModel>[].obs;
   var products = <ProductModel>[].obs;
+  bool isTableReservationEnable = false;
   RxInt activeBannerIndex = 0.obs;
   final PageController pageController = PageController();
   var error = Rxn<String>();
@@ -81,6 +82,8 @@ class HomeController extends GetxController {
 
       showAlert.value = result['popup_flag']?.toString() == '1';
       alertMsg.value = result['popup_message']?.toString() ?? '';
+      isTableReservationEnable =
+          result['table_booking_flag']?.toString() == '1';
     } catch (e) {
       error.value = UiHelper.getMsgFromException(e);
     } finally {

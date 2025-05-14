@@ -7,6 +7,7 @@ class AppConstants {
   static const String verifyOtpUrl = '${apiEndPoint}verifyotp';
   static const String resendOtpUrl = '${apiEndPoint}resend_otp';
   static const String logoutUrl = '${apiEndPoint}logout';
+  static const String termsUrl = 'https://www.google.com';
 
 //<!------------------------ PROFILE --------------------->
   static const String updateProfileUrl = '${apiEndPoint}update_profile';

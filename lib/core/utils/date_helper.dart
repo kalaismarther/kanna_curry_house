@@ -16,4 +16,12 @@ class DateHelper {
       return '';
     }
   }
+
+  static DateTime? parseDate(String date) {
+    try {
+      return DateTime.parse(date);
+    } catch (e) {
+      return null;
+    }
+  }
 }

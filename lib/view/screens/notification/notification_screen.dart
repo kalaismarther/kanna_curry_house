@@ -48,7 +48,7 @@ class NotificationScreen extends StatelessWidget {
               itemBuilder: (context, index) =>
                   index < controller.notificationList.length
                       ? NotificationItem(
-                          notification: controller.notificationList[0],
+                          notification: controller.notificationList[index],
                         )
                       : const CupertinoActivityIndicator(),
             );

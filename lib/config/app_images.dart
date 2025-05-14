@@ -5,6 +5,8 @@ class AppImages {
   static const String logo = '${imagePath}logo.png';
   static const String splashLeftCorner = '${imagePath}splash_left_corner.png';
   static const String splashRightCorner = '${imagePath}splash_right_corner.png';
+  static const String playStore = '${imagePath}playstore.png';
+  static const String appStore = '${imagePath}appstore.png';
 
 //<!------------------------ GET STARTED SCREEN --------------------->
   static const String getStartedOne = '${imagePath}get_started_one.png';

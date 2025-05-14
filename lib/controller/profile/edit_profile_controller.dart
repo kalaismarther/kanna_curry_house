@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/date_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,7 +29,8 @@ class EditProfileController extends GetxController {
     name.text = user.name;
     mobileNumber.text = user.mobile;
     email.text = user.email;
-    dobController.text = user.dob;
+    dob = DateHelper.parseDate(user.dob);
+    dobController.text = DateHelper.formatDate(user.dob);
     super.onInit();
   }
 
@@ -117,6 +119,7 @@ class EditProfileController extends GetxController {
             userId: user.id,
             name: name.text.trim(),
             mobile: mobileNumber.text.trim(),
+            dob: dob != null ? DateFormat('yyyy-MM-dd').format(dob!) : '',
             email: email.text.trim(),
             profileImagePath: selectedImagePath.value);
 
