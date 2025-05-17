@@ -131,8 +131,8 @@ class ProductDetailScreen extends StatelessWidget {
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color:
-                                                Colors.white.withOpacity(0.3),
+                                            color: Colors.white
+                                                .withValues(alpha: 0.3),
                                           ),
                                           child: Icon(
                                             Icons.remove,
@@ -162,8 +162,8 @@ class ProductDetailScreen extends StatelessWidget {
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color:
-                                                Colors.white.withOpacity(0.3),
+                                            color: Colors.white
+                                                .withValues(alpha: 0.3),
                                           ),
                                           child: Icon(
                                             Icons.add,

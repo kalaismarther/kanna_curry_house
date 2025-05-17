@@ -29,9 +29,6 @@ class PaymentController extends GetxController {
             loadingPercentage.value = progress;
           },
           onPageStarted: (String url) async {
-            print('Navigating to: $url');
-            print(billId);
-
             final uri = Uri.parse(url);
 
             final paid = uri.queryParameters['billplz[paid]'];

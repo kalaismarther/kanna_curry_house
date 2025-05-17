@@ -30,8 +30,8 @@ class CartInfo extends StatelessWidget {
                   height: 36.sp,
                   width: DeviceHelper.screenWidth(context),
                   radius: 10.sp,
-                  baseColor: const Color(0xFF121223).withOpacity(0.5),
-                  highlightColor: Colors.white.withOpacity(0.5),
+                  baseColor: const Color(0xFF121223).withValues(alpha: 0.5),
+                  highlightColor: Colors.white.withValues(alpha: 0.5),
                 )
               : Row(
                   children: [

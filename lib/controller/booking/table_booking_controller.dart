@@ -69,7 +69,6 @@ class TableBookingController extends GetxController {
       if (context.mounted) {
         selectedTime.value = pickedTime;
         timeController.text = pickedTime.format(context);
-        ;
       }
     }
   }

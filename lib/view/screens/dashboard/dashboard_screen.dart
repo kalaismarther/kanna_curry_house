@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
+import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/view/screens/booking/my_booking_list_screen.dart';
 import 'package:kanna_curry_house/view/screens/home/home_screen.dart';
 import 'package:kanna_curry_house/view/screens/order/my_order_list_screen.dart';
@@ -24,6 +25,10 @@ class DashboardScreen extends StatelessWidget {
             if (controller.currentTab.value == 0) {
               controller.exitAlert();
             } else {
+              if (!Get.isRegistered<HomeController>()) {
+                Get.put(HomeController());
+              }
+
               controller.changeTab(0);
             }
           },

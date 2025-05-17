@@ -8,6 +8,7 @@ class MyBookingModel {
   final String contactNumber;
   final String adultsCount;
   final String kidsCount;
+  final String rejectedReason;
 
   MyBookingModel(
       {required this.id,
@@ -18,7 +19,8 @@ class MyBookingModel {
       required this.contactNo,
       required this.contactNumber,
       required this.adultsCount,
-      required this.kidsCount});
+      required this.kidsCount,
+      required this.rejectedReason});
 
   factory MyBookingModel.fromJson(Map<String, dynamic> json) => MyBookingModel(
         id: json['id']?.toString() ?? '0',
@@ -30,5 +32,6 @@ class MyBookingModel {
         contactNumber: json['contact_mobile']?.toString() ?? '0',
         adultsCount: json['adult']?.toString() ?? '0',
         kidsCount: json['kid']?.toString() ?? '0',
+        rejectedReason: json['reject_reason']?.toString() ?? '',
       );
 }

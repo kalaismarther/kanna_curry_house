@@ -22,7 +22,7 @@ class LogoutDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.sp),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -35,7 +35,7 @@ class LogoutDialog extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.sp),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(

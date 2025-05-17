@@ -74,19 +74,29 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () => Get.to(() => NotificationScreen()),
+                      onTap: () => Get.off(() => NotificationScreen()),
                       child: Container(
-                        height: 40.sp,
-                        width: 40.sp,
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14.sp),
-                        ),
-                        child: Image.asset(
-                          AppImages.notificationIcon,
-                        ),
-                      ),
+                          height: 40.sp,
+                          width: 40.sp,
+                          padding: EdgeInsets.all(10.sp),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14.sp),
+                          ),
+                          child: Obx(() {
+                            if (controller.notificationCount.value > 0) {
+                              return Badge.count(
+                                count: controller.notificationCount.value,
+                                child: Image.asset(
+                                  AppImages.notificationIcon,
+                                ),
+                              );
+                            }
+
+                            return Image.asset(
+                              AppImages.notificationIcon,
+                            );
+                          })),
                     ),
                     const HorizontalSpace(width: 16),
                     InkWell(
@@ -242,7 +252,8 @@ class HomeScreen extends StatelessWidget {
                                     color: controller.activeBannerIndex.value ==
                                             index
                                         ? Colors.green.shade800
-                                        : Colors.blueGrey.withOpacity(0.6),
+                                        : Colors.blueGrey
+                                            .withValues(alpha: 0.6),
                                   ),
                                 ),
                               ),
@@ -533,7 +544,7 @@ class TableReservationUnavailable extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 25.0,
             spreadRadius: 0.0,
             offset: const Offset(0.0, 10.0),
@@ -551,8 +562,8 @@ class TableReservationUnavailable extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFFFF6B6B).withOpacity(0.9),
-                  const Color(0xFFF06292).withOpacity(0.85),
+                  const Color(0xFFFF6B6B).withValues(alpha: 0.9),
+                  const Color(0xFFF06292).withValues(alpha: 0.85),
                 ],
               ),
               borderRadius: BorderRadius.only(
@@ -588,7 +599,7 @@ class TableReservationUnavailable extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(5.r),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -713,7 +724,7 @@ class TableReservationUnavailable extends StatelessWidget {
           //       borderRadius: BorderRadius.circular(10.r),
           //       boxShadow: [
           //         BoxShadow(
-          //           color: const Color(0xFF4285F4).withOpacity(0.3),
+          //           color: const Color(0xFF4285F4).withValues(alpha :0.3),
           //           blurRadius: 8,
           //           offset: const Offset(0, 4),
           //         ),

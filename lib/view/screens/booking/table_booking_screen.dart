@@ -49,6 +49,7 @@ class TableBookingScreen extends StatelessWidget {
                       validator: ValidationHelper.validateMobileNumber,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CustomTextField(
@@ -118,7 +119,8 @@ class TableBookingScreen extends StatelessWidget {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.white.withOpacity(0.3),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.3),
                                     ),
                                     child: const Icon(
                                       Icons.remove,
@@ -142,7 +144,8 @@ class TableBookingScreen extends StatelessWidget {
                                     margin: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.white.withOpacity(0.3),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.3),
                                     ),
                                     child: const Icon(
                                       Icons.add,
@@ -188,7 +191,8 @@ class TableBookingScreen extends StatelessWidget {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.white.withOpacity(0.3),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.3),
                                     ),
                                     child: const Icon(
                                       Icons.remove,
@@ -212,7 +216,8 @@ class TableBookingScreen extends StatelessWidget {
                                     margin: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.white.withOpacity(0.3),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.3),
                                     ),
                                     child: const Icon(
                                       Icons.add,

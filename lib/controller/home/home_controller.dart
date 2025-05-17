@@ -65,6 +65,9 @@ class HomeController extends GetxController {
       userCurrentAddress.value =
           AddressModel.tryParse(result['curret_default']);
 
+      notificationCount.value =
+          int.tryParse(result['notification_count'].toString()) ?? 0;
+
       bannerImages.value = [
         for (final banner in result['data']?[0]?['menubanners'] ?? [])
           banner['is_image']?.toString() ?? ''

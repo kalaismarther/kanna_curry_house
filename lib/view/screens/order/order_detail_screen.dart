@@ -279,7 +279,7 @@ class OrderDetailScreen extends StatelessWidget {
                     fontSize: 15.sp,
                     color: isLabelBold
                         ? Colors.black
-                        : Colors.black.withOpacity(0.6),
+                        : Colors.black.withValues(alpha: 0.6),
                     fontWeight: isLabelBold ? FontWeight.w700 : null),
               ),
             ),

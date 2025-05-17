@@ -15,6 +15,8 @@ class MyBookingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool negative = myBooking.status.toLowerCase().trim() == 'cancelled' ||
+        myBooking.status.toLowerCase().trim() == 'rejected';
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -25,7 +27,7 @@ class MyBookingItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withValues(alpha: 0.2),
               spreadRadius: 2,
               blurRadius: 5,
             ),
@@ -83,7 +85,7 @@ class MyBookingItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (myBooking.status.toLowerCase().trim() == 'cancelled')
+                if (negative)
                   Image.asset(AppImages.wrongIcon, height: 14.sp)
                 else
                   Image.asset(AppImages.tickIcon, height: 14.sp),
@@ -93,10 +95,7 @@ class MyBookingItem extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
-                      color:
-                          myBooking.status.toLowerCase().trim() == 'cancelled'
-                              ? Colors.red
-                              : Colors.green.shade300),
+                      color: negative ? Colors.red : Colors.green.shade300),
                 ),
               ],
             ),

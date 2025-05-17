@@ -10,11 +10,13 @@ class PrimaryAppbar extends StatelessWidget implements PreferredSizeWidget {
       required this.title,
       this.actions,
       this.leading,
+      this.onBack,
       this.dashboardScreen = false});
 
   final String title;
   final List<Widget>? actions;
   final Widget? leading;
+  final Function()? onBack;
   final bool dashboardScreen;
 
   @override
@@ -29,6 +31,10 @@ class PrimaryAppbar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading ??
           IconButton(
             onPressed: () {
+              if (onBack != null) {
+                onBack!();
+                return;
+              }
               if (dashboardScreen) {
                 Get.find<DashboardController>().changeTab(0);
               } else {

@@ -270,7 +270,7 @@ class TrapezoidPainter extends CustomPainter {
       ..close();
 
     // Draw shadow
-    canvas.drawShadow(path, Colors.black.withOpacity(0.3), 6, true);
+    canvas.drawShadow(path, Colors.black.withValues(alpha: 0.3), 6, true);
 
     // Draw the shape
     canvas.drawPath(path, paint);

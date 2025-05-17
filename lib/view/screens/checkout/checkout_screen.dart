@@ -370,7 +370,8 @@ class CheckoutScreen extends StatelessWidget {
                                   margin: EdgeInsets.only(top: 12.sp),
                                   padding: EdgeInsets.all(12.sp),
                                   decoration: BoxDecoration(
-                                    color: Colors.red.shade100.withOpacity(0.5),
+                                    color: Colors.red.shade100
+                                        .withValues(alpha: 0.5),
                                     borderRadius: BorderRadius.circular(8),
                                     border:
                                         Border.all(color: Colors.red.shade200),
@@ -451,7 +452,7 @@ class CheckoutScreen extends StatelessWidget {
                   fontSize: 15.sp,
                   color: isLabelBold
                       ? Colors.black
-                      : Colors.black.withOpacity(0.6),
+                      : Colors.black.withValues(alpha: 0.6),
                   fontWeight: isLabelBold ? FontWeight.w700 : null,
                 ),
               ),
