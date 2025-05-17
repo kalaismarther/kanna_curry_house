@@ -1,7 +1,9 @@
 import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kanna_curry_house/core/utils/storage_helper.dart';
+import 'package:kanna_curry_house/main.dart';
+import 'package:kanna_curry_house/view/screens/notification/notification_screen.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {}
 
@@ -17,11 +19,15 @@ class NotificationService {
 
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
-  void handleMessage(RemoteMessage? message) {
+  void handleMessage(RemoteMessage? message) async {
     if (message == null) return;
 
-    // navigatorKey.currentState
-    //     ?.pushNamed(NotificationScreen.route, arguments: message);
+    bool? alreadyLoggedIn = await StorageHelper.read('logged');
+
+    if (alreadyLoggedIn == true) {
+      navigatorKey.currentState
+          ?.pushNamed(NotificationScreen.route, arguments: message);
+    }
   }
 
   Future initLocalNotifications() async {

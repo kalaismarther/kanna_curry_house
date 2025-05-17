@@ -13,6 +13,8 @@ import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
 
+  static const route = '/notification-screen';
+
   @override
   Widget build(BuildContext context) {
     void goBack() {

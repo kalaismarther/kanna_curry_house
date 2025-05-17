@@ -7,8 +7,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/core/services/notification_service.dart';
 import 'package:kanna_curry_house/firebase_options.dart';
+import 'package:kanna_curry_house/view/screens/notification/notification_screen.dart';
 import 'package:kanna_curry_house/view/screens/splash/splash_screen.dart';
 import 'controller/dashboard/dashboard_controller.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +38,9 @@ class MyApp extends StatelessWidget {
         title: 'Aadhi Curry House',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme(),
+        routes: {
+          NotificationScreen.route: (context) => const NotificationScreen()
+        },
         home: const SplashScreen(),
       ),
     );
