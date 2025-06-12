@@ -5,6 +5,7 @@ class UpdateProfileRequestModel {
   final String userId;
   final String name;
   final String email;
+  final String countryId;
   final DateTime dob;
   final AddressModel address;
 
@@ -12,6 +13,7 @@ class UpdateProfileRequestModel {
       {required this.userId,
       required this.name,
       required this.email,
+      required this.countryId,
       required this.dob,
       required this.address});
 
@@ -19,6 +21,7 @@ class UpdateProfileRequestModel {
         'user_id': userId,
         'name': name,
         'email': email,
+        'country_code_id': countryId,
         'dob': DateFormat('yyyy-MM-dd').format(dob),
         'address_type': address.type,
         'location': address.location,

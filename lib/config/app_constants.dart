@@ -1,13 +1,15 @@
 class AppConstants {
-  static const String _baseUrl = 'http://18.188.82.54/kanna/';
+  // static const String _baseUrl = 'http://18.188.82.54/kanna/';
+  static const String _baseUrl = 'https://www.aadhicurryhouse.com/admin/';
   static const String apiEndPoint = '${_baseUrl}api/';
 
 //<!------------------------ AUTH --------------------->
+  static const String getCountriesUrl = '${apiEndPoint}get_countries';
   static const String loginUrl = '${apiEndPoint}user_login';
   static const String verifyOtpUrl = '${apiEndPoint}verifyotp';
   static const String resendOtpUrl = '${apiEndPoint}resend_otp';
   static const String logoutUrl = '${apiEndPoint}logout';
-  static const String termsUrl = 'https://www.google.com';
+  static const String termsUrl = '${_baseUrl}user/terms_conditions';
 
 //<!------------------------ PROFILE --------------------->
   static const String updateProfileUrl = '${apiEndPoint}update_profile';

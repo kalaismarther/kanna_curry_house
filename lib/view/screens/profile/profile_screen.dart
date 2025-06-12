@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                     width: 72.sp,
                     radius: 10.sp,
                   ),
-                  const HorizontalSpace(width: 24),
+                  const HorizontalSpace(width: 20),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,6 +68,7 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  HorizontalSpace(width: 8),
                   InkWell(
                     onTap: () async {
                       await Get.to(() => const EditProfileScreen());

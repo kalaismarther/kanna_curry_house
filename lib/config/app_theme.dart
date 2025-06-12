@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTheme {
   static const Color yellow = Color(0xFFFCEE1C);
-
   static const Color red = Color(0xFFEC1D24);
   static const Color pink = Color(0xFFCC2B52);
   static const Color lightGrey = Color(0xFFF8F5F2);
   static const Color grey = Color(0xFFDBDBDB);
   static const Color darkgrey = Color(0xFF5B5B5B);
   static const Color inputBg = Color(0xFFF9F9FA);
+
   static ThemeData theme() => ThemeData(
         fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(

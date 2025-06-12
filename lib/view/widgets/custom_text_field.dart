@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.keyboardType,
     this.validator,
+    this.prefixIcon,
     this.suffixIcon,
     this.maxLength,
     this.maxLines,
@@ -28,6 +29,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final String? Function(String? value)? validator;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final int? maxLength;
   final int? maxLines;
@@ -58,6 +60,7 @@ class CustomTextField extends StatelessWidget {
             fillColor: bgColor,
             counterText: '',
             hintText: hintText,
+            prefixIcon: prefixIcon,
             suffixIcon: Padding(
               padding: EdgeInsets.only(right: 12.sp),
               child: suffixIcon,

@@ -73,6 +73,29 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Obx(
+                          () => CustomTextField(
+                            readyOnly: true,
+                            controller: controller.selectedCountry.value == null
+                                ? null
+                                : TextEditingController(
+                                    text:
+                                        '${controller.selectedCountry.value?.name} (${controller.selectedCountry.value?.code})'),
+                            onTap: controller.chooseCountry,
+                            label: 'Country',
+                            hintText: 'Select Country',
+                            validator: (value) {
+                              if (controller.selectedCountry.value == null ||
+                                  value == null ||
+                                  value.isEmpty) {
+                                return 'Please select country';
+                              }
+                              return null;
+                            },
+                            marginBottom: 28,
+                            suffixIcon: Icon(Icons.arrow_drop_down),
+                          ),
+                        ),
                         CustomTextField(
                           controller: controller.mobileController,
                           maxLength: 10,

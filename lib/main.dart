@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'Aadhi Curry House',
         debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
         theme: AppTheme.theme(),
         routes: {
           NotificationScreen.route: (context) => const NotificationScreen()

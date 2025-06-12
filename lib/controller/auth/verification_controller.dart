@@ -20,6 +20,8 @@ class VerificationController extends GetxController {
     super.onInit();
   }
 
+  final LoginController loginController = Get.find<LoginController>();
+
   final formKey = GlobalKey<FormState>();
   final otpController = TextEditingController();
   late Timer timer;
@@ -53,6 +55,7 @@ class VerificationController extends GetxController {
 
       final input = ResendOtpRequestModel(
         userId: user.id,
+        countryId: loginController.selectedCountry.value?.id ?? '',
         mobileNo: Get.find<LoginController>().mobileController.text.trim(),
       );
 
@@ -83,6 +86,7 @@ class VerificationController extends GetxController {
         final input = VerificationRequestModel(
             userId: user.id,
             otp: otpController.text.trim(),
+            countryId: loginController.selectedCountry.value?.id ?? '',
             mobile: Get.find<LoginController>().mobileController.text.trim(),
             deviceId: device.id,
             deviceType: device.type,
@@ -91,6 +95,7 @@ class VerificationController extends GetxController {
         final result = await ApiServices.verifyMobileNumber(input);
 
         await StorageHelper.write('user', result);
+
         UiHelper.closeLoadingDialog();
         if (result['step']?.toString() == '3') {
           await StorageHelper.write('logged', true);

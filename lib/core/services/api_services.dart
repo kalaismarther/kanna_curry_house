@@ -4,6 +4,7 @@ import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/dio_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
+import 'package:kanna_curry_house/model/auth/country_model.dart';
 import 'package:kanna_curry_house/model/auth/login_request_model.dart';
 import 'package:kanna_curry_house/model/auth/resend_otp_request_model.dart';
 import 'package:kanna_curry_house/model/auth/verification_request_model.dart';
@@ -52,6 +53,29 @@ class ApiServices {
   }
 
 //<---------------------------- AUTH ---------------------------------------->
+
+  static Future<List<CountryModel>> getCountriesList() async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.getCountriesUrl,
+        headers: _headersWithToken(),
+        input: {});
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return [
+          for (final country in response.body['data'] ?? [])
+            CountryModel.fromJson(country)
+        ];
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
 
   static Future<void> userLogin(LoginRequestModel input) async {
     final response = await DioHelper.postHttpMethod(

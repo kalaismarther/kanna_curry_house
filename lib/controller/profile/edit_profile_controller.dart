@@ -13,10 +13,10 @@ class EditProfileController extends GetxController {
   var userDp = ''.obs;
   var userName = ''.obs;
   var selectedImagePath = ''.obs;
+  var countryCode = ''.obs;
   final name = TextEditingController();
   final mobileNumber = TextEditingController();
   final email = TextEditingController();
-
   DateTime? dob;
   final dobController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -28,6 +28,7 @@ class EditProfileController extends GetxController {
     userName.value = user.name;
     name.text = user.name;
     mobileNumber.text = user.mobile;
+    countryCode.value = user.country.code;
     email.text = user.email;
     dob = DateHelper.parseDate(user.dob);
     dobController.text = DateHelper.formatDate(user.dob);

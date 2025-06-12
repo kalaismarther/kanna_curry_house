@@ -148,9 +148,9 @@ class UpdateProfileScreen extends StatelessWidget {
                               ),
                               const HorizontalSpace(width: 10),
                               InkWell(
-                                // onTap: () => Get.to(() => PolicyScreen(
-                                //     title: 'Terms and Conditions',
-                                //     url: AppConstants.termsUrl)),
+                                onTap: () => Get.to(() => PolicyScreen(
+                                    title: 'Terms and Conditions',
+                                    url: AppConstants.termsUrl)),
                                 child: Text(
                                   'Terms and Conditions',
                                   style: TextStyle(

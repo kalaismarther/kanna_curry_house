@@ -442,6 +442,12 @@ class HomeScreen extends StatelessWidget {
                           ),
                           if (controller.isLoading.value)
                             const CategoriesLoadingWidget(isListView: true)
+                          else if (controller.categories.isEmpty)
+                            Container(
+                              padding: EdgeInsets.all(20.sp),
+                              alignment: Alignment.center,
+                              child: Text('No Categories Found'),
+                            )
                           else
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -471,6 +477,12 @@ class HomeScreen extends StatelessWidget {
                           const VerticalSpace(height: 28),
                           if (controller.isLoading.value)
                             const ProductsLoadingWidget()
+                          else if (controller.products.isEmpty)
+                            Container(
+                              padding: EdgeInsets.all(20.sp),
+                              alignment: Alignment.center,
+                              child: Text('No Popular Items Found'),
+                            )
                           else
                             GridView.builder(
                               padding: const EdgeInsets.all(0),

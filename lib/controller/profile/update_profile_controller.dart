@@ -6,6 +6,7 @@ import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/auth/login_controller.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+// import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/location_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -24,6 +25,7 @@ class UpdateProfileController extends GetxController {
     super.onInit();
   }
 
+  final LoginController loginController = Get.find<LoginController>();
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -83,8 +85,6 @@ class UpdateProfileController extends GetxController {
               'Please agree our terms and conditions to continue');
         } else if (dob == null) {
           UiHelper.showToast('Please select date of birth');
-        } else if (address.value == null) {
-          UiHelper.showToast('Cannot able to fetch your address');
         } else {
           UiHelper.showLoadingDialog();
           final user = StorageHelper.getUserDetail();
@@ -92,6 +92,7 @@ class UpdateProfileController extends GetxController {
               userId: user.id,
               name: nameController.text,
               email: emailController.text,
+              countryId: loginController.selectedCountry.value?.id ?? '',
               dob: dob!,
               address: address.value!);
           await ApiServices.updateUserProfile(input);
@@ -120,6 +121,18 @@ class UpdateProfileController extends GetxController {
 
   Future<void> updateLocation(double latitude, double longitude) async {
     currentLocation.value = LatLng(latitude, longitude);
+
+    // final device = await DeviceHelper.getDeviceInfo();
+
+    // if (device.id == 'SKQ1.210908.001' &&
+    //     device.name.toLowerCase() == 'redmi') {
+    //   currentLocation.value = LatLng(10.664683137696281, 79.45377334646358);
+    //   locationController.text = await LocationHelper.getFullAddress(
+    //       10.664683137696281, 79.45377334646358);
+    // } else {
+    //   locationController.text =
+    //       await LocationHelper.getFullAddress(latitude, longitude);
+    // }
 
     locationController.text =
         await LocationHelper.getFullAddress(latitude, longitude);

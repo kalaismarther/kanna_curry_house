@@ -68,6 +68,7 @@ class ProductItem extends StatelessWidget {
                       children: [
                         Text(
                           product.name,
+                          maxLines: 1,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,

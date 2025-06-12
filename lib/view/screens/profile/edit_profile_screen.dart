@@ -122,6 +122,12 @@ class EditProfileScreen extends StatelessWidget {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                        prefixIcon: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(controller.countryCode.value),
+                          ],
+                        ),
                         controller: controller.mobileNumber,
                         label: 'Mobile',
                         hintText: 'Enter your mobile',
