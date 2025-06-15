@@ -12,7 +12,7 @@ import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/address/address_model.dart';
 import 'package:kanna_curry_house/model/profile/update_profile_request_model.dart';
-import 'package:kanna_curry_house/view/screens/address/add_address_screen.dart';
+// import 'package:kanna_curry_house/view/screens/address/add_address_screen.dart';
 import 'package:kanna_curry_house/view/screens/dashboard/dashboard_screen.dart';
 
 class UpdateProfileController extends GetxController {
@@ -20,8 +20,7 @@ class UpdateProfileController extends GetxController {
   void onInit() {
     mobileController.text =
         Get.find<LoginController>().mobileController.text.trim();
-
-    getDeviceLocation();
+    checkLocationPermissions();
     super.onInit();
   }
 
@@ -36,6 +35,9 @@ class UpdateProfileController extends GetxController {
   var currentLocation = Rxn<LatLng>();
   final locationController = TextEditingController();
   RxBool isAgreed = false.obs;
+  RxBool isLocationPermitted = false.obs;
+  RxBool isLocationTurnedOn = false.obs;
+  var fetchingLocation = false.obs;
 
   void selectDOB(BuildContext context) async {
     final date = await showDatePicker(
@@ -64,15 +66,46 @@ class UpdateProfileController extends GetxController {
     }
   }
 
-  Future<void> chooseLocation() async {
-    final chosenAddress =
-        await Get.to(() => const AddAddressScreen(fromUpdateProfile: true));
+  Future<void> checkLocationPermissions() async {
+    try {
+      bool hasLocationPermission = await LocationHelper.hasLocationPermission();
 
-    if (chosenAddress != null && chosenAddress.runtimeType == AddressModel) {
-      address.value = chosenAddress;
-      locationController.text = address.value?.location ?? '';
+      isLocationPermitted.value = hasLocationPermission;
+
+      if (!hasLocationPermission) {
+        return;
+      }
+      await turnOnLocation();
+    } catch (e) {
+      // SystemNavigator.pop();
     }
   }
+
+  Future<void> turnOnLocation() async {
+    try {
+      bool isLocationEnabled = await LocationHelper.isLocationEnabled();
+
+      print(isLocationEnabled);
+
+      isLocationTurnedOn.value = isLocationEnabled;
+
+      if (isLocationEnabled) {
+        await getDeviceLocation();
+      }
+    } catch (e) {
+      //
+    }
+  }
+
+  // Future<void> chooseLocation() async {
+  //   final chosenAddress =
+  //       await Get.to(() => const AddAddressScreen(fromUpdateProfile: true));
+
+  //   if (chosenAddress != null && chosenAddress.runtimeType == AddressModel) {
+  //     address.value = chosenAddress;
+  //     locationController.text = address.value?.location ?? '';
+  //   }
+  // }
 
   void toggleAgree(bool? v) => isAgreed.value = v ?? false;
 
@@ -111,8 +144,10 @@ class UpdateProfileController extends GetxController {
 
   Future<void> getDeviceLocation() async {
     try {
+      fetchingLocation.value = true;
       final deviceLocation = await LocationHelper.getCurrentLocation();
       await updateLocation(deviceLocation.latitude, deviceLocation.longitude);
+      fetchingLocation.value = false;
     } catch (e) {
       Get.back();
       UiHelper.showErrorMessage(e);
@@ -136,7 +171,7 @@ class UpdateProfileController extends GetxController {
 
     locationController.text =
         await LocationHelper.getFullAddress(latitude, longitude);
-
+    update();
     address.value = AddressModel(
         location: locationController.text.trim(),
         doorNo: '10',

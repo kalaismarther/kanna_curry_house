@@ -14,6 +14,8 @@ class AppConstants {
 //<!------------------------ PROFILE --------------------->
   static const String updateProfileUrl = '${apiEndPoint}update_profile';
   static const String editProfileUrl = '${apiEndPoint}edit_profile';
+  static const String deleteBtnUrl = '${apiEndPoint}hide_delete_button';
+  static const String deleteAccountUrl = '${apiEndPoint}delete_account';
 
 //<!------------------------ HOME --------------------->
   static const String homeContentUrl = '${apiEndPoint}home_content';

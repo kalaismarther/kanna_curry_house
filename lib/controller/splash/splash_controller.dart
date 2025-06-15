@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +11,7 @@ import 'package:kanna_curry_house/core/utils/network_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/view/screens/dashboard/dashboard_screen.dart';
 import 'package:kanna_curry_house/view/screens/splash/get_started_screen.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -29,75 +28,90 @@ class SplashController extends GetxController {
     try {
       bool hasLocationPermission = await LocationHelper.hasLocationPermission();
 
-      if (!hasLocationPermission) {
-        final bool? goToSettings = await Get.dialog(
-          AlertDialog.adaptive(
-            title: const Text('Location Permission Required'),
-            content: const Text(
-                'We use your location to show nearby available orders and enhance your booking experience.'),
-            actions: [
-              TextButton(
-                child: const Text('Recheck'),
-                onPressed: () {
-                  Get.back(result: false);
-                  checkLocationPermissions();
-                },
-              ),
-              TextButton(
-                child: const Text('Open Settings'),
-                onPressed: () => Get.back(result: true),
-              ),
-            ],
-          ),
-          barrierDismissible: false,
-        );
+      //<------------- MANDATORY LOCATION PERMISSION --------------->
 
-        if (goToSettings == true) {
-          await openAppSettings();
-          checkLocationPermissions();
-        }
-        return;
+      // if (!hasLocationPermission) {
+      //   final bool? goToSettings = await Get.dialog(
+      //     AlertDialog.adaptive(
+      //       title: const Text('Location Permission Required'),
+      //       content: const Text(
+      //           'We use your location to show nearby available orders and enhance your booking experience.'),
+      //       actions: [
+      //         TextButton(
+      //           child: const Text('Recheck'),
+      //           onPressed: () {
+      //             Get.back(result: false);
+      //             checkLocationPermissions();
+      //           },
+      //         ),
+      //         TextButton(
+      //           child: const Text('Open Settings'),
+      //           onPressed: () => Get.back(result: true),
+      //         ),
+      //       ],
+      //     ),
+      //     barrierDismissible: false,
+      //   );
+
+      //   if (goToSettings == true) {
+      //     await openAppSettings();
+      //     checkLocationPermissions();
+      //   }
+      //   return;
+      // }
+      // turnOnLocation();
+
+      //<------------- OPTIONAL LOCATION PERMISSION --------------->
+      if (hasLocationPermission) {
+        await turnOnLocation();
+      } else {
+        await checkVersionUpdate();
       }
-      turnOnLocation();
     } catch (e) {
       SystemNavigator.pop();
     }
   }
 
-  void turnOnLocation() async {
+  Future<void> turnOnLocation() async {
     try {
+      // ignore: unused_local_variable
       bool isLocationEnabled = await LocationHelper.isLocationEnabled();
 
-      if (!isLocationEnabled) {
-        final bool? enableLocation = await Get.dialog(
-          AlertDialog.adaptive(
-            title: const Text('Enable Location Services'),
-            content: const Text(
-                'We use your location to show nearby available orders and enhance your booking experience.'),
-            actions: [
-              TextButton(
-                child: const Text('Enable Location'),
-                onPressed: () => Get.back(result: true),
-              ),
-            ],
-          ),
-          barrierDismissible: false,
-        );
+      //<------------------ MANDATORY ENABLE LOCATION ------------------->
 
-        if (enableLocation == true) {
-          isLocationEnabled = await LocationHelper.isLocationEnabled();
-          if (!isLocationEnabled) {
-            turnOnLocation();
-          } else {
-            await checkVersionUpdate();
-            return;
-          }
-        } else {
-          turnOnLocation();
-        }
-      } else {
-        await checkVersionUpdate();
-      }
+      // if (!isLocationEnabled) {
+      //   final bool? enableLocation = await Get.dialog(
+      //     AlertDialog.adaptive(
+      //       title: const Text('Enable Location Services'),
+      //       content: const Text(
+      //           'We use your location to show nearby available orders and enhance your booking experience.'),
+      //       actions: [
+      //         TextButton(
+      //           child: const Text('Enable Location'),
+      //           onPressed: () => Get.back(result: true),
+      //         ),
+      //       ],
+      //     ),
+      //     barrierDismissible: false,
+      //   );
+
+      //   if (enableLocation == true) {
+      //     isLocationEnabled = await LocationHelper.isLocationEnabled();
+      //     if (!isLocationEnabled) {
+      //       turnOnLocation();
+      //     } else {
+      //       await checkVersionUpdate();
+      //       return;
+      //     }
+      //   } else {
+      //     turnOnLocation();
+      //   }
+      // } else {
+      //   await checkVersionUpdate();
+      // }
+
+      //<------------------- OPEN APP EVEN LOCATION IS NOT ENABLED --------------->
+      await checkVersionUpdate();
     } catch (e) {
       //
     }

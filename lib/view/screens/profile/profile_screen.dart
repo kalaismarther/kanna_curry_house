@@ -6,6 +6,7 @@ import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/controller/profile/profile_controller.dart';
 import 'package:kanna_curry_house/view/screens/help/help_and_support_screen.dart';
+import 'package:kanna_curry_house/view/screens/profile/delete_account_screen.dart';
 import 'package:kanna_curry_house/view/screens/profile/edit_profile_screen.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
 import 'package:kanna_curry_house/view/widgets/online_image.dart';
@@ -18,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
+    controller.onInit();
 
     final dashboardController = Get.find<DashboardController>();
 
@@ -95,41 +97,62 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const VerticalSpace(height: 30),
-          Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey.shade300, width: 1.2),
-              borderRadius: BorderRadius.circular(12.sp),
-            ),
-            child: Column(
-              children: [
-                ProfileMenuItem(
-                  onTap: () => dashboardController.changeTab(1),
-                  image: AppImages.menuMyOrders,
-                  text: 'My Orders',
-                ),
-                ProfileMenuItem(
-                  onTap: () => dashboardController.changeTab(2),
-                  image: AppImages.menuMyBookings,
-                  text: 'My Bookings',
-                ),
-                ProfileMenuItem(
-                  onTap: () => {},
-                  image: AppImages.menuNotification,
-                  text: 'Notification',
-                ),
-                ProfileMenuItem(
-                  onTap: () => Get.to(() => const HelpAndSupportScreen()),
-                  image: AppImages.menuHelp,
-                  text: 'Help & Support',
-                ),
-                ProfileMenuItem(
-                  onTap: dashboardController.showLogoutAlert,
-                  image: AppImages.logout,
-                  text: 'Logout',
-                ),
-              ],
+          Obx(
+            () => Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300, width: 1.2),
+                borderRadius: BorderRadius.circular(12.sp),
+              ),
+              child: Column(
+                children: [
+                  ProfileMenuItem(
+                    onTap: () => dashboardController.changeTab(1),
+                    image: AppImages.menuMyOrders,
+                    text: 'My Orders',
+                  ),
+                  ProfileMenuItem(
+                    onTap: () => dashboardController.changeTab(2),
+                    image: AppImages.menuMyBookings,
+                    text: 'My Bookings',
+                  ),
+                  ProfileMenuItem(
+                    onTap: () => {},
+                    image: AppImages.menuNotification,
+                    text: 'Notification',
+                  ),
+                  ProfileMenuItem(
+                    onTap: () => Get.to(() => const HelpAndSupportScreen()),
+                    image: AppImages.menuHelp,
+                    text: 'Help & Support',
+                  ),
+                  ProfileMenuItem(
+                    onTap: dashboardController.showLogoutAlert,
+                    image: AppImages.logout,
+                    text: 'Logout',
+                  ),
+                  if (controller.showDeleteBtn.value)
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16.sp),
+                      leading: Icon(
+                        Icons.delete_outline,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withValues(alpha: 0.76),
+                      ),
+                      title: Text(
+                        'Delete Account',
+                        style: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.w500),
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios,
+                          size: 16.sp, color: Colors.grey),
+                      onTap: () => Get.to(() => DeleteAccountScreen()),
+                    )
+                ],
+              ),
             ),
           )
         ],

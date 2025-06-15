@@ -208,6 +208,47 @@ class ApiServices {
     }
   }
 
+  static Future<bool> getDeleteBtnStatus() async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.deleteBtnUrl,
+        headers: _headersWithoutToken(),
+        input: {});
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['data']?.toString() == '1';
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
+  static Future<String> deleteUserAccount() async {
+    final user = StorageHelper.getUserDetail();
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.deleteAccountUrl,
+        headers: _headersWithToken(),
+        input: {'user_id': user.id});
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        return response.body['message']?.toString() ?? '';
+      } else if (response.body['status']?.toString() == '2') {
+        AuthHelper.logoutUser();
+        throw Exception(response.body['message']?.toString() ?? '');
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
 //<---------------------------- HOME ---------------------------------------->
   static Future<Map<String, dynamic>> getHomeContent() async {
     final user = StorageHelper.getUserDetail();
