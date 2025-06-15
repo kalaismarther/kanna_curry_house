@@ -65,8 +65,12 @@ class DashboardScreen extends StatelessWidget {
                 () => BottomNavigationBar(
                   currentIndex: controller.currentTab.value,
                   onTap: (value) => controller.changeTab(value),
-                  selectedLabelStyle:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  selectedLabelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 12.sp),
+                  unselectedLabelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 12.sp),
                   selectedItemColor: Theme.of(context).colorScheme.secondary,
                   backgroundColor: Colors.white,
                   type: BottomNavigationBarType.fixed,

@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBdwpqsiuaN2vaJuUgBmwISwFC2nIWHhKc',
-    appId: '1:323407169293:ios:b335d7b1ca25af6708d244',
+    appId: '1:323407169293:ios:96355ef28760a0a108d244',
     messagingSenderId: '323407169293',
     projectId: 'kanna-food',
     storageBucket: 'kanna-food.firebasestorage.app',
-    iosBundleId: 'com.example.kannaCurryHouse',
+    iosBundleId: 'com.smart.aadhicurryhouse',
   );
 
 }

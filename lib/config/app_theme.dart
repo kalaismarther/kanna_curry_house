@@ -91,15 +91,16 @@ class AppTheme {
             borderRadius: BorderRadius.circular(14.sp),
           ),
         ),
-        tabBarTheme: const TabBarTheme(
-            labelStyle:
-                TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-            unselectedLabelStyle:
-                TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500)),
+        // tabBarTheme: const TabBarTheme(
+        //     labelStyle:
+        //         TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
+        //     unselectedLabelStyle:
+        //         TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500)),
+      
         dividerTheme: DividerThemeData(color: Colors.grey.shade300),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 48),
+            minimumSize: Size(double.infinity, 48.sp),
             backgroundColor: red,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
