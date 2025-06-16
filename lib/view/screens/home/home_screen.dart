@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/view/screens/booking/table_booking_screen.dart';
@@ -74,7 +75,14 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () => Get.off(() => NotificationScreen()),
+                      onTap: () {
+                        if (!AuthHelper.isGuestUser()) {
+                          Get.off(() => NotificationScreen());
+                        } else {
+                          UiHelper.showToast(
+                              'Please login to view your notifications');
+                        }
+                      },
                       child: Container(
                           height: 40.sp,
                           width: 40.sp,
@@ -100,8 +108,13 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const HorizontalSpace(width: 16),
                     InkWell(
-                      onTap: () =>
-                          Get.to(() => const CartScreen(fromScreen: 'home')),
+                      onTap: () {
+                        if (!AuthHelper.isGuestUser()) {
+                          Get.to(() => const CartScreen(fromScreen: 'home'));
+                        } else {
+                          UiHelper.showToast('Please login to view your cart');
+                        }
+                      },
                       child: Container(
                         height: 40.sp,
                         width: 40.sp,

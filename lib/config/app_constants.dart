@@ -6,6 +6,7 @@ class AppConstants {
 //<!------------------------ AUTH --------------------->
   static const String getCountriesUrl = '${apiEndPoint}get_countries';
   static const String loginUrl = '${apiEndPoint}user_login';
+  static const String guestLoginUrl = '${apiEndPoint}guestlogin';
   static const String verifyOtpUrl = '${apiEndPoint}verifyotp';
   static const String resendOtpUrl = '${apiEndPoint}resend_otp';
   static const String logoutUrl = '${apiEndPoint}logout';

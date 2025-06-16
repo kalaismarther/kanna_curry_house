@@ -77,6 +77,29 @@ class ApiServices {
     }
   }
 
+  static Future<void> guestLogin() async {
+    final response = await DioHelper.postHttpMethod(
+        url: AppConstants.guestLoginUrl,
+        headers: _headersWithoutToken(),
+        input: {'email': 'guestlogin@gmail.com', 'password': '123456'});
+
+    if (response.success) {
+      if (response.body['status']?.toString() == '1') {
+        if (response.body['data']?.runtimeType != null) {
+          await StorageHelper.write('guest_login', true);
+          await StorageHelper.write('user', response.body['data'] ?? {});
+        } else {
+          await StorageHelper.deleteAll();
+        }
+        return;
+      } else {
+        throw Exception(response.body['message']?.toString() ?? '');
+      }
+    } else {
+      throw Exception(response.error);
+    }
+  }
+
   static Future<void> userLogin(LoginRequestModel input) async {
     final response = await DioHelper.postHttpMethod(
         url: AppConstants.loginUrl,
@@ -86,6 +109,7 @@ class ApiServices {
     if (response.success) {
       if (response.body['status']?.toString() == '1') {
         if (response.body['data']?.runtimeType != null) {
+          await StorageHelper.write('guest_login', false);
           await StorageHelper.write('user', response.body['data'] ?? {});
         } else {
           await StorageHelper.deleteAll();

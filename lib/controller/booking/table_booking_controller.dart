@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/booking/table_booking_request_model.dart';
@@ -101,28 +102,32 @@ class TableBookingController extends GetxController {
 
   Future<void> submit() async {
     try {
-      if (formKey.currentState?.validate() == true) {
-        if (!isAgreed.value) {
-          UiHelper.showToast('Please agree disclaimer');
-        } else {
-          UiHelper.showLoadingDialog();
-          final user = StorageHelper.getUserDetail();
-          final input = TableBookingRequestModel(
-              userId: user.id,
-              mobile: mobileController.text.trim(),
-              name: nameController.text.trim(),
-              date: selectedDate.value!,
-              time:
-                  _convertTo24HourFormat(selectedTime.value ?? TimeOfDay.now()),
-              adultsCount: noOfAdult.value,
-              kidsCount: noOfKids.value);
+      if (!AuthHelper.isGuestUser()) {
+        if (formKey.currentState?.validate() == true) {
+          if (!isAgreed.value) {
+            UiHelper.showToast('Please agree disclaimer');
+          } else {
+            UiHelper.showLoadingDialog();
+            final user = StorageHelper.getUserDetail();
+            final input = TableBookingRequestModel(
+                userId: user.id,
+                mobile: mobileController.text.trim(),
+                name: nameController.text.trim(),
+                date: selectedDate.value!,
+                time: _convertTo24HourFormat(
+                    selectedTime.value ?? TimeOfDay.now()),
+                adultsCount: noOfAdult.value,
+                kidsCount: noOfKids.value);
 
-          final result = await ApiServices.requestForTableBooking(input);
-          UiHelper.closeLoadingDialog();
-          UiHelper.showToast(result);
-          Get.to(() => const BookingConfirmedScreen(),
-              transition: Transition.downToUp);
+            final result = await ApiServices.requestForTableBooking(input);
+            UiHelper.closeLoadingDialog();
+            UiHelper.showToast(result);
+            Get.to(() => const BookingConfirmedScreen(),
+                transition: Transition.downToUp);
+          }
         }
+      } else {
+        UiHelper.showToast('Please login to book table');
       }
     } catch (e) {
       UiHelper.showErrorMessage(e);

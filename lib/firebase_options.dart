@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'kanna-food.firebasestorage.app',
     iosBundleId: 'com.smart.aadhicurryhouse',
   );
-
 }

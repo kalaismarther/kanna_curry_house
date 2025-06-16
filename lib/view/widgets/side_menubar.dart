@@ -4,13 +4,14 @@ import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
+import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/view/screens/help/help_and_support_screen.dart';
 import 'package:kanna_curry_house/view/screens/notification/notification_screen.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
 import 'package:kanna_curry_house/view/widgets/online_image.dart';
 import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
-import 'package:new_version_plus/new_version_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SideMenubar extends StatelessWidget {
@@ -101,6 +102,8 @@ class SideMenubar extends StatelessWidget {
       ),
       onTap: () async {
         final dashboardController = Get.find<DashboardController>();
+        final isGuestUser = AuthHelper.isGuestUser();
+
         if (title == 'Home') {
           Get.back();
         } else if (title == 'My Order') {
@@ -113,28 +116,25 @@ class SideMenubar extends StatelessWidget {
           Get.back();
           dashboardController.changeTab(3);
         } else if (title == 'Notifications') {
-          Get.back();
-          Get.to(() => NotificationScreen());
-        } else if (title == 'Share this app') {
-          String storeLink = '';
-          try {
-            final newVersion = NewVersionPlus(
-                androidId: 'com.smart.aadhicurryhourse',
-                iOSId: 'com.smart.aadhicurryhourse');
-
-            final status = await newVersion.getVersionStatus();
-
-            if (status != null) {
-              storeLink = status.appStoreLink;
-            }
-          } catch (e) {
-            //
+          if (!isGuestUser) {
+            Get.back();
+            Get.to(() => NotificationScreen());
+          } else {
+            UiHelper.showToast('Please login to view your notifications');
           }
+        } else if (title == 'Share this app') {
+          String playstoreLink =
+              'https://play.google.com/store/apps/details?id=com.smart.aadhicurryhouse';
+          String appstoreLink =
+              'https://apps.apple.com/us/app/aadhi-curry-house/id6747305559';
 
           final String message = '''
 Order your favorite dishes or book a table — right from your phone!
 Download the app now and enjoy a smooth food & dining experience:
-$storeLink
+
+Play Store : $playstoreLink
+
+App Store : $appstoreLink
 
 Let me know what you think and feel free to share! 😋
 ''';

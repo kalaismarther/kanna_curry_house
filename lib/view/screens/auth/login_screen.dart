@@ -111,6 +111,19 @@ class LoginScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: controller.submit,
                           child: const Text('Login'),
+                        ),
+                        VerticalSpace(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: controller.continueAsGuest,
+                            child: Text(
+                              'Continue as Guest',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                          ),
                         )
                       ],
                     ),

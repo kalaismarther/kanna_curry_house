@@ -37,7 +37,11 @@ class ProfileController extends GetxController {
   Future<void> checkDeleteButtonStatus() async {
     try {
       isLoading.value = true;
-      showDeleteBtn.value = await ApiServices.getDeleteBtnStatus();
+      if (!AuthHelper.isGuestUser()) {
+        showDeleteBtn.value = await ApiServices.getDeleteBtnStatus();
+      } else {
+        showDeleteBtn.value = false;
+      }
     } catch (e) {
       //
     } finally {

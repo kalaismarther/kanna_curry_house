@@ -5,7 +5,10 @@ import 'package:kanna_curry_house/config/app_images.dart';
 import 'package:kanna_curry_house/config/app_theme.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/controller/profile/profile_controller.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
+import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/view/screens/help/help_and_support_screen.dart';
+import 'package:kanna_curry_house/view/screens/notification/notification_screen.dart';
 import 'package:kanna_curry_house/view/screens/profile/delete_account_screen.dart';
 import 'package:kanna_curry_house/view/screens/profile/edit_profile_screen.dart';
 import 'package:kanna_curry_house/view/widgets/horizontal_space.dart';
@@ -77,8 +80,13 @@ class ProfileScreen extends StatelessWidget {
                         HorizontalSpace(width: 8),
                         InkWell(
                           onTap: () async {
-                            await Get.to(() => const EditProfileScreen());
-                            controller.onInit();
+                            if (!AuthHelper.isGuestUser()) {
+                              await Get.to(() => const EditProfileScreen());
+                              controller.onInit();
+                            } else {
+                              UiHelper.showToast(
+                                  'Please login to edit your profile');
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -121,7 +129,14 @@ class ProfileScreen extends StatelessWidget {
                           text: 'My Bookings',
                         ),
                         ProfileMenuItem(
-                          onTap: () => {},
+                          onTap: () {
+                            if (!AuthHelper.isGuestUser()) {
+                              Get.off(() => NotificationScreen());
+                            } else {
+                              UiHelper.showToast(
+                                  'Please login to view your notifications');
+                            }
+                          },
                           image: AppImages.menuNotification,
                           text: 'Notification',
                         ),

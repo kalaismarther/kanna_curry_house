@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
 import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
+
 import 'package:kanna_curry_house/view/widgets/logout_dialog.dart';
 
 class DashboardController extends GetxController {
@@ -41,6 +42,10 @@ class DashboardController extends GetxController {
 
   Future<void> logout() async {
     try {
+      if (AuthHelper.isGuestUser()) {
+        AuthHelper.logoutUser(message: 'Logged out as Guest');
+        return;
+      }
       if (Get.isDialogOpen == true) {
         Get.back();
       }

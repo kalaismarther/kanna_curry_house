@@ -9,4 +9,10 @@ class AuthHelper {
     UiHelper.showToast(message ?? 'Session Expired');
     Get.offAll(() => const SplashScreen());
   }
+
+  static bool isGuestUser() {
+    final isGuestUser = StorageHelper.read('guest_login');
+
+    return isGuestUser == true;
+  }
 }

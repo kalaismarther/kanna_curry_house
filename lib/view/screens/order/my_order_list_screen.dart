@@ -29,18 +29,17 @@ class MyOrderListScreen extends StatelessWidget {
             );
           }
 
-          if (controller.orders.isEmpty) {
-            return const Center(
-              child: Text('No Orders Found'),
-            );
-          }
-
           if (controller.error.value != null) {
             return Center(
               child: Text(controller.error.value ?? ''),
             );
           }
 
+          if (controller.orders.isEmpty) {
+            return const Center(
+              child: Text('No Orders Found'),
+            );
+          }
           return RefreshIndicator(
             color: AppTheme.red,
             onRefresh: () {

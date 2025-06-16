@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/booking/my_booking_list_request_model.dart';
@@ -23,6 +24,10 @@ class MyBookingListController extends GetxController {
 
   Future<void> fetchMyBookings({required bool initialize}) async {
     try {
+      if (AuthHelper.isGuestUser()) {
+        error.value = 'Please login to view your bookings';
+        return;
+      }
       if (initialize) {
         pageNo = 0;
         bookings.clear();

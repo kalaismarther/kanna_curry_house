@@ -29,15 +29,15 @@ class MyBookingListScreen extends StatelessWidget {
             );
           }
 
-          if (controller.bookings.isEmpty) {
-            return const Center(
-              child: Text('No bookings Found'),
-            );
-          }
-
           if (controller.error.value != null) {
             return Center(
               child: Text(controller.error.value ?? ''),
+            );
+          }
+
+          if (controller.bookings.isEmpty) {
+            return const Center(
+              child: Text('No bookings Found'),
             );
           }
 

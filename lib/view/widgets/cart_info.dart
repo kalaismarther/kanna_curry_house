@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/device_helper.dart';
+import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/view/widgets/loading_shimmer.dart';
 
 class CartInfo extends StatelessWidget {
@@ -55,7 +57,14 @@ class CartInfo extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: onCheckOut,
+                        onTap: () {
+                          if (!AuthHelper.isGuestUser()) {
+                            onCheckOut();
+                          } else {
+                            UiHelper.showToast('Please login to checkout',
+                                bgColor: Colors.red);
+                          }
+                        },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                             vertical: 6,

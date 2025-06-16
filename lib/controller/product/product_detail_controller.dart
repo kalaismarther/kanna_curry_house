@@ -3,6 +3,7 @@ import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/controller/category/category_products_controller.dart';
 import 'package:kanna_curry_house/controller/home/home_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/cart/add_to_cart_request_model.dart';
@@ -47,18 +48,22 @@ class ProductDetailController extends GetxController {
 
   Future<void> addToCart() async {
     try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = AddToCartRequestModel(
-          userId: user.id, productId: product.value?.id ?? '0', quantity: 1);
+      if (!AuthHelper.isGuestUser()) {
+        UiHelper.showLoadingDialog();
+        final user = StorageHelper.getUserDetail();
+        final input = AddToCartRequestModel(
+            userId: user.id, productId: product.value?.id ?? '0', quantity: 1);
 
-      final result = await ApiServices.addProductToCart(input);
+        final result = await ApiServices.addProductToCart(input);
 
-      if (result != null) {
-        product.value = result;
-        notifyOnOtherScreens();
+        if (result != null) {
+          product.value = result;
+          notifyOnOtherScreens();
+        }
+        await Get.find<CartInfoController>().reloadCartData();
+      } else {
+        UiHelper.showToast('Please login to add product to your cart');
       }
-      await Get.find<CartInfoController>().reloadCartData();
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {
@@ -68,20 +73,25 @@ class ProductDetailController extends GetxController {
 
   Future<void> updateCart({required bool toIncrease}) async {
     try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = UpdateCartRequestModel(
-          userId: user.id,
-          cartItemId: product.value?.cartItemId ?? '0',
-          quantity: (product.value?.cartQuantity ?? 0) + (toIncrease ? 1 : -1));
+      if (!AuthHelper.isGuestUser()) {
+        UiHelper.showLoadingDialog();
+        final user = StorageHelper.getUserDetail();
+        final input = UpdateCartRequestModel(
+            userId: user.id,
+            cartItemId: product.value?.cartItemId ?? '0',
+            quantity:
+                (product.value?.cartQuantity ?? 0) + (toIncrease ? 1 : -1));
 
-      final result = await ApiServices.updateProductInCart(input);
+        final result = await ApiServices.updateProductInCart(input);
 
-      if (result != null) {
-        product.value = result;
-        notifyOnOtherScreens();
+        if (result != null) {
+          product.value = result;
+          notifyOnOtherScreens();
+        }
+        await Get.find<CartInfoController>().reloadCartData();
+      } else {
+        UiHelper.showToast('Please login to add product to your cart');
       }
-      await Get.find<CartInfoController>().reloadCartData();
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {
@@ -91,17 +101,21 @@ class ProductDetailController extends GetxController {
 
   Future<void> deleteCart() async {
     try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = DeleteFromCartRequestModel(
-          userId: user.id, cartItemId: product.value?.cartItemId ?? '0');
+      if (!AuthHelper.isGuestUser()) {
+        UiHelper.showLoadingDialog();
+        final user = StorageHelper.getUserDetail();
+        final input = DeleteFromCartRequestModel(
+            userId: user.id, cartItemId: product.value?.cartItemId ?? '0');
 
-      await ApiServices.deleteProductFromCart(input);
-      UiHelper.closeLoadingDialog();
-      product.value?.isInCart = false;
-      product.refresh();
-      notifyOnOtherScreens(isDeleted: true);
-      await Get.find<CartInfoController>().reloadCartData();
+        await ApiServices.deleteProductFromCart(input);
+        UiHelper.closeLoadingDialog();
+        product.value?.isInCart = false;
+        product.refresh();
+        notifyOnOtherScreens(isDeleted: true);
+        await Get.find<CartInfoController>().reloadCartData();
+      } else {
+        UiHelper.showToast('Please login to remove product from cart');
+      }
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {

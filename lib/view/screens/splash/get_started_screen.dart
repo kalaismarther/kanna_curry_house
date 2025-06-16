@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/config/app_images.dart';
+import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/view/screens/auth/login_screen.dart';
 import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
 
@@ -18,6 +19,7 @@ class GetStartedScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: DeviceHelper.screenHeight(context) * 0.16),
             Image.asset(
               AppImages.getStartedOne,
               height: 320.sp,

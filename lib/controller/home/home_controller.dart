@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/controller/cart/cart_info_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/address/address_model.dart';
@@ -96,17 +97,21 @@ class HomeController extends GetxController {
 
   Future<void> addToCart(ProductModel product) async {
     try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = AddToCartRequestModel(
-          userId: user.id, productId: product.id, quantity: 1);
+      if (!AuthHelper.isGuestUser()) {
+        UiHelper.showLoadingDialog();
+        final user = StorageHelper.getUserDetail();
+        final input = AddToCartRequestModel(
+            userId: user.id, productId: product.id, quantity: 1);
 
-      final result = await ApiServices.addProductToCart(input);
+        final result = await ApiServices.addProductToCart(input);
 
-      if (result != null) {
-        showQuantityAdjusters(result);
+        if (result != null) {
+          showQuantityAdjusters(result);
+        }
+        await Get.find<CartInfoController>().reloadCartData();
+      } else {
+        UiHelper.showToast('Please login to add product to your cart');
       }
-      await Get.find<CartInfoController>().reloadCartData();
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {
@@ -117,19 +122,23 @@ class HomeController extends GetxController {
   Future<void> updateCart(ProductModel product,
       {required bool toIncrease}) async {
     try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = UpdateCartRequestModel(
-          userId: user.id,
-          cartItemId: product.cartItemId,
-          quantity: product.cartQuantity + (toIncrease ? 1 : -1));
+      if (!AuthHelper.isGuestUser()) {
+        UiHelper.showLoadingDialog();
+        final user = StorageHelper.getUserDetail();
+        final input = UpdateCartRequestModel(
+            userId: user.id,
+            cartItemId: product.cartItemId,
+            quantity: product.cartQuantity + (toIncrease ? 1 : -1));
 
-      final result = await ApiServices.updateProductInCart(input);
+        final result = await ApiServices.updateProductInCart(input);
 
-      if (result != null) {
-        showQuantityAdjusters(result);
+        if (result != null) {
+          showQuantityAdjusters(result);
+        }
+        await Get.find<CartInfoController>().reloadCartData();
+      } else {
+        UiHelper.showToast('Please login to add product to your cart');
       }
-      await Get.find<CartInfoController>().reloadCartData();
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {
@@ -139,14 +148,18 @@ class HomeController extends GetxController {
 
   Future<void> deleteCart(ProductModel product) async {
     try {
-      UiHelper.showLoadingDialog();
-      final user = StorageHelper.getUserDetail();
-      final input = DeleteFromCartRequestModel(
-          userId: user.id, cartItemId: product.cartItemId);
+      if (!AuthHelper.isGuestUser()) {
+        UiHelper.showLoadingDialog();
+        final user = StorageHelper.getUserDetail();
+        final input = DeleteFromCartRequestModel(
+            userId: user.id, cartItemId: product.cartItemId);
 
-      await ApiServices.deleteProductFromCart(input);
-      hideQuantityAdjusters(product);
-      await Get.find<CartInfoController>().reloadCartData();
+        await ApiServices.deleteProductFromCart(input);
+        hideQuantityAdjusters(product);
+        await Get.find<CartInfoController>().reloadCartData();
+      } else {
+        UiHelper.showToast('Please login to remove product from cart');
+      }
     } catch (e) {
       UiHelper.showErrorMessage(e);
     } finally {

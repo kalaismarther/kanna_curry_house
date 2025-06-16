@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
+import 'package:kanna_curry_house/core/utils/auth_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:kanna_curry_house/model/order/my_order_list_request_model.dart';
@@ -23,6 +24,11 @@ class MyOrderListController extends GetxController {
 
   Future<void> fetchMyOrders({required bool initialize}) async {
     try {
+      if (AuthHelper.isGuestUser()) {
+        error.value = 'Please login to view your orders';
+        return;
+      }
+
       if (initialize) {
         pageNo = 0;
         orders.clear();
