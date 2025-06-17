@@ -42,10 +42,6 @@ class DashboardController extends GetxController {
 
   Future<void> logout() async {
     try {
-      if (AuthHelper.isGuestUser()) {
-        AuthHelper.logoutUser(message: 'Logged out as Guest');
-        return;
-      }
       if (Get.isDialogOpen == true) {
         Get.back();
       }

@@ -75,7 +75,10 @@ class SideMenubar extends StatelessWidget {
                   _buildDrawerItem(AppImages.smNotification, 'Notifications'),
                   _buildDrawerItem(AppImages.smShare, 'Share this app'),
                   _buildDrawerItem(AppImages.smHelp, 'Help'),
-                  _buildDrawerItem(AppImages.smLogout, 'Logout'),
+                  if (controller.isGuestUser.value)
+                    _buildDrawerItem(AppImages.smLogout, 'Login')
+                  else
+                    _buildDrawerItem(AppImages.smLogout, 'Logout'),
                 ],
               ),
             ),
@@ -146,6 +149,9 @@ Let me know what you think and feel free to share! 😋
         } else if (title == 'Logout') {
           Get.back();
           dashboardController.showLogoutAlert();
+        } else if (title == 'Login') {
+          Get.back();
+          AuthHelper.redirectGuestUserToLogin();
         }
       },
     );

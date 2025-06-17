@@ -40,6 +40,7 @@ class HomeController extends GetxController {
   RxInt activeBannerIndex = 0.obs;
   final PageController pageController = PageController();
   var error = Rxn<String>();
+  var isGuestUser = false.obs;
 
   Future<void> fetchUserDetail() async {
     try {
@@ -52,6 +53,7 @@ class HomeController extends GetxController {
       final storedAddress = StorageHelper.read('current_address');
 
       userCurrentAddress.value = AddressModel.tryParse(storedAddress);
+      isGuestUser.value = AuthHelper.isGuestUser();
     } catch (e) {
       //
     }

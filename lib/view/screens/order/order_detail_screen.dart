@@ -215,6 +215,8 @@ class OrderDetailScreen extends StatelessWidget {
                           const VerticalSpace(height: 16),
                           _buildSummaryItem(
                               'Sub Total', myOrder.subTotal, Colors.black),
+                          _buildSummaryItem('Delivery Charges',
+                              myOrder.deliveryCharge, Colors.black),
                           _buildSummaryItem('SST (tax is 6%)',
                               myOrder.taxAmount, Colors.black),
                           if ((double.tryParse(myOrder.couponAmount) ?? 0.0) >

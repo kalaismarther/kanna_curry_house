@@ -146,12 +146,22 @@ class ProfileScreen extends StatelessWidget {
                           image: AppImages.menuHelp,
                           text: 'Help & Support',
                         ),
-                        ProfileMenuItem(
-                          onTap: dashboardController.showLogoutAlert,
-                          image: AppImages.logout,
-                          text: 'Logout',
-                        ),
-                        if (controller.showDeleteBtn.value)
+                        if (controller.isGuestUser.value)
+                          ProfileMenuItem(
+                            onTap: () {
+                              AuthHelper.redirectGuestUserToLogin();
+                            },
+                            image: AppImages.logout,
+                            text: 'Login',
+                          )
+                        else
+                          ProfileMenuItem(
+                            onTap: dashboardController.showLogoutAlert,
+                            image: AppImages.logout,
+                            text: 'Logout',
+                          ),
+                        if (controller.showDeleteBtn.value &&
+                            !controller.isGuestUser.value)
                           ListTile(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 16.sp),

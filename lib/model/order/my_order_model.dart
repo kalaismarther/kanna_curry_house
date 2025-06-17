@@ -16,6 +16,7 @@ class MyOrderModel {
   final String paymentStatus;
   final String paymentDateAndTime;
   final String paymentType;
+  final String deliveryCharge;
 
   MyOrderModel(
       {required this.id,
@@ -32,7 +33,8 @@ class MyOrderModel {
       required this.preparationTime,
       required this.paymentStatus,
       required this.paymentDateAndTime,
-      required this.paymentType});
+      required this.paymentType,
+      required this.deliveryCharge});
 
   factory MyOrderModel.fromJson(Map<String, dynamic> json) => MyOrderModel(
         id: json['id']?.toString() ?? '0',
@@ -51,6 +53,7 @@ class MyOrderModel {
         paymentDateAndTime:
             formatDateAndTime(json['payment_date']?.toString() ?? ''),
         paymentType: json['is_payment_type']?.toString() ?? '',
+        deliveryCharge: json['delivery_fee']?.toString() ?? '0',
       );
 
   static String formatDateAndTime(String paymentDateAndTime) {

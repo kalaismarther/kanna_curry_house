@@ -15,8 +15,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(LoginController(), permanent: true);
+
     return GetBuilder<LoginController>(
-      init: LoginController(),
       builder: (controller) => Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
         body: Column(
@@ -73,40 +74,52 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Obx(
+                        //   () => CustomTextField(
+                        //     readyOnly: true,
+                        //     controller: controller.selectedCountry.value == null
+                        //         ? null
+                        //         : TextEditingController(
+                        //             text:
+                        //                 '${controller.selectedCountry.value?.name} (${controller.selectedCountry.value?.code})'),
+                        //     onTap: controller.chooseCountry,
+                        //     label: 'Country',
+                        //     hintText: 'Select Country',
+                        //     validator: (value) {
+                        //       if (controller.selectedCountry.value == null ||
+                        //           value == null ||
+                        //           value.isEmpty) {
+                        //         return 'Please select country';
+                        //       }
+                        //       return null;
+                        //     },
+                        //     marginBottom: 28,
+                        //     suffixIcon: Icon(Icons.arrow_drop_down),
+                        //   ),
+                        // ),
                         Obx(
                           () => CustomTextField(
-                            readyOnly: true,
-                            controller: controller.selectedCountry.value == null
-                                ? null
-                                : TextEditingController(
-                                    text:
-                                        '${controller.selectedCountry.value?.name} (${controller.selectedCountry.value?.code})'),
-                            onTap: controller.chooseCountry,
-                            label: 'Country',
-                            hintText: 'Select Country',
-                            validator: (value) {
-                              if (controller.selectedCountry.value == null ||
-                                  value == null ||
-                                  value.isEmpty) {
-                                return 'Please select country';
-                              }
-                              return null;
-                            },
-                            marginBottom: 28,
-                            suffixIcon: Icon(Icons.arrow_drop_down),
+                            prefixIcon: controller.selectedCountry.value != null
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(controller
+                                              .selectedCountry.value?.code ??
+                                          ''),
+                                    ],
+                                  )
+                                : null,
+                            controller: controller.mobileController,
+                            maxLength: 10,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            label: 'Mobile',
+                            hintText: 'Enter mobile number',
+                            validator: ValidationHelper.validateMobileNumber,
+                            marginBottom: 52,
                           ),
-                        ),
-                        CustomTextField(
-                          controller: controller.mobileController,
-                          maxLength: 10,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          label: 'Mobile',
-                          hintText: 'Enter mobile number',
-                          validator: ValidationHelper.validateMobileNumber,
-                          marginBottom: 52,
                         ),
                         ElevatedButton(
                           onPressed: controller.submit,

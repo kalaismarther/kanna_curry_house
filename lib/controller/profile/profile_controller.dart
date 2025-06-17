@@ -10,6 +10,7 @@ class ProfileController extends GetxController {
   var userDp = ''.obs;
   var email = ''.obs;
   var showDeleteBtn = false.obs;
+  var isGuestUser = false.obs;
 
   @override
   void onInit() {
@@ -17,6 +18,7 @@ class ProfileController extends GetxController {
     userName.value = user.name;
     userDp.value = user.profileImageUrl;
     email.value = user.email;
+    isGuestUser.value = AuthHelper.isGuestUser();
     checkDeleteButtonStatus();
     super.onInit();
   }

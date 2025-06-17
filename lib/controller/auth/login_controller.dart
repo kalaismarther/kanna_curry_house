@@ -14,6 +14,12 @@ class LoginController extends GetxController {
 
   var selectedCountry = Rxn<CountryModel>();
 
+  @override
+  void onInit() {
+    fetchCountries();
+    super.onInit();
+  }
+
   Future<void> submit() async {
     try {
       UiHelper.unfocus();
@@ -54,4 +60,16 @@ class LoginController extends GetxController {
           onSelectCountry: (country) => selectedCountry.value = country,
         ),
       );
+
+  Future<void> fetchCountries() async {
+    try {
+      final result = await ApiServices.getCountriesList();
+
+      if (result.isNotEmpty) {
+        selectedCountry.value = result.first;
+      }
+    } catch (e) {
+      UiHelper.showErrorMessage(e);
+    } finally {}
+  }
 }
