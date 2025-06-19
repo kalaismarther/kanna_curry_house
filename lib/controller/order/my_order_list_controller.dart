@@ -47,6 +47,7 @@ class MyOrderListController extends GetxController {
       final result = await ApiServices.getMyOrders(input);
       orders.addAll(result);
     } catch (e) {
+      print(e);
       if (orders.isEmpty) {
         error.value = UiHelper.getMsgFromException(e);
       }

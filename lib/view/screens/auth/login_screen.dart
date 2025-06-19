@@ -100,13 +100,25 @@ class LoginScreen extends StatelessWidget {
                         Obx(
                           () => CustomTextField(
                             prefixIcon: controller.selectedCountry.value != null
-                                ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(controller
-                                              .selectedCountry.value?.code ??
-                                          ''),
-                                    ],
+                                ? InkWell(
+                                    onTap: controller.chooseCountry,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(width: 2.sp),
+                                            Text(controller.selectedCountry
+                                                    .value?.code ??
+                                                ''),
+                                            SizedBox(width: 1.sp),
+                                            Icon(Icons.arrow_drop_down)
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 : null,
                             controller: controller.mobileController,

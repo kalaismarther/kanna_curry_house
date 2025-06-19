@@ -19,7 +19,9 @@ class SideMenubar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HomeController>();
+    final HomeController controller = Get.isRegistered<HomeController>()
+        ? Get.find<HomeController>()
+        : Get.put(HomeController());
 
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primary,
