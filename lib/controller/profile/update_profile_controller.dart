@@ -156,18 +156,7 @@ class UpdateProfileController extends GetxController {
 
   Future<void> updateLocation(double latitude, double longitude) async {
     currentLocation.value = LatLng(latitude, longitude);
-
-    // final device = await DeviceHelper.getDeviceInfo();
-
-    // if (device.id == 'SKQ1.210908.001' &&
-    //     device.name.toLowerCase() == 'redmi') {
-    //   currentLocation.value = LatLng(10.664683137696281, 79.45377334646358);
-    //   locationController.text = await LocationHelper.getFullAddress(
-    //       10.664683137696281, 79.45377334646358);
-    // } else {
-    //   locationController.text =
-    //       await LocationHelper.getFullAddress(latitude, longitude);
-    // }
+//
 
     locationController.text =
         await LocationHelper.getFullAddress(latitude, longitude);
