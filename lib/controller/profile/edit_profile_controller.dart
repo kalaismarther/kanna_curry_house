@@ -8,6 +8,7 @@ import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kanna_curry_house/model/profile/edit_profile_request_model.dart';
+import 'package:kanna_curry_house/view/widgets/custom_date_picker.dart';
 
 class EditProfileController extends GetxController {
   var userDp = ''.obs;
@@ -35,31 +36,48 @@ class EditProfileController extends GetxController {
     super.onInit();
   }
 
+  // void selectDOB(BuildContext context) async {
+  //   final date = await showDatePicker(
+  //     initialDate: dob,
+  //     context: context,
+  //     firstDate: DateTime(1900),
+  //     lastDate: DateTime.now(),
+  //     builder: (context, child) => Theme(
+  //       data: ThemeData(
+  //         fontFamily: 'Poppins',
+  //         primaryColor: AppTheme.red,
+  //         colorScheme: const ColorScheme.light(
+  //           primary: AppTheme.red,
+  //           onPrimary: Colors.white,
+  //           onSurface: Colors.black,
+  //         ),
+  //         dialogTheme: DialogThemeData(
+  //             backgroundColor: Colors.white), // Background color
+  //       ),
+  //       child: child ?? const SizedBox(),
+  //     ),
+  //   );
+  //   if (date != null) {
+  //     dob = date;
+  //     dobController.text = DateFormat("dd MMM, yyyy").format(date);
+  //   }
+  // }
+
   void selectDOB(BuildContext context) async {
-    final date = await showDatePicker(
-      initialDate: dob,
+    showDialog(
       context: context,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      builder: (context, child) => Theme(
-        data: ThemeData(
-          fontFamily: 'Poppins',
-          primaryColor: AppTheme.red,
-          colorScheme: const ColorScheme.light(
-            primary: AppTheme.red,
-            onPrimary: Colors.white,
-            onSurface: Colors.black,
-          ),
-          dialogTheme: DialogThemeData(
-              backgroundColor: Colors.white), // Background color
-        ),
-        child: child ?? const SizedBox(),
-      ),
+      builder: (context) {
+        return CustomDatePicker(
+          initialDate: dob,
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+          onDateSelected: (date) {
+            dob = date;
+            dobController.text = DateFormat("dd MMM, yyyy").format(date);
+          },
+        );
+      },
     );
-    if (date != null) {
-      dob = date;
-      dobController.text = DateFormat("dd MMM, yyyy").format(date);
-    }
   }
 
   void showImagePickerDialog() {
