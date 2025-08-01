@@ -1,0 +1,2 @@
+C:/Users/user/AndroidStudioProjects/kanna_curry_house/android/app/.cxx/RelWithDebInfo/3h3m3321/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/user/AndroidStudioProjects/kanna_curry_house/android/app/.cxx/RelWithDebInfo/3h3m3321/armeabi-v7a/CMakeFiles/rebuild_cache.dir

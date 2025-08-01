@@ -99,31 +99,41 @@ class CartController extends GetxController {
   }
 
   void notifyOnOtherScreens(ProductModel product, {bool isDeleted = false}) {
-    if (isDeleted) {
-      if (fromScreenName == 'home') {
-        Get.find<HomeController>().hideQuantityAdjusters(product);
-      } else if (fromScreenName == 'products') {
-        Get.find<CategoryProductsController>().hideQuantityAdjusters(product);
-      } else if (fromScreenName == 'product_detail') {
-        final productDetailController = Get.find<ProductDetailController>();
-        if (productDetailController.product.value?.id == product.id) {
-          productDetailController.product.value?.isInCart = false;
-          productDetailController.product.refresh();
-          productDetailController.notifyOnOtherScreens(isDeleted: true);
+    try {
+      if (isDeleted) {
+        if (fromScreenName == 'home') {
+          final homeController = Get.isRegistered<HomeController>()
+              ? Get.find<HomeController>()
+              : Get.put(HomeController());
+          homeController.hideQuantityAdjusters(product);
+        } else if (fromScreenName == 'products') {
+          Get.find<CategoryProductsController>().hideQuantityAdjusters(product);
+        } else if (fromScreenName == 'product_detail') {
+          final productDetailController = Get.find<ProductDetailController>();
+          if (productDetailController.product.value?.id == product.id) {
+            productDetailController.product.value?.isInCart = false;
+            productDetailController.product.refresh();
+            productDetailController.notifyOnOtherScreens(isDeleted: true);
+          }
+        }
+      } else {
+        if (fromScreenName == 'home') {
+          final homeController = Get.isRegistered<HomeController>()
+              ? Get.find<HomeController>()
+              : Get.put(HomeController());
+          homeController.showQuantityAdjusters(product);
+        } else if (fromScreenName == 'products') {
+          Get.find<CategoryProductsController>().showQuantityAdjusters(product);
+        } else if (fromScreenName == 'product_detail') {
+          final productDetailController = Get.find<ProductDetailController>();
+          if (productDetailController.product.value?.id == product.id) {
+            productDetailController.product.value = product;
+            productDetailController.notifyOnOtherScreens();
+          }
         }
       }
-    } else {
-      if (fromScreenName == 'home') {
-        Get.find<HomeController>().showQuantityAdjusters(product);
-      } else if (fromScreenName == 'products') {
-        Get.find<CategoryProductsController>().showQuantityAdjusters(product);
-      } else if (fromScreenName == 'product_detail') {
-        final productDetailController = Get.find<ProductDetailController>();
-        if (productDetailController.product.value?.id == product.id) {
-          productDetailController.product.value = product;
-          productDetailController.notifyOnOtherScreens();
-        }
-      }
+    } catch (e) {
+      //
     }
   }
 }

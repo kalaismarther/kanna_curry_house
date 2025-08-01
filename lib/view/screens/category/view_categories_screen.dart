@@ -8,6 +8,7 @@ import 'package:kanna_curry_house/view/widgets/cart_info.dart';
 import 'package:kanna_curry_house/view/widgets/categories_loading_widget.dart';
 import 'package:kanna_curry_house/view/widgets/category_item.dart';
 import 'package:kanna_curry_house/view/widgets/primary_appbar.dart';
+import 'package:kanna_curry_house/view/widgets/primary_loader.dart';
 import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
 
 class ViewCategoriesScreen extends StatelessWidget {
@@ -64,6 +65,16 @@ class ViewCategoriesScreen extends StatelessWidget {
                     );
                   },
                 ),
+                Obx(() {
+                  if (controller.paginationLoading.value) {
+                    return Padding(
+                      padding: EdgeInsets.all(8.sp),
+                      child: PrimaryLoader(),
+                    );
+                  }
+
+                  return SizedBox();
+                })
               ],
             ),
           ),

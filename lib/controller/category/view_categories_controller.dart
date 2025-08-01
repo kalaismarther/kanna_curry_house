@@ -27,6 +27,7 @@ class ViewCategoriesController extends GetxController {
   Future<void> fetchCategories({required bool initialize}) async {
     try {
       if (initialize) {
+        pageNo = 0;
         isLoading.value = true;
       } else {
         paginationLoading.value = true;
@@ -51,7 +52,9 @@ class ViewCategoriesController extends GetxController {
   }
 
   Future<void> loadMore() async {
-    if (scrollController.position.maxScrollExtent == scrollController.offset) {
+    final maxScroll = scrollController.position.maxScrollExtent;
+    final currentScroll = scrollController.offset;
+    if (currentScroll >= (maxScroll * 0.8)) {
       if (pageNo != null && !isLoading.value && !paginationLoading.value) {
         fetchCategories(initialize: false);
       }

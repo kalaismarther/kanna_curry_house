@@ -13,12 +13,13 @@ import 'package:kanna_curry_house/view/screens/dashboard/dashboard_screen.dart';
 import 'package:kanna_curry_house/view/screens/splash/get_started_screen.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:new_version_plus/new_version_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SplashController extends GetxController {
   @override
   void onInit() {
-    Future.delayed(const Duration(seconds: 1), checkLocationPermissions);
+    Future.delayed(const Duration(milliseconds: 500), checkLocationPermissions);
     super.onInit();
   }
 
@@ -130,9 +131,12 @@ class SplashController extends GetxController {
       if (noInternet) {
         startApp();
       } else {
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
         final newVersion = NewVersionPlus(
-            androidId: 'com.smart.aadhicurryhourse',
-            iOSId: 'com.smart.aadhicurryhourse');
+          androidId: packageInfo.packageName,
+          iOSId: packageInfo.packageName,
+        );
 
         final status = await newVersion.getVersionStatus();
 
@@ -191,6 +195,7 @@ class SplashController extends GetxController {
       }
     } catch (e) {
       //
+      print(e);
       startApp();
     }
   }

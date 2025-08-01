@@ -112,14 +112,14 @@ class ProductItem extends StatelessWidget {
                                       child: Icon(
                                         Icons.remove,
                                         color: Colors.black,
-                                        size: 16.sp,
+                                        size: 15.sp,
                                       ),
                                     ),
                                   ),
                                   Text(
                                     product.cartQuantity.toString(),
                                     style: TextStyle(
-                                        fontSize: 16.sp,
+                                        fontSize: 15.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
                                   InkWell(
@@ -137,7 +137,7 @@ class ProductItem extends StatelessWidget {
                                       child: Icon(
                                         Icons.add,
                                         color: Colors.black,
-                                        size: 16.sp,
+                                        size: 15.sp,
                                       ),
                                     ),
                                   ),

@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:kanna_curry_house/controller/auth/login_controller.dart';
 import 'package:kanna_curry_house/controller/dashboard/dashboard_controller.dart';
 import 'package:kanna_curry_house/core/services/api_services.dart';
-// import 'package:kanna_curry_house/core/utils/device_helper.dart';
+import 'package:kanna_curry_house/core/utils/device_helper.dart';
 import 'package:kanna_curry_house/core/utils/location_helper.dart';
 import 'package:kanna_curry_house/core/utils/storage_helper.dart';
 import 'package:kanna_curry_house/core/utils/ui_helper.dart';
@@ -174,7 +174,6 @@ class UpdateProfileController extends GetxController {
   Future<void> updateLocation(double latitude, double longitude) async {
     currentLocation.value = LatLng(latitude, longitude);
 //
-
     locationController.text =
         await LocationHelper.getFullAddress(latitude, longitude);
     update();

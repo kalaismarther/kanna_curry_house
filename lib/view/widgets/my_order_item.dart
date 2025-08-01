@@ -106,19 +106,28 @@ class MyOrderItem extends StatelessWidget {
                         style: TextStyle(fontSize: 14.sp),
                       ),
                     )
-                  // else if (myOrder.status.toLowerCase() != 'order cancelled' &&
-                  //     myOrder.status.toLowerCase() != 'processing')
                   else if (myOrder.status.toLowerCase() == 'delivered' ||
                       myOrder.status.toLowerCase() == 'order delivered')
                     InkWell(
                       onTap: () {
-                        Get.find<OrderDetailController>().showRatingDialog();
+                        if (Get.isRegistered<OrderDetailController>()) {
+                          Get.find<OrderDetailController>().showRatingDialog();
+                        }
                       },
-                      child: Padding(
-                        padding: EdgeInsets.all(4.sp),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.sp, vertical: 6.sp),
+                        decoration: BoxDecoration(
+                          color: AppTheme.red,
+                          borderRadius: BorderRadius.circular(6.sp),
+                        ),
                         child: Text(
                           'Rate Now',
-                          style: TextStyle(fontSize: 14.sp),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     )

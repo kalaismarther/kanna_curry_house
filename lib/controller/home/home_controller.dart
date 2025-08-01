@@ -110,7 +110,9 @@ class HomeController extends GetxController {
         if (result != null) {
           showQuantityAdjusters(result);
         }
-        await Get.find<CartInfoController>().reloadCartData();
+        if (Get.isRegistered<CartInfoController>()) {
+          await Get.find<CartInfoController>().reloadCartData();
+        }
       } else {
         UiHelper.showToast('Please login to add product to your cart');
       }
@@ -137,7 +139,9 @@ class HomeController extends GetxController {
         if (result != null) {
           showQuantityAdjusters(result);
         }
-        await Get.find<CartInfoController>().reloadCartData();
+        if (Get.isRegistered<CartInfoController>()) {
+          await Get.find<CartInfoController>().reloadCartData();
+        }
       } else {
         UiHelper.showToast('Please login to add product to your cart');
       }
@@ -158,7 +162,9 @@ class HomeController extends GetxController {
 
         await ApiServices.deleteProductFromCart(input);
         hideQuantityAdjusters(product);
-        await Get.find<CartInfoController>().reloadCartData();
+        if (Get.isRegistered<CartInfoController>()) {
+          await Get.find<CartInfoController>().reloadCartData();
+        }
       } else {
         UiHelper.showToast('Please login to remove product from cart');
       }

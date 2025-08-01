@@ -11,7 +11,7 @@ class NotificationController extends GetxController {
   void onInit() {
     isLoading.value = true;
     scrollController.addListener(loadMore);
-    getMyNotifications();
+    getMyNotifications(initialize: true);
     super.onInit();
   }
 
@@ -24,8 +24,15 @@ class NotificationController extends GetxController {
 
   final scrollController = ScrollController();
 
-  Future<void> getMyNotifications() async {
+  Future<void> getMyNotifications({required bool initialize}) async {
     try {
+      if (initialize) {
+        pageNo = 0;
+        notificationList.clear();
+        isLoading.value = true;
+      } else {
+        paginationLoading.value = true;
+      }
       error.value = null;
       pageNo = notificationList.length;
 
@@ -53,8 +60,7 @@ class NotificationController extends GetxController {
     final currentScroll = scrollController.offset;
     if (currentScroll >= (maxScroll * 0.8)) {
       if (pageNo != null && !isLoading.value && !paginationLoading.value) {
-        paginationLoading.value = true;
-        getMyNotifications();
+        getMyNotifications(initialize: false);
       }
     }
   }

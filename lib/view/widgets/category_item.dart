@@ -64,6 +64,8 @@ class CategoryItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       category.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w600),
                     ),

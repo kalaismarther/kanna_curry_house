@@ -17,7 +17,7 @@ class CartInfo extends StatelessWidget {
     return GetBuilder<CartInfoController>(
       builder: (controller) => Obx(() {
         final cart = controller.myCart.value;
-        if (cart == null) {
+        if (cart == null || AuthHelper.isGuestUser()) {
           return const SizedBox();
         }
         return Container(

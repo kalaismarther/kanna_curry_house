@@ -77,9 +77,11 @@ class CategoryProductsController extends GetxController {
   }
 
   Future<void> loadMoreCategories() async {
-    if (categoriesScrollController.position.maxScrollExtent ==
-        categoriesScrollController.offset) {
+    final maxScroll = categoriesScrollController.position.maxScrollExtent;
+    final currentScroll = categoriesScrollController.offset;
+    if (currentScroll >= (maxScroll * 0.8)) {
       if (categoriesPageNo != null &&
+          categoriesPageNo != categories.length &&
           !categoriesLoading.value &&
           !categoryiesPaginationLoading.value) {
         fetchCategories(initialize: false);
@@ -99,7 +101,7 @@ class CategoryProductsController extends GetxController {
         products.clear();
         productsLoading.value = true;
       } else {
-        categoryiesPaginationLoading.value = true;
+        productsPaginationLoading.value = true;
       }
       productsError.value = null;
       productsPageNo = products.length;
@@ -118,14 +120,16 @@ class CategoryProductsController extends GetxController {
       }
     } finally {
       productsLoading.value = false;
-      categoryiesPaginationLoading.value = false;
+      productsPaginationLoading.value = false;
     }
   }
 
   Future<void> loadMoreProductsByCategory() async {
-    if (productsScrollController.position.maxScrollExtent ==
-        productsScrollController.offset) {
+    final maxScroll = productsScrollController.position.maxScrollExtent;
+    final currentScroll = productsScrollController.offset;
+    if (currentScroll >= (maxScroll * 0.8)) {
       if (productsPageNo != null &&
+          productsPageNo != products.length &&
           !productsLoading.value &&
           !productsPaginationLoading.value) {
         fetchProductsbyCategory(initialize: false);
@@ -146,7 +150,9 @@ class CategoryProductsController extends GetxController {
         if (result != null) {
           showQuantityAdjusters(result);
         }
-        await Get.find<CartInfoController>().reloadCartData();
+        if (Get.isRegistered<CartInfoController>()) {
+          await Get.find<CartInfoController>().reloadCartData();
+        }
       } else {
         UiHelper.showToast('Please login to add product to your cart');
       }
@@ -173,7 +179,9 @@ class CategoryProductsController extends GetxController {
         if (result != null) {
           showQuantityAdjusters(result);
         }
-        await Get.find<CartInfoController>().reloadCartData();
+        if (Get.isRegistered<CartInfoController>()) {
+          await Get.find<CartInfoController>().reloadCartData();
+        }
       } else {
         UiHelper.showToast('Please login to add product to your cart');
       }
@@ -195,7 +203,9 @@ class CategoryProductsController extends GetxController {
         await ApiServices.deleteProductFromCart(input);
 
         hideQuantityAdjusters(product);
-        await Get.find<CartInfoController>().reloadCartData();
+        if (Get.isRegistered<CartInfoController>()) {
+          await Get.find<CartInfoController>().reloadCartData();
+        }
       } else {
         UiHelper.showToast('Please login to remove product from cart');
       }
@@ -214,7 +224,9 @@ class CategoryProductsController extends GetxController {
       products[itemIndex] = product;
       products.refresh();
     }
-    Get.find<HomeController>().showQuantityAdjusters(product);
+    if (Get.isRegistered<HomeController>()) {
+      Get.find<HomeController>().showQuantityAdjusters(product);
+    }
   }
 
   void hideQuantityAdjusters(ProductModel product) async {
@@ -224,7 +236,9 @@ class CategoryProductsController extends GetxController {
       final itemIndex = products.indexOf(item);
       products[itemIndex].isInCart = false;
       products.refresh();
-      Get.find<HomeController>().hideQuantityAdjusters(item);
+      if (Get.isRegistered<HomeController>()) {
+        Get.find<HomeController>().hideQuantityAdjusters(item);
+      }
     }
   }
 }

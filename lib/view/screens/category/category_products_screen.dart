@@ -12,6 +12,7 @@ import 'package:kanna_curry_house/view/widgets/categories_loading_widget.dart';
 import 'package:kanna_curry_house/view/widgets/category_item.dart';
 import 'package:kanna_curry_house/view/widgets/loading_shimmer.dart';
 import 'package:kanna_curry_house/view/widgets/primary_appbar.dart';
+import 'package:kanna_curry_house/view/widgets/primary_loader.dart';
 import 'package:kanna_curry_house/view/widgets/product_item.dart';
 import 'package:kanna_curry_house/view/widgets/products_loading_widget.dart';
 import 'package:kanna_curry_house/view/widgets/vertical_space.dart';
@@ -31,90 +32,114 @@ class CategoryProductsScreen extends StatelessWidget {
         bottom: true,
         child: Scaffold(
           appBar: const PrimaryAppbar(title: 'View Category'),
-          body: Padding(
-            padding: EdgeInsets.all(16.sp),
-            child: Obx(
-              () => Column(
-                children: [
-                  if (controller.categoriesLoading.value)
-                    const CategoriesLoadingWidget(isListView: true)
-                  else
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      controller: controller.categoriesScrollController,
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12.sp, horizontal: 4.sp),
-                      child: Row(
+          body: Obx(
+            () => Column(
+              children: [
+                const VerticalSpace(height: 16),
+                if (controller.categoriesLoading.value)
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.sp, horizontal: 20.sp),
+                    child: const CategoriesLoadingWidget(isListView: true),
+                  )
+                else
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    controller: controller.categoriesScrollController,
+                    padding: EdgeInsets.symmetric(
+                        vertical: 12.sp, horizontal: 20.sp),
+                    child: Row(
+                      children: [
+                        for (final category in controller.categories)
+                          CategoryItem(
+                            onTap: () => controller
+                                .selectCategoryAndLoadProducts(category),
+                            category: category,
+                            inListView: true,
+                            backgroundColor:
+                                controller.selectedCategory.value?.id ==
+                                        category.id
+                                    ? AppTheme.red
+                                    : Colors.white,
+                          ),
+                        if (controller.categoryiesPaginationLoading.value)
+                          LoadingShimmer(
+                              height: 60.sp, width: 160.sp, radius: 12.sp),
+                      ],
+                    ),
+                  ),
+                const VerticalSpace(height: 16),
+                if (controller.productsError.value != null)
+                  SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(controller.productsError.value ?? ''),
+                    ),
+                  )
+                else if (controller.productsLoading.value)
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 20.sp, right: 20.sp, bottom: 20.sp),
+                    child: const ProductsLoadingWidget(),
+                  )
+                else
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: controller.productsScrollController,
+                      padding: EdgeInsets.only(
+                          left: 20.sp, right: 20.sp, bottom: 20.sp),
+                      child: Column(
                         children: [
-                          for (final category in controller.categories)
-                            CategoryItem(
-                              onTap: () => controller
-                                  .selectCategoryAndLoadProducts(category),
-                              category: category,
-                              inListView: true,
-                              backgroundColor:
-                                  controller.selectedCategory.value?.id ==
-                                          category.id
-                                      ? AppTheme.red
-                                      : Colors.white,
+                          GridView.builder(
+                            padding: const EdgeInsets.all(0),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: controller.products.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 24.sp,
+                                    crossAxisSpacing: 13.sp,
+                                    childAspectRatio: 0.96),
+                            itemBuilder: (context, index) => ProductItem(
+                              onTap: () => Get.to(
+                                () => ProductDetailScreen(
+                                    productId: controller.products[index].id,
+                                    fromScreen: 'category_products'),
+                              ),
+                              onAdd: () {
+                                controller
+                                    .addToCart(controller.products[index]);
+                              },
+                              onIncrement: () {
+                                controller.updateCart(
+                                    controller.products[index],
+                                    toIncrease: true);
+                              },
+                              onDecrement: () {
+                                if (controller.products[index].cartQuantity <
+                                    2) {
+                                  controller
+                                      .deleteCart(controller.products[index]);
+                                } else {
+                                  controller.updateCart(
+                                      controller.products[index],
+                                      toIncrease: false);
+                                }
+                              },
+                              product: controller.products[index],
                             ),
-                          if (controller.categoryiesPaginationLoading.value)
-                            LoadingShimmer(
-                                height: 60.sp, width: 160.sp, radius: 12.sp),
+                          ),
+                          if (controller.productsPaginationLoading.value)
+                            Padding(
+                              padding: EdgeInsets.all(8.sp),
+                              child: PrimaryLoader(),
+                            )
                         ],
                       ),
                     ),
-                  const VerticalSpace(height: 20),
-                  if (controller.productsError.value != null)
-                    SizedBox(
-                      height: 100,
-                      child: Center(
-                        child: Text(controller.productsError.value ?? ''),
-                      ),
-                    )
-                  else if (controller.productsLoading.value)
-                    const ProductsLoadingWidget()
-                  else
-                    GridView.builder(
-                      padding: const EdgeInsets.all(0),
-                      shrinkWrap: true,
-                      controller: controller.productsScrollController,
-                      itemCount: controller.products.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 24.sp,
-                          crossAxisSpacing: 16.sp,
-                          childAspectRatio: 0.96),
-                      itemBuilder: (context, index) => ProductItem(
-                        onTap: () => Get.to(
-                          () => ProductDetailScreen(
-                              productId: controller.products[index].id,
-                              fromScreen: 'category_products'),
-                        ),
-                        onAdd: () {
-                          controller.addToCart(controller.products[index]);
-                        },
-                        onIncrement: () {
-                          controller.updateCart(controller.products[index],
-                              toIncrease: true);
-                        },
-                        onDecrement: () {
-                          if (controller.products[index].cartQuantity < 2) {
-                            controller.deleteCart(controller.products[index]);
-                          } else {
-                            controller.updateCart(controller.products[index],
-                                toIncrease: false);
-                          }
-                        },
-                        product: controller.products[index],
-                      ),
-                    ),
-                  if (controller.productsPaginationLoading.value)
-                    const Center(
-                      child: CupertinoActivityIndicator(),
-                    )
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
           bottomNavigationBar: CartInfo(
